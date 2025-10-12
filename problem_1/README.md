@@ -5,7 +5,7 @@ Find the sum of all multiples of 3 or 5 below a given threshold (default 1000).
 
 ---
 
-## Solution 1 (`solution1.py`)
+## Solution 1 (`solution_1.py`)
 
 **Approach:**  
 
