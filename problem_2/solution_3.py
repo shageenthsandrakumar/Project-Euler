@@ -21,7 +21,7 @@ sum_ephi = ephi * (ephi**N - 1) / (ephi - 1)
 sum_epsi = epsi * (epsi**N - 1) / (epsi - 1)
 
 # total sum of even Fibonacci numbers
-sum_even = (sum_ephi - sum_epsi) / sqrt5
+sum_even = (sum_ephi - sum_epsi) / math.sqrt(5)
 
 # round to nearest integer for exact sum
 sum_even = round(sum_even)
