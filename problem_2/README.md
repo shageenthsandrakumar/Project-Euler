@@ -75,7 +75,7 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
 ### Detailed Explanation
 
 - **Step 1: Finding the index $N$**  
-  - The code iteratively solves for the smallest $N$ such that $E_N \ge 4,000,000$.  
+  - The code iteratively solves for the smallest $N$ such that $E_N \ge 4{,}000{,}000$.  
   - The index $N - 1$ is the last term to be summed.  
 
 - **Step 2: Sum of Geometric Series**  
@@ -85,9 +85,12 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
 - **Step 3: Final Calculation**  
   - The final sum is calculated as:  
     $$\text{sum\_even} = \frac{\sum (\phi^3)^n - \sum (\psi^3)^n}{\sqrt{5}}$$  
+    (or written correctly in LaTeX as)  
+    $$\text{sum\_even} = \frac{\sum (\phi^3)^n - \sum (\psi^3)^n}{\sqrt{5}}$$  
   - The result is rounded to the nearest integer to correct for floating-point errors.  
 
 - **Efficiency:** This is the most efficient solution since it avoids a sequential loop over the Fibonacci terms.
+
 
 
 ## Output
