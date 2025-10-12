@@ -67,7 +67,7 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
   - The $n$-th even Fibonacci number is $E_n = F_{3n}$, which can be expressed using the Golden Ratio $\phi$ and its conjugate $\psi$:
     $$E_n = \frac{(\phi^3)^n - (\psi^3)^n}{\sqrt{5}}$$
   - Calculate the index $N$ of the last even term below the threshold ($4,000,000$).
-  - Use the **formula for the sum of a geometric series** to sum all $N$ terms directly, resulting in an $\mathcal{O}(1)$ solution.
+  - Use the **formula for the sum of a geometric series** to sum all $N$ terms directly.
 
 **Reference:** The full Python implementation is available in [`solution_3.py`](solution_3.py).
 
@@ -93,9 +93,9 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
         $$\text{Sum} = \frac{1}{\sqrt{5}} \left( \sum_{n=1}^{N} (\phi^3)^n - \sum_{n=1}^{N} (\psi^3)^n \right)$$
       - The sum of a geometric series $S_N = \sum_{n=1}^{N} r^n = \frac{r(r^N - 1)}{r - 1}$.
       - **Sum of Positive Part ($S_{\phi}$):** $r = \phi^3$
-        $$S_{\phi} = \sum_{n=1}^{12} (\phi^3)^n = \frac{\phi^3 ((\phi^3)^{11} - 1)}{\phi^3 - 1}$$
+        $$S_{\phi} = \sum_{n=1}^{11} (\phi^3)^n = \frac{\phi^3 ((\phi^3)^{11} - 1)}{\phi^3 - 1}$$
       - **Sum of Negative Part ($S_{\psi}$):** $r = \psi^3$
-        $$S_{\psi} = \sum_{n=1}^{12} (\psi^3)^n = \frac{\psi^3 ((\psi^3)^{11} - 1)}{\psi^3 - 1}$$
+        $$S_{\psi} = \sum_{n=1}^{11} (\psi^3)^n = \frac{\psi^3 ((\psi^3)^{11} - 1)}{\psi^3 - 1}$$
   - **Step 5: Final Calculation (Threshold = $4,000,000$ $\implies N=11$)**
       - $\phi^{3 \cdot 11} = \phi^{33}$
       - $\psi^{3 \cdot 11} = \psi^{33}$
