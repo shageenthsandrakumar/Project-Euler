@@ -18,8 +18,9 @@ Find the sum of all the multiples of 3 or 5 below 1000.
   - sum_of_multiples = step * n * (n + 1) / 2  
   - Here, `step` is 3, 5, or 15, and `n` is the number of terms.  
 - Correct for double-counting by subtracting the sum of multiples of 15.  
-- Compute the final sum efficiently:
+- Compute the final sum efficiently.
 
+**Reference:** The full Python implementation is available in [`solution_1.py`](solution_1.py).
 
 ### Detailed Explanation
 
