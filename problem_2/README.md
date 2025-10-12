@@ -96,7 +96,7 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
         $$S_{\phi} = \sum_{n=1}^{12} (\phi^3)^n = \frac{\phi^3 ((\phi^3)^{11} - 1)}{\phi^3 - 1}$$
       - **Sum of Negative Part ($S_{\psi}$):** $r = \psi^3$
         $$S_{\psi} = \sum_{n=1}^{12} (\psi^3)^n = \frac{\psi^3 ((\psi^3)^{11} - 1)}{\psi^3 - 1}$$
-  - **Step 5: Final Calculation (Threshold $4,000,000$ $\implies N=11$)**
+  - **Step 5: Final Calculation (Threshold = $4,000,000$ $\implies N=11$)**
       - $\phi^{3 \cdot 11} = \phi^{33}$
       - $\psi^{3 \cdot 11} = \psi^{33}$
       - $S_{\phi} = \frac{\phi^{36} - \phi^3 }{\phi^3 - 1}$
