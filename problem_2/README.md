@@ -28,7 +28,7 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
       - The `while current < threshold:` loop continues as long as the current Fibonacci number is below four million.
       - Inside the loop, the next Fibonacci number is calculated: `previous, current = current, previous + current`. The old `current` becomes the new `previous`, and the sum of the old `previous` and `current` becomes the new `current`.
   - **Step 3: Check for Even Numbers**
-      - We check the **new `previous`** (which is the old `current`, the term *just added* to the sequence) for evenness using modular arithmetic: `if not previous % 2:`.
+      - We check the new `previous` (which is the old `current`, the term *just added* to the sequence) for evenness using modular arithmetic: `if not previous % 2:`.
   - **Step 4: Accumulating the sum**
       - If the term is even, it is added to the running `sum`.
 
