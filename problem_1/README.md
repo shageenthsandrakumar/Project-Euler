@@ -63,7 +63,7 @@ Final sum: `166833 + 99500 - 33165 = 233168`
 
 **Reference:** The full Python implementation is available in [`solution_2.py`](solution_2.py).
 
-### Detailed Explanation (Solution 2)
+### Detailed Explanation
 
 - **Step 1: Iteration**  
   We loop through each number `n` from 1 up to `threshold - 1` to examine all candidates below the threshold.
@@ -83,7 +83,7 @@ Final sum: `166833 + 99500 - 33165 = 233168`
   After the loop, the variable `sum` holds the sum of all multiples of 3 or 5 below the threshold.
 
 
-### Output
+## Output
 
 ```
 233168
@@ -91,7 +91,7 @@ Final sum: `166833 + 99500 - 33165 = 233168`
 
 ---
 
-### Notes
+## Notes
 
 - `threshold` can be changed to compute the sum below any upper limit.  
 - Using the arithmetic series formula is faster and more efficient than iterating through all numbers.  
