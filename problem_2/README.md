@@ -117,4 +117,4 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
 ## Notes
 
   - The problem uses the sequence starting $1, 2, 3, 5, \dots$. If using the standard mathematical indexing $F_1=1, F_2=1, F_3=2, \dots$, the terms used here are $F_2, F_3, F_4, \dots$.
-  - **Solution 2** is the optimal iterative method, while **Solution 3** is the most efficient, closed-form approach.
+  - **Solution 2** is the optimal iterative method, while **Solution 3** is the most efficient approach.
