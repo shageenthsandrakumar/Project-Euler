@@ -45,7 +45,7 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
   - This allows for the generation of *only* the even terms, significantly reducing the number of iterations.
   - Iterate using this modified recurrence relation and sum the terms until the threshold is exceeded.
 
-**Reference:** The full Python implementation is available in [`solution_2.py`](https://www.google.com/search?q=solution_2.py).
+**Reference:** The full Python implementation is available in [`solution_2.py`](solution_2.py).
 
 ### Detailed Explanation
 
