@@ -99,8 +99,8 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
   - **Step 5: Final Calculation (Threshold $4,000,000$ $\implies N=11$)**
       - $\phi^{3 \cdot 11} = \phi^{33}$
       - $\psi^{3 \cdot 11} = \psi^{33}$
-      - $S_{\phi} \approx \frac{4.236068 \cdot (14930352 - 1)}{4.236068 - 1} \approx 20387556.000$
-      - $S_{\psi} \approx \frac{-0.236068 \cdot (4.47 \times 10^{-8} - 1)}{-0.236068 - 1} \approx 0.0000000447$
+      - $S_{\phi} = \frac{\phi^3 (\phi^33 - 1)}{\phi^3 - 1}$
+      - $S_{\psi} = \frac{\psi^3 (\psi^33 - 1)}{\psi^3 - 1}$
       - The total sum is:
         $$\text{Sum} = \frac{S_{\phi} - S_{\psi}}{\sqrt{5}} = \frac{20387556.000 - 0.0000000447}{\sqrt{5}} \approx 9123847.99999996 / 2.236068 \approx 4613732.000$$
       - The result is then **rounded** to the nearest integer to correct for floating-point imprecision, yielding the exact sum: **$4613732$**.
