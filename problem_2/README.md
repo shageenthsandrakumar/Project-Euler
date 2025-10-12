@@ -77,8 +77,8 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
       - **Golden Ratio:** $\phi = \frac{1+\sqrt{5}}{2}$
       - **Conjugate:** $\psi = \frac{1-\sqrt{5}}{2}$ 
       - The base for the geometric series for even terms are $r_1 = \phi^3$ and $r_2 = \psi^3$.
-          - $r_1 = \phi^3  (`ephi`)
-          - $r_2 = \psi^3  (`epsi`)
+          - $r_1 = \phi^3$  (`ephi`)
+          - $r_2 = \psi^3$  (`epsi`)
   - **Step 2: Finding the Index $N$**
       - We solve for the largest integer $N$ such that $E_N < 4,000,000$.
       - This is found iteratively in the code: $N=12$.
