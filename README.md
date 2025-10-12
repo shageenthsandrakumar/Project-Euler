@@ -4,21 +4,11 @@ This repository contains Python solutions to Project Euler problems. Each proble
 
 ---
 
-## Problem 1: Multiples of 3 and 5
+## Problems Overview
 
-**Problem statement:**  
-Find the sum of all multiples of 3 or 5 below a given threshold (default 1000).
+- **[Problem 1: Multiples of 3 and 5](./Problem1/README.md)**  
+- **[Problem 2: Even Fibonacci numbers](./Problem2/README.md)**  
+- **[Problem 3: Largest prime factor](./Problem3/README.md)**  
 
----
+Each problem folder contains one or more solutions with explanations, code, and output.
 
-### Solution 1 (`Problem1_solution_1.py`)
-
-**Approach:**  
-
-- Count the number of multiples of 3, 5, and 15 below the threshold.  
-- Use the arithmetic series formula to calculate the sum of each set of multiples.  
-- Correct for double-counting by subtracting the sum of multiples of 15.  
-- Compute the final sum as:
-
-```python
-final_sum = sum_of_3s + sum_of_5s - sum_of_15s
