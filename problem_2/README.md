@@ -101,7 +101,7 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
       - $\psi^{3 \cdot 11} = \psi^{33}$
       - $S_{\phi} = \frac{\phi^{36} - \phi^3 }{\phi^3 - 1}$
       - $S_{\psi} = \frac{\psi^{36} - \psi^3}{\psi^3 - 1}$
-      - The total sum is:  \frac{S_{\phi} - S_{\psi}}{\sqrt{5}} \approx 4613732.000$$
+      - The total sum is:  $$\frac{S_{\phi} - S_{\psi}}{\sqrt{5}} \approx 4613732.000$$
       - The result is then **rounded** to the nearest integer to correct for floating-point imprecision, yielding the exact sum: **$4613732$**.
   - **Efficiency:** This is the most efficient solution as it is a **closed-form, $\mathcal{O}(1)$ solution** (excluding the initial loop to find $N$), requiring no iteration over the series terms themselves.
 
