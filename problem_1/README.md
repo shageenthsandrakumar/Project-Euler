@@ -13,11 +13,12 @@ Find the sum of all the multiples of 3 or 5 below 1000.
 
 ### Approach
 
-1. **Count the number of multiples below the threshold**  
-
-2. **Compute the sum of each arithmetic series**  
-
-3. **Calculate the final sum**  
+- Count the number of multiples of 3, 5, and 15 below the threshold.  
+- Use the arithmetic series formula to calculate the sum of each set of multiples:  
+  - sum_of_multiples = step * n * (n + 1) / 2  
+  - Here, `step` is 3, 5, or 15, and `n` is the number of terms.  
+- Correct for double-counting by subtracting the sum of multiples of 15.  
+- Compute the final sum efficiently:
 
 
 ### Detailed Explanation
