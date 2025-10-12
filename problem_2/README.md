@@ -69,7 +69,7 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
   - Calculate the index $N$ of the last even term below the threshold ($4,000,000$).
   - Use the **formula for the sum of a geometric series** to sum all $N$ terms directly, resulting in an $\mathcal{O}(1)$ solution.
 
-**Reference:** The full Python implementation is available in [`solution_3.py`](https://www.google.com/search?q=solution_3.py).
+**Reference:** The full Python implementation is available in [`solution_3.py`](solution_3.py).
 
 ### Detailed Explanation
 
@@ -103,41 +103,9 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
       - $S_{\psi} = \frac{\psi^{36} - \psi^3}{\psi^3 - 1}$
       - The total sum is:  $$\frac{S_{\phi} - S_{\psi}}{\sqrt{5}} \approx 4613732.000$$
       - The result is then **rounded** to the nearest integer to correct for floating-point imprecision, yielding the exact sum: **$4613732$**.
-  - **Efficiency:** This is the most efficient solution as it is a **closed-form, $\mathcal{O}(1)$ solution** (excluding the initial loop to find $N$), requiring no iteration over the series terms themselves.
+  - **Efficiency:** This is the most efficient solution as it only requires finding the index of the largest even-value term below the threshold. 
 
 -----
-
-
-### Approach
-
-- Use **Binet's Formula** to find the $n$-th even Fibonacci number directly.  
-- The $n$-th even Fibonacci number is $E_n = F_{3n}$, which can be expressed using the Golden Ratio $\phi$:  
-  $$E_n = \frac{(\phi^3)^n - (\psi^3)^n}{\sqrt{5}}$$  
-- Calculate the index $N$ of the last even term below the threshold.  
-- Use the **formula for the sum of a geometric series** to sum all $N$ terms directly, resulting in an $\mathcal{O}(1)$ solution.  
-
-**Reference:** The full Python implementation is available in [`solution_3.py`](solution_3.py).
-
-### Detailed Explanation
-
-- **Step 1: Finding the index $N$**  
-  - The code iteratively solves for the smallest $N$ such that $E_N \ge 4,000,000$.  
-  - The index $N - 1$ is the last term to be summed.  
-
-- **Step 2: Sum of Geometric Series**  
-  - The total sum $\sum_{n=1}^{N} E_n$ is a sum of two geometric series derived from Binet's formula components.  
-  - The sum formula $S_N = \frac{a(r^N - 1)}{r - 1}$ is applied to the $\phi^3$ and $\psi^3$ parts.  
-
-- **Step 3: Final Calculation**  
-  - The final sum is calculated as:  
-    $$\text{sum\even} = \frac{\sum (\phi^3)^n - \sum (\psi^3)^n}{\sqrt{5}}$$  
-  - The result is rounded to the nearest integer to correct for floating-point errors.  
-
-- **Efficiency:** This is the most efficient solution since it avoids a sequential loop over the Fibonacci terms.
-
-
-
-
 ## Output
 
 ```
