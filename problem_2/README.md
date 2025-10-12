@@ -93,10 +93,10 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
         $$\text{Sum} = \frac{1}{\sqrt{5}} \left( \sum_{n=1}^{N} (\phi^3)^n - \sum_{n=1}^{N} (\psi^3)^n \right)$$
       - The sum of a geometric series $S_N = \sum_{n=1}^{N} r^n = \frac{r(r^N - 1)}{r - 1}$.
       - **Sum of Positive Part ($S_{\phi}$):** $r = \phi^3$
-        $$S_{\phi} = \sum_{n=1}^{12} (\phi^3)^n = \frac{\phi^3 ((\phi^3)^{12} - 1)}{\phi^3 - 1}$$
+        $$S_{\phi} = \sum_{n=1}^{12} (\phi^3)^n = \frac{\phi^3 ((\phi^3)^{11} - 1)}{\phi^3 - 1}$$
       - **Sum of Negative Part ($S_{\psi}$):** $r = \psi^3$
-        $$S_{\psi} = \sum_{n=1}^{12} (\psi^3)^n = \frac{\psi^3 ((\psi^3)^{12} - 1)}{\psi^3 - 1}$$
-  - **Step 5: Final Calculation (Threshold $4,000,000$ $\implies N=12$)**
+        $$S_{\psi} = \sum_{n=1}^{12} (\psi^3)^n = \frac{\psi^3 ((\psi^3)^{11} - 1)}{\psi^3 - 1}$$
+  - **Step 5: Final Calculation (Threshold $4,000,000$ $\implies N=11$)**
       - $\phi^{3 \cdot 11} = \phi^{33}$
       - $\psi^{3 \cdot 11} = \psi^{33}$
       - $S_{\phi} \approx \frac{4.236068 \cdot (14930352 - 1)}{4.236068 - 1} \approx 20387556.000$
