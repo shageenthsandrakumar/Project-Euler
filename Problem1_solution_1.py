@@ -1,7 +1,4 @@
-#!/usr/bin/env python
-# coding: utf-8
 
-# In[3]:
 
 
 number_of_3s = int(1000/3)
