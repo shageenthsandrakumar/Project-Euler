@@ -1,6 +1,4 @@
 
-
-
 number_of_3s = int(1000/3)
 number_of_5s = 1000/5-1
 number_of_15s = int(1000/15)
