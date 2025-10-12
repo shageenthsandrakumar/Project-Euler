@@ -11,7 +11,7 @@ N = 0
 E_N = 0
 while E_N < 4000000:
     N += 1
-    E_N = (ephi**N - epsi**N) / sqrt5
+    E_N = (ephi**N - epsi**N) / math.sqrt(5)
 #N represents index of first even fibinacci number over threshold.
 #Use one less to represent indicies of numbers below threshold. 
 N -= 1
