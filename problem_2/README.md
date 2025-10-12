@@ -84,7 +84,7 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
 
 - **Step 3: Final Calculation**  
   - The final sum is calculated as:  
-    $$\text{sum\_even} = \frac{\sum (\phi^3)^n - \sum (\psi^3)^n}{\sqrt{5}}$$  
+    $$\text{sum\even} = \frac{\sum (\phi^3)^n - \sum (\psi^3)^n}{\sqrt{5}}$$  
   - The result is rounded to the nearest integer to correct for floating-point errors.  
 
 - **Efficiency:** This is the most efficient solution since it avoids a sequential loop over the Fibonacci terms.
