@@ -80,9 +80,9 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
           - $r_1 = \phi^3$  (`ephi`)
           - $r_2 = \psi^3$  (`epsi`)
   - **Step 2: Finding the Index $N$**
-    - We solve for the largest integer $N$ such that $E_N < 4,000,000$.
+    - We solve for the smallest integer $N$ such that $E_N ≥ `threshold`$.
     - This is found iteratively in the code: $N=12$.
-    - The even terms are $E_1, E_2, \dots, E_{12}$. There are $N=12$ terms to sum.
+    - The even terms are $E_1, E_2, \dots, E_{12}$.
   - **Step 3: Index Correction ($N -= 1$)**
     - When the loop terminates, the variable $N$ holds the value of the index of the term that exceeded the limit.
     - However, we need to sum only the terms *up to* the limit, which means we need a count of **N-1** terms.
