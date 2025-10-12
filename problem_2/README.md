@@ -70,7 +70,7 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
   - Calculate the index $N$ of the last even term below the threshold.
   - Use the **formula for the sum of a geometric series** to sum all $N$ terms directly, resulting in an $\mathcal{O}(1)$ solution.
 
-**Reference:** The full Python implementation is available in [`solution_3.py`](https://www.google.com/search?q=solution_3.py).
+**Reference:** The full Python implementation is available in [`solution_3.py`](solution_3.py).
 
 ### Detailed Explanation
 
