@@ -1,6 +1,6 @@
 # Project Euler Solutions
 
-This repository contains my Python solutions to Project Euler problems. Each problem may have multiple solutions exploring different mathematical or algorithmic approaches. The goal is to understand the reasoning behind each method and compare efficiency and simplicity.
+This repository contains Python solutions to Project Euler problems. Each problem may have multiple solutions exploring different mathematical or algorithmic approaches. The goal is to demonstrate problem-solving skills, efficient coding, and clear reasoning.
 
 ---
 
@@ -15,12 +15,10 @@ Find the sum of all multiples of 3 or 5 below a given threshold (default 1000).
 
 **Approach:**  
 
-1. Count the number of multiples below the threshold for 3, 5, and 15.  
-2. Use the formula for the sum of an arithmetic series to calculate:  
-   - Sum of multiples of 3  
-   - Sum of multiples of 5  
-   - Sum of multiples of 15 (to correct for double-counting)  
-3. Calculate the final sum as:
+- Count the number of multiples of 3, 5, and 15 below the threshold.  
+- Use the arithmetic series formula to calculate the sum of each set of multiples.  
+- Correct for double-counting by subtracting the sum of multiples of 15.  
+- Compute the final sum as:
 
 ```python
 final_sum = sum_of_3s + sum_of_5s - sum_of_15s
