@@ -59,15 +59,6 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
   - **Efficiency:** This method is much faster than Solution 1, performing only $\approx \frac{1}{3}$ the number of steps.
 
 -----
-
-## Solution 3
-
-You are absolutely right. While the general explanation was there, the full geometric series formulas and a complete numerical calculation were omitted from Solution 3 in the previous README.
-
-Here is the revised **Solution 3** section with the full details, including the necessary mathematical constants and the sum calculation, formatted for easy inclusion into the final GitHub README.
-
------
-
 ## Solution 3
 
 ### Approach
@@ -86,12 +77,13 @@ Here is the revised **Solution 3** section with the full details, including the 
       - **Golden Ratio:** $\phi = \frac{1+\sqrt{5}}{2}$
       - **Conjugate:** $\psi = \frac{1-\sqrt{5}}{2}$ 
       - The base for the geometric series for even terms are $r_1 = \phi^3$ and $r_2 = \psi^3$.
-          - $r_1 = \phi^3 \approx 4.236068$ (`ephi`)
-          - $r_2 = \psi^3 \approx -0.236068$ (`epsi`)
+          - $r_1 = \phi^3  (`ephi`)
+          - $r_2 = \psi^3  (`epsi`)
   - **Step 2: Finding the Index $N$**
       - We solve for the largest integer $N$ such that $E_N < 4,000,000$.
       - This is found iteratively in the code: $N=12$.
       - The even terms are $E_1, E_2, \dots, E_{12}$. There are $N=12$ terms to sum.
+  
   - **Step 3: Sum of Geometric Series**
       - The total sum $\sum_{n=1}^{N} E_n$ is:
         $$\text{Sum} = \frac{1}{\sqrt{5}} \left( \sum_{n=1}^{N} (\phi^3)^n - \sum_{n=1}^{N} (\psi^3)^n \right)$$
