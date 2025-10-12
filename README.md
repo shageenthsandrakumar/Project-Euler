@@ -11,7 +11,9 @@ Find the sum of all multiples of 3 or 5 below a given threshold (default 1000).
 
 ---
 
-### Solution approach
+### Solution 1 (`Problem1_solution_1.py`)
+
+**Approach:**  
 
 1. Count the number of multiples below the threshold for 3, 5, and 15.  
 2. Use the formula for the sum of an arithmetic series to calculate:  
