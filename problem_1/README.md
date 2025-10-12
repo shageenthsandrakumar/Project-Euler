@@ -52,6 +52,37 @@ Final sum: `166833 + 99500 - 33165 = 233168`
 
 ---
 
+## Solution 2
+
+**Approach:**
+
+- Iterate through all numbers from 1 up to (but not including) the threshold.
+- Check if each number is a multiple of 3 or 5.
+- If it is, add it to the running sum.
+- This approach is straightforward but less efficient than the arithmetic series formula.
+
+**Reference:** The full Python implementation is available in [`solution_2.py`](solution_2.py).
+
+### Detailed Explanation (Solution 2)
+
+- **Step 1: Iteration**  
+  We loop through each number `n` from 1 up to `threshold - 1` to examine all candidates below the threshold.
+
+- **Step 2: Check for multiples using modular arithmetic**  
+  - `n % 3` computes the remainder when `n` is divided by 3.  
+  - `n % 5` computes the remainder when `n` is divided by 5.  
+  - If a number is a multiple of 3 or 5, at least one of these remainders is 0.  
+  - The expression `n % 3 * n % 5` multiplies the remainders:  
+    - If `n` is divisible by 3 or 5, at least one remainder is 0 → the product is 0.  
+    - Using `not (n % 3 * n % 5)` evaluates to `True` when `n` is a multiple of 3 or 5.  
+
+- **Step 3: Accumulating the sum**  
+  When the condition is true, we add `n` to the running total sum.
+
+- **Step 4: Result**  
+  After the loop, the variable `sum` holds the sum of all multiples of 3 or 5 below the threshold.
+
+
 ### Output
 
 ```
