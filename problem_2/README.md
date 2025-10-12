@@ -55,7 +55,7 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
       - The relation $E_{n} = 4 \cdot E_{n-1} + E_{n-2}$ is implemented as: `previous, current = current, previous + 4 * current`.
       - The terms generated are $2, 8, 34, 144, \dots$ which are exactly the even terms.
   - **Step 3: Accumulating the sum**
-      - The new `previous` (the term *just added* to the sequence) is added to the running `sum` in each iteration.
+      - The new `previous` (the term just added to the sequence) is added to the running `sum` in each iteration.
   - **Efficiency:** This method is much faster than Solution 1, performing only $\approx \frac{1}{3}$ the number of steps.
 
 -----
