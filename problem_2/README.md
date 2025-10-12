@@ -83,8 +83,8 @@ Here is the revised **Solution 3** section with the full details, including the 
 ### Detailed Explanation
 
   - **Step 1: Constants and Even Fibonacci Recurrence**
-      - **Golden Ratio:** $\phi = \frac{1+\sqrt{5}}{2} \approx 1.618034$
-      - **Conjugate:** $\psi = \frac{1-\sqrt{5}}{2} \approx -0.618034$
+      - **Golden Ratio:** $\phi = \frac{1+\sqrt{5}}{2} 
+      - **Conjugate:** $\psi = \frac{1-\sqrt{5}}{2} 
       - The base for the geometric series for even terms are $r_1 = \phi^3$ and $r_2 = \psi^3$.
           - $r_1 = \phi^3 \approx 4.236068$ (`ephi`)
           - $r_2 = \psi^3 \approx -0.236068$ (`epsi`)
