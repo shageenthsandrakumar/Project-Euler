@@ -80,7 +80,7 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
           - $r_1 = \phi^3$  (`ephi`)
           - $r_2 = \psi^3$  (`epsi`)
   - **Step 2: Finding the Index $N$**
-    - We solve for the smallest integer $N$ such that $E_N ≥ `threshold`$.
+    - We solve for the smallest integer $N$ such that $E_N ≥ threshold$.
     - This is found iteratively in the code: $N=12$.
     - The even terms are $E_1, E_2, \dots, E_{12}$.
   - **Step 3: Index Correction ($N -= 1$)**
