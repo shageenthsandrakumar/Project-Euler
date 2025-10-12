@@ -17,7 +17,7 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
   - If the term is even, add it to a running sum.
   - Stop when the generated term exceeds the threshold of four million.
 
-**Reference:** The full Python implementation is available in [`solution_1.py`](https://www.google.com/search?q=solution_1.py).
+**Reference:** The full Python implementation is available in [`solution_1.py`](solution_1.py).
 
 ### Detailed Explanation
 
