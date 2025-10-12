@@ -23,7 +23,7 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
 
   - **Step 1: Initialization**
       - Initialize `previous = 0` and `current = 1` to start the sequence generation.
-      - Initialize `sum = 0` and \`threshold = 4000000`.
+      - Initialize `sum = 0` and `threshold = 4000000`.
   - **Step 2: Iteration and Sequence Generation**
       - The `while current < threshold:` loop continues as long as the current Fibonacci number is below four million.
       - Inside the loop, the next Fibonacci number is calculated: `previous, current = current, previous + current`. The old `current` becomes the new `previous`, and the sum of the old `previous` and `current` becomes the new `current`.
