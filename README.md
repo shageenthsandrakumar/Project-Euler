@@ -6,9 +6,9 @@ This repository contains Python solutions to Project Euler problems. Each proble
 
 ## Problems Overview
 
-- **[Problem 1: Multiples of 3 and 5](./Problem1/README.md)**  
-- **[Problem 2: Even Fibonacci numbers](./Problem2/README.md)**  
-- **[Problem 3: Largest prime factor](./Problem3/README.md)**  
+- **[Problem 1: Multiples of 3 and 5](./Problem_1/README.md)**  
+- **[Problem 2: Even Fibonacci numbers](./Problem_2/README.md)**  
+- **[Problem 3: Largest prime factor](./Problem_3/README.md)**  
 
 Each problem folder contains one or more solutions with explanations, code, and output.
 
