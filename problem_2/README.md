@@ -86,7 +86,8 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
   - **Step 3: Index Correction ($N -= 1$)**
     - When the loop terminates, the variable $N$ holds the value of the index of the term that exceeded the limit.
     - However, we need to sum only the terms *up to* the limit, which means we need a count of **N-1** terms.
-    - The command `N -= 1` is executed to rewind the index by one. 
+    - The command `N -= 1` is executed to rewind the index by one.
+    - This changes the value of **N**: $N=11$
   - **Step 4: Sum of Geometric Series**
       - The total sum $\sum_{n=1}^{N} E_n$ is:
         $$\text{Sum} = \frac{1}{\sqrt{5}} \left( \sum_{n=1}^{N} (\phi^3)^n - \sum_{n=1}^{N} (\psi^3)^n \right)$$
@@ -96,8 +97,8 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
       - **Sum of Negative Part ($S_{\psi}$):** $r = \psi^3$
         $$S_{\psi} = \sum_{n=1}^{12} (\psi^3)^n = \frac{\psi^3 ((\psi^3)^{12} - 1)}{\psi^3 - 1}$$
   - **Step 5: Final Calculation (Threshold $4,000,000$ $\implies N=12$)**
-      - $\phi^{3 \cdot 12} = \phi^{36} \approx 1.4930352 \times 10^7$
-      - $\psi^{3 \cdot 12} = \psi^{36} \approx 4.472136 \times 10^{-8}$
+      - $\phi^{3 \cdot 11} = \phi^{33}$
+      - $\psi^{3 \cdot 11} = \psi^{33}$
       - $S_{\phi} \approx \frac{4.236068 \cdot (14930352 - 1)}{4.236068 - 1} \approx 20387556.000$
       - $S_{\psi} \approx \frac{-0.236068 \cdot (4.47 \times 10^{-8} - 1)}{-0.236068 - 1} \approx 0.0000000447$
       - The total sum is:
