@@ -61,13 +61,11 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
       - The total sum is:  $$\frac{S_{\phi} - S_{\psi}}{\sqrt{5}} \approx 4613732.000$$
       - The result is then **rounded** to the nearest integer to correct for floating-point imprecision, yielding the exact sum: **$4613732$**.
   - **Efficiency:** This is the most efficient solution as it avoids iteration through all Fibonacci terms, using only a handful of arithmetic and logarithmic operations.
-  - **Caveat:** For extremely large (N), floating-point arithmetic may introduce rounding errors when computing powers of (\varphi^n) and (\psi^n).
+  - **Caveat:** For extremely large (N), floating-point arithmetic may introduce rounding errors when computing powers of ($\phi^n$) and ($\psi^n$).
     -   This could cause slight inaccuracies in the computed sum or the index of the largest Fibonacci number below the threshold.
     -   For typical problem sizes (e.g., thresholds up to 10^15), Python’s double-precision floats are sufficient.
 
----
 
-If you want, I can also write a **shorter 2–3 line version** suitable for a README without losing the warning.
 
 -----
 
