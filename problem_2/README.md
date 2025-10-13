@@ -42,7 +42,7 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
       - The sequence pattern is: $\text{odd}, \text{odd}, \text{even}, \text{odd}, \text{odd}, \text{even}, \dots$
   - Use the modified recurrence relation for **even Fibonacci numbers** $E_n$:
     $$E_{n} = 4 \cdot E_{n-1} + E_{n-2}$$
-  - This allows for the generation of *only* the even terms, significantly reducing the number of iterations.
+  - This allows for the generation of only the even terms, significantly reducing the number of iterations.
   - Iterate using this modified recurrence relation and sum the terms until the threshold is exceeded.
 
 **Reference:** The full Python implementation is available in [`solution_2.py`](solution_2.py).
@@ -88,12 +88,12 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
   - **Step 3: Refining the Index (Starting at `n_cand - 1`)**
       - The code sets the initial value for the counter $N$ to `n_cand - 1`: `N = n_cand - 1`.
       - **The purpose of starting at `n_cand - 1` is to guarantee that the first calculated even Fibonacci number ($E_N$) is below the threshold.**
-      - Since `n_cand` is derived from an equation meant to find the boundary, starting one step *before* that boundary ensures the **`while E_N < threshold:`** loop is correctly initiated.
+      - Since `n_cand` is derived from an equation meant to find the boundary, starting one step before that boundary ensures the **`while E_N < threshold:`** loop is correctly initiated.
       - The **`while` loop** then iteratively increments $N$ and recalculates $E_N$ until $E_N$ is no longer less than the threshold 
   
   - **Step 4: Index Correction ($N -= 1$)**
     - When the loop terminates, the variable $N$ holds the value of the index of the term that exceeded the limit.
-    - However, we need to sum only the terms *up to* the limit, which means we need a count of **N-1** terms.
+    - However, we need to sum only the terms up to the limit, which means we need a count of **N-1** terms.
     - The command `N -= 1` is executed to rewind the index by one.
     - This changes the value of **N**: $N=11$
   - **Step 5: Sum of Geometric Series**
@@ -144,11 +144,11 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
     3.  `sum += E_N`: The newly calculated term is added to the running total.
 
 - **Step 3:** Threshold Correction
-  - The loop continues as long as the *previously* calculated $\mathbf{E\_N}$ is less than the threshold.
+  - The loop continues as long as the previously calculated $\mathbf{E\_N}$ is less than the threshold.
   - The loop's final iteration does the following:
     1.  Calculates $E_{12} = 5,702,887$ (The first term $\geq 4,000,000$).
     2.  Adds this over-limit value to the `sum`.
-    3.  Terminates the loop because the *new* $E_{12}$ is not less than the threshold.
+    3.  Terminates the loop because the new $E_{12}$ is not less than the threshold.
   - The line `sum -= E_N` removes this final, excess term ($5,702,887$) from the total, leaving only the sum of the terms below the threshold ($E_1$ through $E_{11}$).
 
 - **Step 4:** Final Result
