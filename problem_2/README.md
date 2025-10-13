@@ -63,7 +63,7 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
   - **Efficiency:** This is the most efficient solution as it avoids iteration through all Fibonacci terms, using only a handful of arithmetic and logarithmic operations.
   - **Caveat:** For extremely large (N), floating-point arithmetic may introduce rounding errors when computing powers of $\phi^n$ and $\psi^n$.
     -   This could cause slight inaccuracies in the computed sum or the index of the largest Fibonacci number below the threshold.
-    -   For typical problem sizes (e.g., thresholds up to 10^15), Python’s double-precision floats are sufficient.
+    -   For typical problem sizes (e.g., thresholds up to $10^{15}$), Python’s double-precision floats are sufficient.
 
 
 
@@ -164,7 +164,7 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
 - **Efficiency:** It avoids the standard, slower recursive definition of Fibonacci numbers. It avoids iterating through **all** Fibonacci numbers, only calculating every third one (the even terms).
 - **Caveat:** For extremely large (N), floating-point arithmetic may introduce rounding errors when computing powers of $\phi^n$ and $\psi^n$.
     -   This could cause slight inaccuracies in the computed sum or the index of the largest Fibonacci number below the threshold.
-    -   For typical problem sizes (e.g., thresholds up to $10^15$), Python’s double-precision floats are sufficient.
+    -   For typical problem sizes (e.g., thresholds up to $10^{15}$), Python’s double-precision floats are sufficient.
 
 -----
 ## Output
