@@ -58,10 +58,7 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
       - The new `previous` (the term just added to the sequence) is added to the running `sum` in each iteration.
   - **Efficiency:** This method is much faster than Solution 1, performing only $\approx \frac{1}{3}$ the number of steps.
 
------
-
-  - **Efficiency:** This is the most efficient solution as it avoids iteration through all Fibonacci terms, using only a handful of arithmetic and logarithmic operations.
- 
+----- 
 ## Solution 3
 
 ### Approach
@@ -114,7 +111,7 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
       - $S_{\psi} = \frac{\psi^{36} - \psi^3}{\psi^3 - 1}$
       - The total sum is:  $$\frac{S_{\phi} - S_{\psi}}{\sqrt{5}} \approx 4613732.000$$
       - The result is then **rounded** to the nearest integer to correct for floating-point imprecision, yielding the exact sum: **$4613732$**.
-  - **Efficiency:** This is the most efficient solution as it only requires finding the index of the largest even-value term below the threshold. 
+  - **Efficiency:** This is the most efficient solution as it avoids iteration through all Fibonacci terms, using only a handful of arithmetic and logarithmic operations. 
 
 -----
 ## Output
