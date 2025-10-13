@@ -111,7 +111,61 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
       - $S_{\psi} = \frac{\psi^{36} - \psi^3}{\psi^3 - 1}$
       - The total sum is:  $$\frac{S_{\phi} - S_{\psi}}{\sqrt{5}} \approx 4613732.000$$
       - The result is then **rounded** to the nearest integer to correct for floating-point imprecision, yielding the exact sum: **$4613732$**.
-  - **Efficiency:** This is the most efficient solution as it avoids iteration through all Fibonacci terms, using only a handful of arithmetic and logarithmic operations. 
+  - **Efficiency:** This is the most efficient solution as it avoids iteration through all Fibonacci terms, using only a handful of arithmetic and logarithmic operations.
+
+-----
+# Solution 4: Iterative Summation with Binet's Formula
+
+
+## Approach
+
+1.  **Identify Even Term Structure:** Recognize that the $n$-th even Fibonacci number, $E_n$, is the $3n$-th regular Fibonacci number, $F_{3n}$.
+2.  **Adapt Binet's Formula:** Modify **Binet's Formula** to directly calculate $E_n$ using $\phi^3$ and $\psi^3$ as the new bases.
+3.  **Iterative Generation and Summation:** Use a `while` loop to repeatedly calculate the next even term, $\mathbf{E_N}$, and add it to a running `sum`.
+4.  **Threshold Correction:** Since the loop adds the term that *exceeds* the `threshold` before terminating, subtract this final, over-limit term from the `sum`.
+5.  **Final Rounding:** Round the final floating-point sum to the nearest integer to correct for precision errors.
+
+
+## Detailed Explanation
+
+### Step 1: Constants and Adapted Binet's Formula
+
+  * **Golden Ratio:** $\phi = \frac{1+\sqrt{5}}{2}$
+  * **Conjugate:** $\psi = \frac{1-\sqrt{5}}{2}$
+  * The $n$-th even Fibonacci number $E_n$ is calculated using the bases:
+      * $\mathbf{ephi} = \phi^3$
+      * $\mathbf{epsi} = \psi^3$
+      * Formula: $$E_n = \frac{(\phi^3)^n - (\psi^3)^n}{\sqrt{5}}$$
+
+### Step 2: Iteration and Summation
+
+  * The code initializes $\mathbf{N=0}$, $\mathbf{sum=0}$, and $\mathbf{E\_N=0}$.
+  * The `while E_N < threshold:` loop controls the process:
+    1.  `N += 1`: The index $N$ increments (starting $N=1$).
+    2.  `E_N = (ephi**N - epsi**N) / math.sqrt(5)`: The current even Fibonacci number is calculated.
+    3.  `sum += E_N`: The newly calculated term is added to the running total.
+
+### Step 3: Threshold Correction
+
+  * The loop continues as long as the *previously* calculated $\mathbf{E\_N}$ is less than the threshold.
+  * The loop's final iteration does the following:
+    1.  Calculates $E_{12} = 5,702,887$ (The first term $\geq 4,000,000$).
+    2.  Adds this over-limit value to the `sum`.
+    3.  Terminates the loop because the *new* $E_{12}$ is not less than the threshold.
+  * The line `sum -= E_N` removes this final, excess term ($5,702,887$) from the total, leaving only the sum of the terms below the threshold ($E_1$ through $E_{11}$).
+
+### Step 4: Final Result
+
+  * The total is calculated using floating-point numbers. Since the sum of integers must be an integer, the line `sum = round(sum)` corrects any minor floating-point errors.
+  * The result printed is the exact integer sum: **$4613732$**.
+
+### Efficiency
+
+This approach is highly efficient because:
+
+1.  It avoids the standard, slower recursive definition of Fibonacci numbers.
+2.  It avoids iterating through **all** Fibonacci numbers, only calculating every third one (the even terms).
+3.  It doesn't require pre-calculating the index $N$ via logarithms, instead finding the limit naturally through the loop condition.
 
 -----
 ## Output
