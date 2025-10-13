@@ -155,12 +155,7 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
 
   * The total is calculated using floating-point numbers. Since the sum of integers must be an integer, the line `sum = round(sum)` corrects any minor floating-point errors.
   * The result printed is the exact integer sum: **$4613732$**.
-
-### Efficiency
-
-1.  It avoids the standard, slower recursive definition of Fibonacci numbers.
-2.  It avoids iterating through **all** Fibonacci numbers, only calculating every third one (the even terms).
-3.  It doesn't require pre-calculating the index $N$ via logarithms, instead finding the limit naturally through the loop condition.
+- **Efficiency:** It avoids the standard, slower recursive definition of Fibonacci numbers. It avoids iterating through **all** Fibonacci numbers, only calculating every third one (the even terms).
 
 -----
 ## Output
