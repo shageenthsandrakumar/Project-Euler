@@ -7,9 +7,11 @@ psi = (1 - math.sqrt(5)) / 2
 # powers for even fibinacci terms
 ephi = phi**3
 epsi = psi**3
-N = 0
-E_N = 0
-while E_N < 4000000:
+threshold = 4000000
+n_cand = int((math.log(threshold * math.sqrt(5)) / (math.log(ephi))))
+N = n_cand-1
+E_N = (ephi**N - epsi**N) / math.sqrt(5)
+while E_N < threshold:
     N += 1
     E_N = (ephi**N - epsi**N) / math.sqrt(5)
 #N represents index of first even fibinacci number over threshold.
