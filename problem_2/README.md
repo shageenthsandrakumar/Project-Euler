@@ -136,11 +136,9 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
       * $\mathbf{ephi} = \phi^3$
       * $\mathbf{epsi} = \psi^3$
       * Formula: $$E_n = \frac{(\phi^3)^n - (\psi^3)^n}{\sqrt{5}}$$
-
-### Step 2: Iteration and Summation
-
-  * The code initializes $\mathbf{N=0}$, $\mathbf{sum=0}$, and $\mathbf{E\_N=0}$.
-  * The `while E_N < threshold:` loop controls the process:
+- **Step 2:** Iteration and Summation
+  - The code initializes $\mathbf{N=0}$, $\mathbf{sum=0}$, and $\mathbf{E\_N=0}$.
+  - The `while E_N < threshold:` loop controls the process:
     1.  `N += 1`: The index $N$ increments (starting $N=1$).
     2.  `E_N = (ephi**N - epsi**N) / math.sqrt(5)`: The current even Fibonacci number is calculated.
     3.  `sum += E_N`: The newly calculated term is added to the running total.
