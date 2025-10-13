@@ -8,7 +8,9 @@ psi = (1 - math.sqrt(5)) / 2
 ephi = phi**3
 epsi = psi**3
 threshold = 4000000
+#Using Binet's approximation to find a candidate value for N
 n_cand = int((math.log(threshold * math.sqrt(5)) / (math.log(ephi))))
+#We must check index below just in case because Binet's appoximation is an upper bound. 
 N = n_cand-1
 E_N = (ephi**N - epsi**N) / math.sqrt(5)
 while E_N < threshold:
