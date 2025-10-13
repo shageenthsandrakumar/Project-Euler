@@ -59,6 +59,76 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
   - **Efficiency:** This method is much faster than Solution 1, performing only $\approx \frac{1}{3}$ the number of steps.
 
 -----
+You want to know why the code starts iterating for the index $N$ at `n_cand - 1` instead of `n_cand` when refining the estimate.
+
+The reason is to ensure the **first value tested in the `while` loop is guaranteed to be below the threshold**, correctly triggering the loop's intended behavior of incrementing to find the boundary.
+
+Here is the updated explanation for Solution 3, focusing on the refinement technique for the index $N$:
+
+## Solution 3
+
+### Approach
+
+  - Use **Binet's Formula** to find the $n$-th even Fibonacci number directly.
+  - The $n$-th even Fibonacci number is $E_n = F_{3n}$, which can be expressed using the Golden Ratio $\phi$ and its conjugate $\psi$:
+    $$E_n = \frac{(\phi^3)^n - (\psi^3)^n}{\sqrt{5}}$$
+  - **Estimate and refine the index $N$** of the last even term below the threshold ($\mathbf{4,000,000}$).
+  - Use the **formula for the sum of a geometric series** to sum all $N$ terms directly.
+
+**Reference:** The full Python implementation is available in [`solution_3.py`](https://www.google.com/search?q=solution_3.py).
+
+-----
+
+### Detailed Explanation
+
+  - **Step 1: Constants and Even Fibonacci Recurrence**
+      - **Golden Ratio:** $\phi = \frac{1+\sqrt{5}}{2}$
+      - **Conjugate:** $\psi = \frac{1-\sqrt{5}}{2}$
+      - The bases for the geometric series for even terms are $r_1 = \phi^3$ and $r_2 = \psi^3$.
+          - $r_1 = \phi^3$ (`ephi`)
+          - $r_2 = \psi^3$ (`epsi`)
+
+-----
+
+  - **Step 2: Finding the Index $N$**
+      - The code uses a **logarithmic approximation** to quickly find an estimate (`n_cand`) for the index $N$ where $E_N \approx \text{threshold}$.
+          - We solve $\frac{\mathbf{ephi}^N}{\sqrt{5}} \approx \text{threshold}$ for $N$:
+            $$N \approx \frac{\ln(\text{threshold} \cdot \sqrt{5})}{\ln(\mathbf{ephi})}$$
+      - Since this calculation involves a logarithm and floating-point math, the result (`n_cand`) is a good estimate but might be slightly above or exactly equal to the true index $N$ where $E_N$ first exceeds the threshold.
+
+-----
+
+  - **Step 3: Refining the Index (Starting at `n_cand - 1`)**
+      - The code sets the initial value for the counter $N$ to `n_cand - 1`: `N = n_cand - 1`.
+      - **The purpose of starting at `n_cand - 1` is to guarantee that the first calculated even Fibonacci number ($E_N$) is below the threshold.** Since `n_cand` is derived from an equation meant to find the boundary, starting one step *before* that boundary ensures the **`while E_N < threshold:`** loop is correctly initiated.
+      - The **`while` loop** then iteratively increments $N$ and recalculates $E_N$ until $E_N$ is no longer less than the threshold (i.e., it exceeds or equals it). For our case, $N$ is incremented from $10$ to $12$:
+          - $N=10 \implies E_{10} = 885534 \quad < 4,000,000$ (Loop continues)
+          - $N=11 \implies E_{11} = 2178309 \quad < 4,000,000$ (Loop continues)
+          - $N=12 \implies E_{12} = 5702887 \quad \geq 4,000,000$ (Loop terminates)
+
+-----
+
+  - **Step 4: Index Correction ($N -= 1$)**
+      - When the loop terminates, $N$ holds the index of the **first term** that exceeded the limit (i.e., $N=12$).
+      - We only want to sum the terms *up to* the limit. Therefore, $N$ is decremented by one (`N -= 1`) to represent the count of even Fibonacci numbers below the threshold.
+      - For a threshold of $\mathbf{4,000,000}$, the final count used for the sum is **$N=11$**.
+
+-----
+
+  - **Step 5: Sum of Geometric Series**
+      - The total sum $\sum_{n=1}^{N} E_n$ is split into two geometric series with $N=11$:
+        $$\text{Sum} = \frac{1}{\sqrt{5}} \left( \sum_{n=1}^{11} (\phi^3)^n - \sum_{n=1}^{11} (\psi^3)^n \right)$$
+      - Using the formula for the sum of a geometric series $S_N = \frac{r(r^N - 1)}{r - 1}$:
+          - **Sum of Positive Part ($S_{\phi}$):** $r = \phi^3$
+          - **Sum of Negative Part ($S_{\psi}$):** $r = \psi^3$
+
+-----
+
+  - **Step 6: Final Calculation and Rounding**
+      - The total sum is calculated as: $\text{Sum} = \frac{S_{\phi} - S_{\psi}}{\sqrt{5}}$.
+      - The result is then **rounded** to the nearest integer to correct for minute floating-point imprecision, yielding the exact sum: **$4613732$**.
+  - **Efficiency:** This is the most efficient solution as it avoids iteration through all Fibonacci terms, using only a handful of arithmetic and logarithmic operations.
+  - 
 ## Solution 3
 
 ### Approach
