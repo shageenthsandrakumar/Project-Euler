@@ -12,57 +12,6 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
 
 ### Approach
 
-  - Generate the Fibonacci sequence iteratively, starting with $0$ and $1$.
-  - In each step, check if the newly generated term is even.
-  - If the term is even, add it to a running sum.
-  - Stop when the generated term exceeds the threshold of four million.
-
-**Reference:** The full Python implementation is available in [`solution_1.py`](solution_1.py).
-
-### Detailed Explanation
-
-  - **Step 1: Initialization**
-      - Initialize `previous = 0` and `current = 1` to start the sequence generation.
-      - Initialize `sum = 0` and `threshold = 4000000`.
-  - **Step 2: Iteration and Sequence Generation**
-      - The `while current < threshold:` loop continues as long as the current Fibonacci number is below four million.
-      - Inside the loop, the next Fibonacci number is calculated: `previous, current = current, previous + current`. The old `current` becomes the new `previous`, and the sum of the old `previous` and `current` becomes the new `current`.
-  - **Step 3: Check for Even Numbers**
-      - We check the new `previous` (which is the old `current`, the term just added to the sequence) for evenness using modular arithmetic: `if not previous % 2:`.
-  - **Step 4: Accumulating the sum**
-      - If the term is even, it is added to the running `sum`.
-
------
-
-## Solution 2
-
-### Approach
-
-  - Exploit the property that **every third Fibonacci number is even**.
-      - The sequence pattern is: $\text{odd}, \text{odd}, \text{even}, \text{odd}, \text{odd}, \text{even}, \dots$
-  - Use the modified recurrence relation for **even Fibonacci numbers** $E_n$:
-    $$E_{n} = 4 \cdot E_{n-1} + E_{n-2}$$
-  - This allows for the generation of only the even terms, significantly reducing the number of iterations.
-  - Iterate using this modified recurrence relation and sum the terms until the threshold is exceeded.
-
-**Reference:** The full Python implementation is available in [`solution_2.py`](solution_2.py).
-
-### Detailed Explanation
-
-  - **Step 1: Modified Initialization**
-      - Initialize `previous = 0` and `current = 2` to correctly seed the even-term recurrence.
-  - **Step 2: Modified Recurrence**
-      - The relation $E_{n} = 4 \cdot E_{n-1} + E_{n-2}$ is implemented as: `previous, current = current, previous + 4 * current`.
-      - The terms generated are $2, 8, 34, 144, \dots$ which are exactly the even terms.
-  - **Step 3: Accumulating the sum**
-      - The new `previous` (the term just added to the sequence) is added to the running `sum` in each iteration.
-  - **Efficiency:** This method is much faster than Solution 1, performing only $\approx \frac{1}{3}$ the number of steps.
-
------ 
-## Solution 3
-
-### Approach
-
   - Use **Binet's Formula** to find the $n$-th even Fibonacci number directly.
   - The $n$-th even Fibonacci number is $E_n = F_{3n}$, which can be expressed using the Golden Ratio $\phi$ and its conjugate $\psi$:
     $$E_n = \frac{(\phi^3)^n - (\psi^3)^n}{\sqrt{5}}$$
@@ -112,6 +61,56 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
       - The total sum is:  $$\frac{S_{\phi} - S_{\psi}}{\sqrt{5}} \approx 4613732.000$$
       - The result is then **rounded** to the nearest integer to correct for floating-point imprecision, yielding the exact sum: **$4613732$**.
   - **Efficiency:** This is the most efficient solution as it avoids iteration through all Fibonacci terms, using only a handful of arithmetic and logarithmic operations.
+-----
+
+## Solution 2
+
+### Approach
+
+  - Generate the Fibonacci sequence iteratively, starting with $0$ and $1$.
+  - In each step, check if the newly generated term is even.
+  - If the term is even, add it to a running sum.
+  - Stop when the generated term exceeds the threshold of four million.
+
+**Reference:** The full Python implementation is available in [`solution_1.py`](solution_1.py).
+
+### Detailed Explanation
+
+  - **Step 1: Initialization**
+      - Initialize `previous = 0` and `current = 1` to start the sequence generation.
+      - Initialize `sum = 0` and `threshold = 4000000`.
+  - **Step 2: Iteration and Sequence Generation**
+      - The `while current < threshold:` loop continues as long as the current Fibonacci number is below four million.
+      - Inside the loop, the next Fibonacci number is calculated: `previous, current = current, previous + current`. The old `current` becomes the new `previous`, and the sum of the old `previous` and `current` becomes the new `current`.
+  - **Step 3: Check for Even Numbers**
+      - We check the new `previous` (which is the old `current`, the term just added to the sequence) for evenness using modular arithmetic: `if not previous % 2:`.
+  - **Step 4: Accumulating the sum**
+      - If the term is even, it is added to the running `sum`.
+----- 
+## Solution 3
+### Approach
+
+  - Exploit the property that **every third Fibonacci number is even**.
+      - The sequence pattern is: $\text{odd}, \text{odd}, \text{even}, \text{odd}, \text{odd}, \text{even}, \dots$
+  - Use the modified recurrence relation for **even Fibonacci numbers** $E_n$:
+    $$E_{n} = 4 \cdot E_{n-1} + E_{n-2}$$
+  - This allows for the generation of only the even terms, significantly reducing the number of iterations.
+  - Iterate using this modified recurrence relation and sum the terms until the threshold is exceeded.
+
+**Reference:** The full Python implementation is available in [`solution_2.py`](solution_2.py).
+
+### Detailed Explanation
+
+  - **Step 1: Modified Initialization**
+      - Initialize `previous = 0` and `current = 2` to correctly seed the even-term recurrence.
+  - **Step 2: Modified Recurrence**
+      - The relation $E_{n} = 4 \cdot E_{n-1} + E_{n-2}$ is implemented as: `previous, current = current, previous + 4 * current`.
+      - The terms generated are $2, 8, 34, 144, \dots$ which are exactly the even terms.
+  - **Step 3: Accumulating the sum**
+      - The new `previous` (the term just added to the sequence) is added to the running `sum` in each iteration.
+  - **Efficiency:** This method is much faster than Solution 1, performing only $\approx \frac{1}{3}$ the number of steps.
+
+
 
 -----
 ## Solution 4: Iterative Summation with Binet's Formula
