@@ -124,6 +124,8 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
 - Apply a threshold correction since the loop adds the term that exceeds the `threshold` before terminating, subtract this final, over-limit term from the `sum`.
 - Round the final floating-point sum to the nearest integer to correct for precision errors.
 
+**Reference:** The full Python implementation is available in [`solution_4.py`](solution_4.py).
+
 
 ## Detailed Explanation
 
