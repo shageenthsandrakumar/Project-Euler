@@ -114,10 +114,10 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
   - **Efficiency:** This is the most efficient solution as it avoids iteration through all Fibonacci terms, using only a handful of arithmetic and logarithmic operations.
 
 -----
-# Solution 4: Iterative Summation with Binet's Formula
+## Solution 4: Iterative Summation with Binet's Formula
 
 
-## Approach
+### Approach
 - Identify even-term structure by recognizing that the $n$-th even Fibonacci number, $E_n$, is the $3n$-th regular Fibonacci number, $F_{3n}$.
 - Adapt Binet's Formula by modifying it to directly calculate $E_n$ using $\phi^3$ and $\psi^3$ as the new bases.
 - Use a `while` loop to repeatedly calculate the next even term, $\mathbf{E_N}$, and add it to a running `sum`.
@@ -127,7 +127,7 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
 **Reference:** The full Python implementation is available in [`solution_4.py`](solution_4.py).
 
 
-## Detailed Explanation
+### Detailed Explanation
 
 ### Step 1: Constants and Adapted Binet's Formula
 
@@ -161,8 +161,6 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
   * The result printed is the exact integer sum: **$4613732$**.
 
 ### Efficiency
-
-This approach is highly efficient because:
 
 1.  It avoids the standard, slower recursive definition of Fibonacci numbers.
 2.  It avoids iterating through **all** Fibonacci numbers, only calculating every third one (the even terms).
