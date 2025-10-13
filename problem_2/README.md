@@ -129,11 +129,10 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
 
 ### Detailed Explanation
 
-### Step 1: Constants and Adapted Binet's Formula
-
-  * **Golden Ratio:** $\phi = \frac{1+\sqrt{5}}{2}$
-  * **Conjugate:** $\psi = \frac{1-\sqrt{5}}{2}$
-  * The $n$-th even Fibonacci number $E_n$ is calculated using the bases:
+- **Step 1:** Constants and Adapted Binet's Formula
+  - **Golden Ratio:** $\phi = \frac{1+\sqrt{5}}{2}$
+  - **Conjugate:** $\psi = \frac{1-\sqrt{5}}{2}$
+  - The $n$-th even Fibonacci number $E_n$ is calculated using the bases:
       * $\mathbf{ephi} = \phi^3$
       * $\mathbf{epsi} = \psi^3$
       * Formula: $$E_n = \frac{(\phi^3)^n - (\psi^3)^n}{\sqrt{5}}$$
