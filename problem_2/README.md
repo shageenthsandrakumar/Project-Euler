@@ -61,6 +61,14 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
       - The total sum is:  $$\frac{S_{\phi} - S_{\psi}}{\sqrt{5}} \approx 4613732.000$$
       - The result is then **rounded** to the nearest integer to correct for floating-point imprecision, yielding the exact sum: **$4613732$**.
   - **Efficiency:** This is the most efficient solution as it avoids iteration through all Fibonacci terms, using only a handful of arithmetic and logarithmic operations.
+  - **Caveat:** For extremely large (N), floating-point arithmetic may introduce rounding errors when computing powers of (\varphi^n) and (\psi^n).
+    -   This could cause slight inaccuracies in the computed sum or the index of the largest Fibonacci number below the threshold.
+    -   For typical problem sizes (e.g., thresholds up to 10^15), Python’s double-precision floats are sufficient.
+
+---
+
+If you want, I can also write a **shorter 2–3 line version** suitable for a README without losing the warning.
+
 -----
 
 ## Solution 2
@@ -86,6 +94,7 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
       - We check the new `previous` (which is the old `current`, the term just added to the sequence) for evenness using modular arithmetic: `if not previous % 2:`.
   - **Step 4: Accumulating the sum**
       - If the term is even, it is added to the running `sum`.
+  - **Efficiency:** It avoids the standard, slower recursive definition of Fibonacci numbers.
 ----- 
 ## Solution 3
 ### Approach
@@ -108,7 +117,7 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
       - The terms generated are $2, 8, 34, 144, \dots$ which are exactly the even terms.
   - **Step 3: Accumulating the sum**
       - The new `previous` (the term just added to the sequence) is added to the running `sum` in each iteration.
-  - **Efficiency:** This method is much faster than Solution 1, performing only $\approx \frac{1}{3}$ the number of steps.
+  - **Efficiency:** It avoids iterating through **all** Fibonacci numbers, only calculating every third one (the even terms). This method is much faster than Solution 2, performing only $\approx \frac{1}{3}$ the number of steps.
 
 
 
@@ -155,6 +164,9 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
   * The total is calculated using floating-point numbers. Since the sum of integers must be an integer, the line `sum = round(sum)` corrects any minor floating-point errors.
   * The result printed is the exact integer sum: **$4613732$**.
 - **Efficiency:** It avoids the standard, slower recursive definition of Fibonacci numbers. It avoids iterating through **all** Fibonacci numbers, only calculating every third one (the even terms).
+- **Caveat:** For extremely large (N), floating-point arithmetic may introduce rounding errors when computing powers of (\varphi^n) and (\psi^n).
+    -   This could cause slight inaccuracies in the computed sum or the index of the largest Fibonacci number below the threshold.
+    -   For typical problem sizes (e.g., thresholds up to 10^15), Python’s double-precision floats are sufficient.
 
 -----
 ## Output
