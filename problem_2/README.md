@@ -92,7 +92,7 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
       - We check the new `previous` (which is the old `current`, the term just added to the sequence) for evenness using modular arithmetic: `if not previous % 2:`.
   - **Step 4: Accumulating the sum**
       - If the term is even, it is added to the running `sum`.
-  - **Efficiency:** It avoids the standard, slower recursive definition of Fibonacci numbers.
+  
 ----- 
 ## Solution 3
 ### Approach
