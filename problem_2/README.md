@@ -18,7 +18,7 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
   - Calculate the index $N$ of the last even term below the threshold ($4,000,000$).
   - Use the **formula for the sum of a geometric series** to sum all $N$ terms directly.
 
-**Reference:** The full Python implementation is available in [`solution_3.py`](solution_3.py).
+**Reference:** The full Python implementation is available in [`solution_1.py`](solution_1.py).
 
 ### Detailed Explanation
 
@@ -72,7 +72,7 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
   - If the term is even, add it to a running sum.
   - Stop when the generated term exceeds the threshold of four million.
 
-**Reference:** The full Python implementation is available in [`solution_1.py`](solution_1.py).
+**Reference:** The full Python implementation is available in [`solution_2.py`](solution_2.py).
 
 ### Detailed Explanation
 
@@ -97,7 +97,7 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
   - This allows for the generation of only the even terms, significantly reducing the number of iterations.
   - Iterate using this modified recurrence relation and sum the terms until the threshold is exceeded.
 
-**Reference:** The full Python implementation is available in [`solution_2.py`](solution_2.py).
+**Reference:** The full Python implementation is available in [`solution_3.py`](solution_3.py).
 
 ### Detailed Explanation
 
@@ -168,4 +168,4 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
 ## Notes
 
   - The problem uses the sequence starting $1, 2, 3, 5, \dots$. If using the standard mathematical indexing $F_1=1, F_2=1, F_3=2, \dots$, the terms used here are $F_2, F_3, F_4, \dots$.
-  - **Solution 2** is the optimal iterative method, while **Solution 3** is the most efficient approach.
+  - **Solution 3** is the optimal iterative method, while **Solution 1** is the most efficient approach.
