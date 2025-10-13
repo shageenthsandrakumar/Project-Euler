@@ -118,12 +118,11 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
 
 
 ## Approach
-
--**Identify Even Term Structure:** Recognize that the $n$-th even Fibonacci number, $E_n$, is the $3n$-th regular Fibonacci number, $F_{3n}$.
--**Adapt Binet's Formula:** Modify **Binet's Formula** to directly calculate $E_n$ using $\phi^3$ and $\psi^3$ as the new bases.
--**Iterative Generation and Summation:** Use a `while` loop to repeatedly calculate the next even term, $\mathbf{E_N}$, and add it to a running `sum`.
--**Threshold Correction:** Since the loop adds the term that *exceeds* the `threshold` before terminating, subtract this final, over-limit term from the `sum`.
--**Final Rounding:** Round the final floating-point sum to the nearest integer to correct for precision errors.
+- Identify Even Term Structure by recognizing that the $n$-th even Fibonacci number, $E_n$, is the $3n$-th regular Fibonacci number, $F_{3n}$.
+- Adapt Binet's Formula by modifying it to directly calculate $E_n$ using $\phi^3$ and $\psi^3$ as the new bases.
+- Use a `while` loop to repeatedly calculate the next even term, $\mathbf{E_N}$, and add it to a running `sum`.
+- Apply a threshold correction since the loop adds the term that exceeds the `threshold` before terminating, subtract this final, over-limit term from the `sum`.
+- Round the final floating-point sum to the nearest integer to correct for precision errors.
 
 
 ## Detailed Explanation
