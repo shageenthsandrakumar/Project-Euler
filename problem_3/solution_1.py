@@ -1,10 +1,10 @@
 n = 600851475143
 f = 2
-factors = []
+max_factor = 0
 while f <= n:
     if not n%f:
         n //= f
-        factors.append(f)
+        max_factor = f
     else:
         f += 1
-print(max(factors))
+print(max_factor)
