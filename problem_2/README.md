@@ -143,16 +143,15 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
     2.  `E_N = (ephi**N - epsi**N) / math.sqrt(5)`: The current even Fibonacci number is calculated.
     3.  `sum += E_N`: The newly calculated term is added to the running total.
 
-### Step 3: Threshold Correction
-
-  * The loop continues as long as the *previously* calculated $\mathbf{E\_N}$ is less than the threshold.
-  * The loop's final iteration does the following:
+- **Step 3:** Threshold Correction
+  - The loop continues as long as the *previously* calculated $\mathbf{E\_N}$ is less than the threshold.
+  - The loop's final iteration does the following:
     1.  Calculates $E_{12} = 5,702,887$ (The first term $\geq 4,000,000$).
     2.  Adds this over-limit value to the `sum`.
     3.  Terminates the loop because the *new* $E_{12}$ is not less than the threshold.
-  * The line `sum -= E_N` removes this final, excess term ($5,702,887$) from the total, leaving only the sum of the terms below the threshold ($E_1$ through $E_{11}$).
+  - The line `sum -= E_N` removes this final, excess term ($5,702,887$) from the total, leaving only the sum of the terms below the threshold ($E_1$ through $E_{11}$).
 
-### Step 4: Final Result
+- **Step 4:** Final Result
 
   * The total is calculated using floating-point numbers. Since the sum of integers must be an integer, the line `sum = round(sum)` corrects any minor floating-point errors.
   * The result printed is the exact integer sum: **$4613732$**.
