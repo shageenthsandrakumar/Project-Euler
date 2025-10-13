@@ -28,7 +28,7 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
       - The `while current < threshold:` loop continues as long as the current Fibonacci number is below four million.
       - Inside the loop, the next Fibonacci number is calculated: `previous, current = current, previous + current`. The old `current` becomes the new `previous`, and the sum of the old `previous` and `current` becomes the new `current`.
   - **Step 3: Check for Even Numbers**
-      - We check the new `previous` (which is the old `current`, the term *just added* to the sequence) for evenness using modular arithmetic: `if not previous % 2:`.
+      - We check the new `previous` (which is the old `current`, the term just added to the sequence) for evenness using modular arithmetic: `if not previous % 2:`.
   - **Step 4: Accumulating the sum**
       - If the term is even, it is added to the running `sum`.
 
@@ -39,7 +39,7 @@ By considering the terms in the Fibonacci sequence whose values do not exceed fo
 ### Approach
 
   - Exploit the property that **every third Fibonacci number is even**.
-      - The sequence pattern is: $\text{odd}, \text{even}, \text{odd}, \text{even}, \text{odd}, \text{even}, \dots$
+      - The sequence pattern is: $\text{odd}, \text{odd}, \text{even}, \text{odd}, \text{odd}, \text{even}, \dots$
   - Use the modified recurrence relation for **even Fibonacci numbers** $E_n$:
     $$E_{n} = 4 \cdot E_{n-1} + E_{n-2}$$
   - This allows for the generation of *only* the even terms, significantly reducing the number of iterations.
