@@ -38,7 +38,6 @@ What is the **largest prime factor** of the number $600851475143$?
   
   - **Step 3: Final Result**
       - When the loop terminates, `max_factor` contains the largest prime factor encountered.
-      - The algorithm prints: **$6857$**.
 
   - **Efficiency:** This is the least efficient solution. For the given input ($n \approx 6 \times 10^{11}$), this approach is impractical as it may test billions of candidates.
   
@@ -81,9 +80,6 @@ What is the **largest prime factor** of the number $600851475143$?
   - **Step 4: Handle Remaining Prime**
       - After the loop, if `n > 1`, then $n$ itself is a prime factor (and the largest one).
       - Update `max_factor = n`.
-  
-  - **Step 5: Final Result**
-      - The algorithm prints: **$6857$**.
 
   - **Efficiency:** This solution is vastly more efficient than Solution 1. For $n = 600851475143$, this means testing roughly $775{,}146$ candidates instead of $600$ billion.
 
@@ -132,10 +128,7 @@ What is the **largest prime factor** of the number $600851475143$?
   - **Step 4: Handle Remaining Prime**
       - After the loop, if `n > 1`, then $n$ is prime and is the largest factor.
       - Update `max_factor = n`.
-  
-  - **Step 5: Final Result**
-      - The algorithm prints: **$6857$**.
-
+      - 
   - **Efficiency:** This is the most efficient iterative solution. By skipping all multiples of $2$ and $3$, it tests only $\frac{1}{3}$ of the candidates compared to testing all integers, and $\frac{2}{3}$ of the candidates compared to testing all odd numbers.
 
 -----
