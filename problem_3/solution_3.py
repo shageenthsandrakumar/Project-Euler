@@ -3,7 +3,6 @@ max_factor = 0
 while not n%2:
     max_factor = 2 
     n //= 2
-
 while not n%3:
     max_factor = 3
     n //= 3
