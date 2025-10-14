@@ -65,11 +65,11 @@ What is the **largest prime factor** of the number $600851475143$?
       - The loop condition is now `while f*f <= n:` instead of `while f <= n:`.
       - This means we only test candidates up to $\sqrt{n}$.
       - **Why we can stop at $\sqrt{n}$:**
-          - Suppose $n$ has a factor $f > \sqrt{n}$. Then $n = f \times d$ for some integer $d$.
-          - Since $f > \sqrt{n}$, we have $f \times d > \sqrt{n} \times d$, which means $n > \sqrt{n} \times d$.
+          - Suppose $n$ has a factor $f > \sqrt{n}$. Then $n = f * d$ for some integer $d$.
+          - Since $f > \sqrt{n}$, we have $f * d > \sqrt{n} * d$, which means $n > \sqrt{n} * d$.
           - Dividing both sides by $\sqrt{n}$ gives us $\sqrt{n} > d$, so $d < \sqrt{n}$.
           - This means if there's a factor greater than $\sqrt{n}$, there must be a corresponding factor less than $\sqrt{n}$.
-          - Therefore, we don't need to search beyond $\sqrt{n}$—all factors larger than $\sqrt{n}$ will have already been revealed by dividing out their smaller counterparts.
+          - Therefore, we don't need to search beyond $\sqrt{n}$. All factors larger than $\sqrt{n}$ will have already been revealed by dividing out their smaller counterparts.
       - **Key insight:** Once all factors up to $\sqrt{n}$ are removed, any remaining $n > 1$ must be prime (and is the largest prime factor).
   
   - **Step 3: Factor Removal Strategy**
