@@ -128,7 +128,7 @@ What is the **largest prime factor** of the number $600851475143$?
   - **Step 4: Handle Remaining Prime**
       - After the loop, if `n > 1`, then $n$ is prime and is the largest factor.
       - Update `max_factor = n`.
-      - 
+    
   - **Efficiency:** This is the most efficient iterative solution. By skipping all multiples of $2$ and $3$, it tests only $\frac{1}{3}$ of the candidates compared to testing all integers, and $\frac{2}{3}$ of the candidates compared to testing all odd numbers.
 
 -----
