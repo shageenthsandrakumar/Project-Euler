@@ -74,7 +74,6 @@ What is the **largest prime factor** of the number $600851475143$?
   - **Step 3: Factor Removal Strategy**
       - For each candidate $f$:
           - If $f$ divides $n$: divide it out (`n //= f`) and update `max_factor = f`.
-          - **Important:** Unlike Solution 1, this implementation increments $f$ after each division rather than repeatedly testing the same $f$. This means it only removes one instance of each prime factor per pass, but the loop will encounter the same prime again if it appears multiple times.
           - If $f$ does not divide $n$: increment to the next candidate (`f += 1`).
   
   - **Step 4: Handle Remaining Prime**
