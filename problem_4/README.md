@@ -4,7 +4,7 @@
 
 **Problem statement:**
 
-A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is $9009 = 91 \times 99$.
+A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is $9009 = 91 * 99$.
 
 Find the **largest palindrome** made from the product of two 3-digit numbers.
 
@@ -31,7 +31,7 @@ Find the **largest palindrome** made from the product of two 3-digit numbers.
 - **Step 2: Nested Loop Structure**
   - Outer loop: `for i in range(100, 1000)` iterates through all 3-digit numbers.
   - Inner loop: `for j in range(i, 1000)` ensures we only check each pair once (avoiding duplicate pairs like $(i,j)$ and $(j,i)$).
-  - This structure checks all $\frac{900 \times 901}{2} = 405{,}450$ unique pairs.
+  - This structure checks all $\frac{900 * 901}{2} = 405{,}450$ unique pairs.
 
 - **Step 3: Product Evaluation**
   - For each pair, calculate `product = i * j`.
@@ -62,13 +62,13 @@ Find the **largest palindrome** made from the product of two 3-digit numbers.
   - A 6-digit palindrome has the form $\overline{abccba} = 100001a + 10010b + 1100c$.
   - Factor: $100001a + 10010b + 1100c = 11(9091a + 910b + 100c)$.
   - Therefore, every 6-digit palindrome is divisible by 11.
-  - For a product $i \times j$ to be divisible by 11, at least one factor must be divisible by 11.
+  - For a product $i * j$ to be divisible by 11, at least one factor must be divisible by 11.
 
 - **Step 2: Optimized Inner Loop**
   - Calculate `j_start`: the smallest value of $j \geq 100$ that ensures a 6-digit product.
     - Formula: `j_start = max((100000 + i - 1) // i, 100)`
     - **Breakdown:** This is a clever way of computing $\lceil \frac{100000}{i} \rceil$ (ceiling division).
-      - We need $i \times j \geq 100000$ (the smallest 6-digit number).
+      - We need $i * j \geq 100000$ (the smallest 6-digit number).
       - Solving for $j$: $j \geq \frac{100000}{i}$.
       - The expression `(100000 + i - 1) // i` implements ceiling division using only integer arithmetic.
       - Adding $(i-1)$ before integer division ensures we round up: $\lceil \frac{a}{b} \rceil = \lfloor \frac{a + b - 1}{b} \rfloor$.
@@ -113,7 +113,7 @@ Find the **largest palindrome** made from the product of two 3-digit numbers.
 
 - **Step 2: Outer Loop Early Exit**
   - **Condition:** `if i * 990 < largest[0]: break`
-  - **Rationale:** $990$ is the largest 3-digit multiple of 11. The product $i \times 990$ represents the maximum possible palindromic product for the current $i$ (given the divisibility constraint).
+  - **Rationale:** $990$ is the largest 3-digit multiple of 11. The product $i * 990$ represents the maximum possible palindromic product for the current $i$ (given the divisibility constraint).
   - Once this maximum is smaller than the current best palindrome, no future iterations can yield a larger result.
   - This optimization dramatically reduces the search space.
 
@@ -121,7 +121,7 @@ Find the **largest palindrome** made from the product of two 3-digit numbers.
   - Start $j$ at the largest multiple of 11 that is $\leq i$: `j_start_11 = i - (i % 11)` (capped at 990).
   - Calculate the minimum $j$ needed for a 6-digit product using ceiling division:
     - `j_small = max((100000 + i - 1) // i, 100)` computes $\lceil \frac{100000}{i} \rceil$.
-    - This ensures $i \times j \geq 100000$ (the smallest 6-digit number).
+    - This ensures $i * j \geq 100000$ (the smallest 6-digit number).
     - `j_small_11 = ((j_small + 10) // 11) * 11` rounds up to the nearest multiple of 11.
   - Iterate: `for j in range(990, j_small_11 - 1, -11)`
 
@@ -137,7 +137,7 @@ Find the **largest palindrome** made from the product of two 3-digit numbers.
   - Includes its own outer loop early exit: `if i * j_end < largest[0]: break`
 
 - **Step 6: Result**
-  - The algorithm finds $906{,}609 = 993 \times 913$ efficiently.
+  - The algorithm finds $906{,}609 = 993 * 913$ efficiently.
   - The outer loop breaks at approximately $i = 907$ due to the early exit condition.
 
 - **Efficiency:** This is the most efficient solution. The combination of descending search, divisibility optimization, and dual early exits minimizes the number of products checked. In practice, it evaluates fewer than 10,000 products compared to the 405,450 in Solution 1.
@@ -155,8 +155,8 @@ It is the product of 993 × 913
 
 ## Notes
 
-- The largest palindromic product of two 3-digit numbers is $906{,}609 = 993 \times 913$.
+- The largest palindromic product of two 3-digit numbers is $906{,}609 = 993 * 913$.
 - The divisibility-by-11 property is crucial for optimization: all 6-digit palindromes are divisible by 11.
 - **Solution 3** is the optimal approach, leveraging descending search order and early exit strategies to achieve maximum efficiency.
-- The early exit condition $i \times 990 < \text{largest}$ (or $i \times 999$ for a looser bound) is mathematically sound and dramatically reduces computational overhead.
+- The early exit condition $i * 990 < \text{largest}$ (or $i * 999$ for a looser bound) is mathematically sound and dramatically reduces computational overhead.
 - While Solution 2 includes structural separation between 6-digit and 5-digit searches, Solution 3's descending approach makes the fallback loop rarely necessary in practice.
