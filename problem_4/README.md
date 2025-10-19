@@ -15,7 +15,7 @@ Find the **largest palindrome** made from the product of two 3-digit numbers.
 ### Approach
 
 - Iterate through all pairs of 3-digit numbers $(i, j)$ where $100 \leq i \leq j < 1000$.
-- Calculate the product $i \times j$ for each pair.
+- Calculate the product $i * j$ for each pair.
 - Check if the product is a palindrome.
 - Track the largest palindromic product found.
 
