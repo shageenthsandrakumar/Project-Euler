@@ -9,7 +9,7 @@ Find the sum of all the multiples of 3 or 5 below 1000.
 
 ---
 
-## Solution 1
+## Solution 1: Arithmetic Series Formula
 
 ### Approach
 
@@ -52,7 +52,7 @@ Final sum: `166833 + 99500 - 33165 = 233168`
 
 ---
 
-## Solution 2
+## Solution 2: Brute-Force Iteration
 
 **Approach:**
 
