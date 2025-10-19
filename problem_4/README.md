@@ -30,7 +30,7 @@ Find the **largest palindrome** made from the product of two 3-digit numbers.
 
 - **Step 2: Nested Loop Structure**
   - Outer loop: `for i in range(100, 1000)` iterates through all 3-digit numbers.
-  - Inner loop: `for j in range(i, 1000)` ensures we only check each pair once (avoiding duplicate pairs like $(i,j)$ and $(j,i)$).
+  - Inner loop: `for j in range(i, 1000)` ensures we only check each pair once (avoiding duplicate pairs like $(i,j)$ and $(j,i)$ ).
   - This structure checks all $\frac{900 * 901}{2} = 405{,}450$ unique pairs.
 
 - **Step 3: Product Evaluation**
