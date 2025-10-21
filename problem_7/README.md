@@ -58,7 +58,7 @@ What is the $10001$-st prime number?
 
 ### Detailed Explanation
 
-- **Step 1: Mathematical Foundation - The Prime Number Theorem**
+- **Step 1: Start with the Prime Number Theorem**
   - The **Prime Number Theorem** (PNT) states that the number of primes less than or equal to $x$ is approximately:
   $$\pi(x) \sim \frac{x}{\ln(x)}$$
   - This means primes become less dense as numbers grow larger, with an average gap of approximately $\ln(x)$ between consecutive primes near $x$.
@@ -184,7 +184,7 @@ $$
 - The 10,001st prime number is $104{,}743$.
 - **Solution 2** is the optimal approach, leveraging rigorous mathematical theory (the Rosser-Schoenfeld bound) combined with the efficient Sieve of Eratosthenes algorithm.
 - The **Prime Number Theorem** provides the theoretical foundation for understanding prime distribution, while the **Rosser-Schoenfeld bound** gives a practical, provably correct upper limit for computation.
-- The upper bound $n(\ln(n) + \ln(\ln(n)))$ is **essential** — using just $n \ln(n)$ would fail to find the answer.
+- The upper bound $n(\ln(n) + \ln(\ln(n)))$ is **essential**. Using just $n \ln(n)$ would fail to find the answer.
 - The half-sieve optimization (storing only odd numbers) is a standard technique that reduces memory usage by 50% and improves performance through better cache utilization.
 - For larger values of $n$, even tighter bounds exist (such as Dusart's refinements), but the Rosser-Schoenfeld bound is simple, elegant, and sufficient for all practical purposes.
 - The problem demonstrates the power of combining **pure mathematics** (analytic number theory) with **efficient algorithms** (sieving) to solve computational problems.
