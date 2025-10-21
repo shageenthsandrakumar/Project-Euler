@@ -1,6 +1,6 @@
 import numpy as np
-threshold = 10001
-n = threshold
+nth = 10001
+n = nth
 limit = int(n*(np.log(n)+np.log(np.log(n)))+1)
 is_prime = np.ones(((limit+1)//2,), dtype=bool) # index i = 2*i + 1
 is_prime[0] = False 
