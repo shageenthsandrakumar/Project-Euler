@@ -118,6 +118,6 @@ Find the difference between the sum of the squares of the first one hundred natu
 - The difference between the sum of the squares and the square of the sum for the first $100$ natural numbers is $25{,}164{,}150$.
 - **Solution 2** is the optimal approach, using closed-form mathematical formulas to compute the result in constant time.
 - The problem exploits the difference between two quadratic expressions, which simplifies to a quartic polynomial in $n$.
-- The algebraic manipulation reveals the elegant structure: $\frac{n(n+1)(n-1)(3n+2)}{12}$ or equivalently $\frac{n(n^2-1)(3n+2)}{2}$.
+- The algebraic manipulation reveals the elegant structure: $\frac{n(n+1)(n-1)(3n+2)}{12}$ or equivalently $\frac{n(n^2-1)(3n+2)}{12}$.
 - Using the `Fraction` class in Solution 2 ensures exact arithmetic without floating-point rounding errors.
 - For large values of $n$, Solution 2's constant-time computation becomes increasingly advantageous over Solution 1's linear-time approach.
