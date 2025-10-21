@@ -51,7 +51,7 @@ What is the **smallest positive number** that is evenly divisible by all of the 
   - Exponents: $[3, 2, 1, 1]$ because $2^3 = 8 \leq 10$, $3^2 = 9 \leq 10$, $5^1 = 5 \leq 10$, $7^1 = 7 \leq 10$
   - LCM: $2^3 \times 3^2 \times 5 \times 7 = 8 \times 9 \times 5 \times 7 = 2520$
 
-- **Efficiency:** Trial division is straightforward but inefficient for large thresholds. For $\text{nums} = 20$, it performs approximately $20$ iterations with divisibility checks against a growing list of primes. Time complexity: $O(n^2 / \log n)$.
+- **Efficiency:** Trial division is straightforward but inefficient for large thresholds. For $\text{nums} = 20$, it performs approximately $20$ iterations with divisibility checks against a growing list of primes.
 
 ---
 
@@ -85,7 +85,7 @@ What is the **smallest positive number** that is evenly divisible by all of the 
 - **Step 2: Sieve Process**
   - Loop over odd candidates $i$ from $3$ to $\sqrt{\text{nums}}$ (step by 2).
   - **Why only up to $\sqrt{\text{nums}}$:**
-    - If a composite number $n$ has a factor $f > \sqrt{n}$, it must have a corresponding factor $d < \sqrt{n}$ (since $n = f \times d$).
+    - If a composite number $n$ has a factor $f > \sqrt{n}$, it must have a corresponding factor $d < \sqrt{n}$ (since $n = f * d$).
     - Therefore, all composite numbers will have been marked by their smaller factors before we reach $\sqrt{n}$.
     - Any unmarked number beyond this point must be prime.
   - For each candidate $i$, compute its index in the half-sieve: `i//2`.
@@ -93,31 +93,22 @@ What is the **smallest positive number** that is evenly divisible by all of the 
     - Mark all odd multiples of $i$ starting from $i^2$ as composite.
     - **Why start at $i^2$:**
       - All smaller multiples of $i$ (such as $3i, 5i, 7i, \dots$) have already been marked by smaller primes.
-      - For example, when processing $i = 5$: $5 \times 3 = 15$ was already marked when we processed $3$.
+      - For example, when processing $i = 5$: $5 * 3 = 15$ was already marked when we processed $3$.
       - The first unmarked multiple is always $i^2$ (the square of the current prime).
-    - Starting point (in array indices): `i*i//2`
-      - This represents the first odd multiple $i^2$ that hasn't been marked by smaller primes.
-    - Step size: `i`
-      - Represents the gap between consecutive odd multiples of $i$ in the compressed index space.
     - Implementation: `is_prime[i*i//2::i] = False`
+    - **Understanding the slice `i*i//2::i`:**
+      - **Starting point (`i*i//2`):** The index for $i^2$ in the half-sieve is $(i^2 - 1) / 2 = i^2 // 2$ (integer division).
+      - **Step size (`i`):** Consecutive odd multiples of $i$ differ by $2i$ in actual number space. In index space (where each index represents a jump of 2), the step is $2i / 2 = i$.
 
 - **Step 3: Extracting Primes**
   - Use `np.nonzero(is_prime)[0]` to get indices of all `True` entries (odd primes).
-  - Convert indices back to actual numbers: $2 \times \text{index} + 1$.
+  - Convert indices back to actual numbers: $2 * \text{index} + 1$.
   - Prepend $2$ (the only even prime) using `np.r_[2, 2*np.nonzero(is_prime)[0]+1]`.
 
 - **Step 4: Computing Exponents and LCM**
   - Use the same logarithmic formula as Solution 1:
     - `exponents = np.log(nums) // np.log(primes)`
   - Compute the LCM: `int(np.prod(primes**exponents))`
-
-- **Step 5: Why `i*i//2::i` Works**
-  - **Starting point (`i*i//2`):**
-    - We want to start marking from $i^2$ (the first composite that wasn't already marked).
-    - The index for $i^2$ in the half-sieve: $(i^2 - 1) / 2 = i^2 // 2$ (integer division).
-  - **Step size (`i`):**
-    - Consecutive odd multiples of $i$ differ by $2i$ in actual number space.
-    - In index space (where each index represents a jump of 2), the step is $2i / 2 = i$.
 
 - **Efficiency:** The half-sieve is approximately **2× faster** than the full sieve and uses **50% less memory**. This is the most efficient method for generating primes up to moderate limits.
 
