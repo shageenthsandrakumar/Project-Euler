@@ -153,7 +153,7 @@ $$
       - The first unmarked multiple is always $i^2$ (the square of the current prime).
     - Implementation: `is_prime[i*i//2::i] = False`
     - **Understanding the slice `i*i//2::i`:**
-      - **Starting point (`i*i//2`):** The index for $i^2$ in the half-sieve is $(i^2 - 1) / 2 = i^2//2$ (integer division).
+      - **Starting point (`i*i//2`):** The index for $i^2$ in the half-sieve is $(i^2 - 1) / 2 = int(i^2/2)$ (integer division).
       - **Step size (`i`):** Consecutive odd multiples of $i$ differ by $2i$ in actual number space. In index space (where each index represents a jump of 2), the step is $2i / 2 = i$.
 
 - **Step 8: Extracting Primes**
