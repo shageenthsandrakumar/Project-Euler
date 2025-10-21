@@ -90,7 +90,7 @@ Find the difference between the sum of the squares of the first one hundred natu
   - Notice that $n(n-1)$ and $(n+1)$ can be regrouped:
     $$\frac{n}{2} \cdot (n-1)(n+1) \cdot \frac{3n+2}{6}$$
   - Recognize $(n-1)(n+1) = n^2 - 1$:
-    $$\frac{n(n^2-1)(3n+2)}{2}$$
+    $$\frac{n}{2} \cdot n^2-1 \cdot \frac{3n+2}{6}$$
   - Alternative grouping using $a = \frac{n}{2}$:
     $$a(4a^2 - 1)\left(a + \frac{1}{3}\right)$$
     where $a = \frac{n}{2}$, $4a^2 - 1 = (2a-1)(2a+1) = (n-1)(n+1)$, and $a + \frac{1}{3} = \frac{3n+2}{6}$.
