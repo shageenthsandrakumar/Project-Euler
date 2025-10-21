@@ -49,7 +49,7 @@ What is the $10001$-st prime number?
 ### Approach
 
 - Use a **mathematical upper bound** to determine how high to search for the $n$-th prime.
-- Apply the **Rosser-Schoenfeld bound**: For $n \geq 6$, we have $p_n < n(\ln n + \ln \ln n)$.
+- Apply the **Rosser-Schoenfeld bound**: For $n \geq 6$, we have $p_n < n(\ln(n) + \ln (\ln(n)))$.
 - Run the **Sieve of Eratosthenes** up to this upper bound to generate all primes in that range.
 - Use a **half-sieve optimization** (storing only odd numbers) to reduce memory usage by 50%.
 - Extract the list of primes and return the $n$-th one.
