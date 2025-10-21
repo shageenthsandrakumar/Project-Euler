@@ -46,11 +46,6 @@ What is the **smallest positive number** that is evenly divisible by all of the 
   - For a number to be divisible by all integers from $1$ to $\text{nums}$, it must contain all prime factors with sufficient multiplicity.
   - The LCM is obtained by taking each prime to its maximum power that appears in any number $\leq \text{nums}$.
 
-- **Example for nums = 10:**
-  - Primes: $[2, 3, 5, 7]$
-  - Exponents: $[3, 2, 1, 1]$ because $2^3 = 8 \leq 10$, $3^2 = 9 \leq 10$, $5^1 = 5 \leq 10$, $7^1 = 7 \leq 10$
-  - LCM: $2^3 \times 3^2 \times 5 \times 7 = 8 \times 9 \times 5 \times 7 = 2520$
-
 - **Efficiency:** Trial division is straightforward but inefficient for large thresholds. For $\text{nums} = 20$, it performs approximately $20$ iterations with divisibility checks against a growing list of primes.
 
 ---
@@ -73,12 +68,13 @@ What is the **smallest positive number** that is evenly divisible by all of the 
 ### Detailed Explanation
 
 - **Step 1: Half-Sieve Initialization**
-  - Create a boolean array `is_prime` of size `nums//2` to represent only odd numbers.
+  - Create a boolean array `is_prime` of size `(nums+1)//2` to represent only odd numbers up to and including `nums`.
   - Index mapping: `is_prime[i]` corresponds to the number $2i + 1$.
     - `is_prime[0]` → $1$ (not prime, set to `False`)
     - `is_prime[1]` → $3$ (prime)
     - `is_prime[2]` → $5$ (prime)
     - `is_prime[3]` → $7$ (prime)
+  - The array size ensures all odd numbers up to `nums` are included in the sieve.
   - Initialize all entries to `True` (assume all odd numbers are prime initially).
   - Set `is_prime[0] = False` because $1$ is not prime.
 
@@ -104,6 +100,7 @@ What is the **smallest positive number** that is evenly divisible by all of the 
   - Use `np.nonzero(is_prime)[0]` to get indices of all `True` entries (odd primes).
   - Convert indices back to actual numbers: $2 * \text{index} + 1$.
   - Prepend $2$ (the only even prime) using `np.r_[2, 2*np.nonzero(is_prime)[0]+1]`.
+  - Because the sieve size is `(nums+1)//2`, all primes up to and including `nums` are automatically captured.
 
 - **Step 4: Computing Exponents and LCM**
   - Use the same logarithmic formula as Solution 1:
@@ -125,8 +122,9 @@ What is the **smallest positive number** that is evenly divisible by all of the 
 ## Notes
 
 - The smallest number divisible by all integers from $1$ to $20$ is $232{,}792{,}560$.
-- Prime factorization: $232{,}792{,}560 = 2^4 \times 3^2 \times 5 \times 7 \times 11 \times 13 \times 17 \times 19$.
+- Prime factorization: $232{,}792{,}560 = 2^4 * 3^2 * 5 * 7 * 11 * 13 * 17 * 19$.
 - **Solution 2** is the optimal approach, leveraging the half-sieve optimization for efficient prime generation.
 - The problem is equivalent to finding $\text{LCM}(1, 2, 3, \dots, 20)$.
 - Simply multiplying all numbers from $1$ to $20$ would produce a much larger number with redundant prime factors. The LCM approach ensures each prime appears with the minimal necessary exponent.
 - The logarithmic method for computing exponents avoids iterative division and is highly efficient for vectorized operations.
+- Using array size `(nums+1)//2` ensures all odd numbers up to and including `nums` are represented in the sieve.
