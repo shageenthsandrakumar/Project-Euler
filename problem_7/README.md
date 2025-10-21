@@ -4,9 +4,9 @@
 
 **Problem statement:**
 
-By listing the first six prime numbers: $2, 3, 5, 7, 11$, and $13$, we can see that the $6$-th prime is $13$.
+By listing the first six prime numbers: $2, 3, 5, 7, 11$, and $13$, we can see that the $6$th prime is $13$.
 
-What is the $10001$-st prime number?
+What is the $10\,001$st prime number?
 
 ---
 
@@ -127,31 +127,40 @@ $$
   $$\text{limit} = \lfloor n(\ln n + \ln \ln n) \rfloor + 1$$
   - The $+1$ provides a small safety margin for floating-point rounding.
 
-- **Step 6: Half-Sieve Optimization**
-  - The code implements a **half-sieve** that stores only odd numbers to save memory.
-  - **Index mapping:** The array entry at index $i$ represents the number $2i + 1$.
-    - Index $0$ represents $1$ (not prime)
-    - Index $1$ represents $3$ (prime)
-    - Index $2$ represents $5$ (prime)
-    - Index $3$ represents $7$ (prime)
-  - Array size: $\lfloor (\text{limit}+1)/2 \rfloor$ ensures all odd numbers up to the limit are represented.
-  - Initialize all entries to `True` (assume odd numbers are prime), then set the first entry to `False` (since $1$ is not prime).
+- **Step 6: Half-Sieve Initialization**
+  - Create a boolean array `is_prime` of size `(limit+1)//2` to represent only odd numbers up to and including `limit`.
+  - Index mapping: `is_prime[i]` corresponds to the number $2i + 1$.
+    - `is_prime[0]` → $1$ (not prime, set to `False`)
+    - `is_prime[1]` → $3$ (prime)
+    - `is_prime[2]` → $5$ (prime)
+    - `is_prime[3]` → $7$ (prime)
+  - The array size ensures all odd numbers up to `limit` are included in the sieve.
+  - Initialize all entries to `True` (assume all odd numbers are prime initially).
+  - Set `is_prime[0] = False` because $1$ is not prime.
 
-- **Step 7: Sieve Algorithm**
-  - Loop over odd candidates $i$ from $3$ to $\lfloor \sqrt{\text{limit}} \rfloor$ (incrementing by 2):
-    - **Why only to $\sqrt{\text{limit}}$:** Any composite number $n$ must have a prime factor $\leq \sqrt{n}$. All larger factors will have been eliminated by marking multiples of smaller primes.
-  - For each prime $i$ (where the array entry at index $\lfloor i/2 \rfloor$ is `True`):
+- **Step 7: Sieve Process**
+  - Loop over odd candidates $i$ from $3$ to $\sqrt{\text{limit}}$ (step by 2).
+  - **Why only up to $\sqrt{\text{limit}}$:**
+    - If a composite number $n$ has a factor $f > \sqrt{n}$, it must have a corresponding factor $d < \sqrt{n}$ (since $n = f \times d$).
+    - Therefore, all composite numbers will have been marked by their smaller factors before we reach $\sqrt{n}$.
+    - Any unmarked number beyond this point must be prime.
+  - For each candidate $i$, compute its index in the half-sieve: `i//2`.
+  - If `is_prime[i//2]` is `True`, then $i$ is prime:
     - Mark all odd multiples of $i$ starting from $i^2$ as composite.
-    - **Why start at $i^2$:** All smaller odd multiples ($3i, 5i, 7i, \ldots$) have already been marked by smaller primes.
-  - Implementation details:
-    - Starting index: $\lfloor i^2/2 \rfloor$ (the position of $i^2$ in the half-sieve)
-    - Step size: $i$ (each step jumps $2i$ in actual number space, or $i$ in index space)
+    - **Why start at $i^2$:**
+      - All smaller multiples of $i$ (such as $3i, 5i, 7i, \ldots$) have already been marked by smaller primes.
+      - For example, when processing $i = 5$: $5 \times 3 = 15$ was already marked when we processed $3$.
+      - The first unmarked multiple is always $i^2$ (the square of the current prime).
+    - Implementation: `is_prime[i*i//2::i] = False`
+    - **Understanding the slice `i*i//2::i`:**
+      - **Starting point (`i*i//2`):** The index for $i^2$ in the half-sieve is $(i^2 - 1) / 2 = i^2 // 2$ (integer division).
+      - **Step size (`i`):** Consecutive odd multiples of $i$ differ by $2i$ in actual number space. In index space (where each index represents a jump of 2), the step is $2i / 2 = i$.
 
 - **Step 8: Extracting Primes**
-  - Find all indices where the array entry is `True`.
-  - Convert indices to actual numbers: $2 \times \text{index} + 1$.
-  - Prepend $2$ (the only even prime) to the list.
-  - This produces an array of all primes up to the limit.
+  - Use `np.nonzero(is_prime)[0]` to get indices of all `True` entries (odd primes).
+  - Convert indices back to actual numbers: $2 \times \text{index} + 1$.
+  - Prepend $2$ (the only even prime) using `np.r_[2, 2*np.nonzero(is_prime)[0]+1]`.
+  - Because the sieve size is `(limit+1)//2`, all primes up to and including `limit` are automatically captured.
 
 - **Step 9: Accessing the $n$-th Prime**
   - Use zero-based indexing: the element at position $n-1$ gives the $n$-th prime (since arrays are 0-indexed).
