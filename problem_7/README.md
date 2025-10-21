@@ -60,25 +60,25 @@ What is the $10001$-st prime number?
 
 - **Step 1: Mathematical Foundation - The Prime Number Theorem**
   - The **Prime Number Theorem** (PNT) states that the number of primes less than or equal to $x$ is approximately:
-  $$\pi(x) \sim \frac{x}{\ln x}$$
-  - This means primes become less dense as numbers grow larger, with an average gap of approximately $\ln x$ between consecutive primes near $x$.
+  $$\pi(x) \sim \frac{x}{\ln(x)}$$
+  - This means primes become less dense as numbers grow larger, with an average gap of approximately $\ln(x)$ between consecutive primes near $x$.
   - However, the PNT is an **asymptotic result** — it describes behavior as $x \to \infty$ but doesn't provide exact bounds for finite values.
 
 - **Step 2: Inverting the PNT to Estimate $p_n$**
   - We need to **invert** $\pi(x)$ to find $p_n$ (the $n$-th prime) given $n$.
-  - If $\pi(p_n) = n$ and $\pi(x) \approx \frac{x}{\ln x}$, then:
+  - If $\pi(p_n) = n$ and $\pi(x) \approx \frac{x}{\ln(x)}$, then:
   $$n \approx \frac{p_n}{\ln p_n}$$
   - Solving for $p_n$: 
   $$p_n \approx n \ln p_n$$
-  - Since $p_n \approx n \ln n$ (first-order approximation), we have:
-  $$\ln p_n \approx \ln(n \ln n) = \ln n + \ln \ln n$$
+  - Since $p_n \approx n \ln(n)$ (first-order approximation), we have:
+  $$\ln p_n \approx \ln(n \ln(n)) = \ln(n) + \ln \ln(n)$$
   - Substituting back:
-  $$p_n \approx n(\ln n + \ln \ln n)$$
+  $$p_n \approx n(\ln(n) + \ln \ln(n))$$
   - **Important:** This is an **approximation**, not a rigorous upper bound. It can underestimate $p_n$ for small to medium values of $n$.
 
 - **Step 3: The Rosser-Schoenfeld Upper Bound**
   - In 1962, J. Barkley Rosser and Lowell Schoenfeld **proved** rigorously for all $n \geq 6$:
-  $$p_n < n(\ln n + \ln \ln n)$$
+  $$p_n < n(\ln(n) + \ln \ln(n))$$
     
   - This is a **proven upper bound**, not just an approximation.
   - **Why it works:** The bound comes from the **explicit formula** connecting primes to the Riemann zeta function. By carefully bounding the error terms in the Prime Number Theorem (using zero-free regions of the zeta function), Rosser and Schoenfeld derived this explicit inequality.
@@ -87,7 +87,7 @@ What is the $10001$-st prime number?
 $$
 \begin{array}{|c|c|c|c|}
 \hline
-n & p_n & n(\ln n + \ln \ln n) & \text{Bound holds?} \\
+n & p_n & n(\ln(n) + \ln \ln(n)) & \text{Bound holds?} \\
 \hline
 6 & 13 & 14.22 & \checkmark \text{ Yes} \\
 10 & 29 & 31.81 & \checkmark \text{ Yes} \\
@@ -99,18 +99,18 @@ $$
 
   - The bound consistently provides a safe margin (typically 5-10% above the actual value).
 
-- **Step 4: Why $n \ln n$ Alone is NOT Sufficient**
-  - The simpler approximation $p_n \approx n \ln n$ (without the $\ln \ln n$ term) **underestimates** $p_n$ for practical values of $n$.
+- **Step 4: Why $n \ln(n)$ Alone is NOT Sufficient**
+  - The simpler approximation $p_n \approx n \ln(n)$ (without the $\ln \ln(n)$ term) **underestimates** $p_n$ for practical values of $n$.
   - Example for $n = 6$:
-    - $n \ln n = 6 \times \ln(6) \approx 6 \times 1.79 \approx 10.75$
+    - $n \ln(n) = 6 \times \ln(6) \approx 6 \times 1.79 \approx 10.75$
     - Actual $p_6 = 13$
     - The approximation is **too small**!
   - Example for $n = 100$:
-    - $n \ln n = 100 \times \ln(100) \approx 100 \times 4.61 \approx 461$
+    - $n \ln(n) = 100 \times \ln(100) \approx 100 \times 4.61 \approx 461$
     - Actual $p_{100} = 541$
     - The approximation is **too small** by 80!
   - If we used this as our sieve limit, we would **miss the answer entirely**.
-  - The $n \ln \ln n$ term is **essential** for the bound to be a true upper bound.
+  - The $n \ln \ln(n)$ term is **essential** for the bound to be a true upper bound.
 
 - **Step 5: Computing the Upper Bound**
   - Example for $n = 6$:
@@ -124,7 +124,7 @@ $$
     - Upper bound: $100 \times (4.61 + 1.53) = 100 \times 6.14 \approx 614$
     - Actual $p_{100} = 541$, so the bound works with a safety margin of about 13%.
   - The code uses: 
-  $$\text{limit} = \lfloor n(\ln n + \ln \ln n) \rfloor + 1$$
+  $$\text{limit} = \lfloor n(\ln(n) + \ln \ln(n)) \rfloor + 1$$
   - The $+1$ provides a small safety margin for floating-point rounding.
 
 - **Step 6: Half-Sieve Initialization**
@@ -184,7 +184,7 @@ $$
 - The 10,001st prime number is $104{,}743$.
 - **Solution 2** is the optimal approach, leveraging rigorous mathematical theory (the Rosser-Schoenfeld bound) combined with the efficient Sieve of Eratosthenes algorithm.
 - The **Prime Number Theorem** provides the theoretical foundation for understanding prime distribution, while the **Rosser-Schoenfeld bound** gives a practical, provably correct upper limit for computation.
-- The upper bound $n(\ln n + \ln \ln n)$ is **essential** — using just $n \ln n$ would fail to find the answer.
+- The upper bound $n(\ln(n) + \ln \ln(n))$ is **essential** — using just $n \ln(n)$ would fail to find the answer.
 - The half-sieve optimization (storing only odd numbers) is a standard technique that reduces memory usage by 50% and improves performance through better cache utilization.
 - For larger values of $n$, even tighter bounds exist (such as Dusart's refinements), but the Rosser-Schoenfeld bound is simple, elegant, and sufficient for all practical purposes.
 - The problem demonstrates the power of combining **pure mathematics** (analytic number theory) with **efficient algorithms** (sieving) to solve computational problems.
