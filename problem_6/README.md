@@ -86,7 +86,7 @@ Find the difference between the sum of the squares of the first one hundred natu
     $$\frac{n(n+1)(3n+2)(n-1)}{12}$$
 
 - **Step 3: Further Simplification**
-  - Rearrange factors: $n(n-1)(n+1)(3n+2)$
+  - Rearrange factors: $\frac{1}{12}*n(n-1)(n+1)(3n+2)$
   - Notice that $n(n-1)$ and $(n+1)$ can be regrouped:
     $$\frac{n}{2} \cdot (n-1)(n+1) \cdot (3n+2)$$
   - Recognize $(n-1)(n+1) = n^2 - 1$:
