@@ -12,6 +12,7 @@ This repository contains Python solutions to Project Euler problems. Each proble
 - **[Problem 4: Largest Palindrome Product](./problem_4/README.md)**
 - **[Problem 5: Smallest Multiple](./problem_5/README.md)**
 - **[Problem 6: Sum Square Difference](./problem_6/README.md)**
+- **[Problem 7: 10001st Prime](./problem_7/README.md)**
 
 Each problem folder contains one or more solutions with explanations, code, and output.
 
