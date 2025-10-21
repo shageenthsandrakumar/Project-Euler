@@ -67,11 +67,11 @@ What is the $10001$-st prime number?
 - **Step 2: Inverting the PNT to Estimate $p_n$**
   - We need to **invert** $\pi(x)$ to find $p_n$ (the $n$-th prime) given $n$.
   - If $\pi(p_n) = n$ and $\pi(x) \approx \frac{x}{\ln(x)}$, then:
-  $$n \approx \frac{p_n}{\ln p_n}$$
+  $$n \approx \frac{p_n}{\ln(p_n)}$$
   - Solving for $p_n$: 
-  $$p_n \approx n \ln p_n$$
+  $$p_n \approx n \ln(p_n)$$
   - Since $p_n \approx n \ln(n)$ (first-order approximation), we have:
-  $$\ln p_n \approx \ln(n \ln(n)) = \ln(n) + \ln \ln(n)$$
+  $$\ln(p_n) \approx \ln(n \ln(n)) = \ln(n) + \ln \ln(n)$$
   - Substituting back:
   $$p_n \approx n(\ln(n) + \ln \ln(n))$$
   - **Important:** This is an **approximation**, not a rigorous upper bound. It can underestimate $p_n$ for small to medium values of $n$.
