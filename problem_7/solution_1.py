@@ -1,4 +1,5 @@
-threshold = 10001
+nth = 10001
+threshold = nth
 primes = []
 n = 1
 while len(primes) < threshold:
