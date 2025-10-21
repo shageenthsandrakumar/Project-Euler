@@ -62,7 +62,7 @@ What is the $10001$-st prime number?
   - The **Prime Number Theorem** (PNT) states that the number of primes less than or equal to $x$ is approximately:
   $$\pi(x) \sim \frac{x}{\ln(x)}$$
   - This means primes become less dense as numbers grow larger, with an average gap of approximately $\ln(x)$ between consecutive primes near $x$.
-  - However, the PNT is an **asymptotic result** — it describes behavior as $x \to \infty$ but doesn't provide exact bounds for finite values.
+  - However, the PNT is an **asymptotic result**. It describes behavior as $x \to \infty$ but doesn't provide exact bounds for finite values.
 
 - **Step 2: Inverting the PNT to Estimate $p_n$**
   - We need to **invert** $\pi(x)$ to find $p_n$ (the $n$-th prime) given $n$.
