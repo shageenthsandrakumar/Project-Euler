@@ -58,25 +58,7 @@ What is the $10001$-st prime number?
 
 ### Detailed Explanation
 
-- **Step 1: Start with the Prime Number Theorem**
-  - The **Prime Number Theorem** (PNT) states that the number of primes less than or equal to $x$ is approximately:
-  $$\pi(x) \sim \frac{x}{\ln(x)}$$
-  - This means primes become less dense as numbers grow larger, with an average gap of approximately $\ln(x)$ between consecutive primes near $x$.
-  - However, the PNT is an **asymptotic result**. It describes behavior as $x \to \infty$ but doesn't provide exact bounds for finite values.
-
-- **Step 2: Inverting the PNT to Estimate $p_n$**
-  - We need to **invert** $\pi(x)$ to find $p_n$ (the $n$-th prime) given $n$.
-  - If $\pi(p_n) = n$ and $\pi(x) \approx \frac{x}{\ln(x)}$, then:
-  $$n \approx \frac{p_n}{\ln(p_n)}$$
-  - Solving for $p_n$: 
-  $$p_n \approx n \ln(p_n)$$
-  - Since $p_n \approx n \ln(n)$ (first-order approximation), we have:
-  $$\ln(p_n) \approx \ln(n \ln(n)) = \ln(n) + \ln(\ln(n))$$
-  - Substituting back:
-  $$p_n \approx n(\ln(n) + \ln(\ln(n)))$$
-  - **Important:** This is an **approximation**, not a rigorous upper bound. It can underestimate $p_n$ for small to medium values of $n$.
-
-- **Step 3: The Rosser-Schoenfeld Upper Bound**
+- **Step 1: The Rosser-Schoenfeld Upper Bound**
   - In 1962, J. Barkley Rosser and Lowell Schoenfeld **proved** rigorously for all $n \geq 6$:
   $$p_n < n(\ln(n) + \ln(\ln(n)))$$
     
@@ -99,7 +81,7 @@ $$
 
   - The bound consistently provides a safe margin (typically 5-10% above the actual value).
 
-- **Step 4: Why $n \ln(n)$ Alone is NOT Sufficient**
+- **Step 2: Why $n \ln(n)$ Alone is NOT Sufficient**
   - The simpler approximation $p_n \approx n \ln(n)$ (without the $\ln(\ln(n))$ term) **underestimates** $p_n$ for practical values of $n$.
   - Example for $n = 6$:
     - $n \ln(n) = 6 \times \ln(6) \approx 6 \times 1.79 \approx 10.75$
@@ -112,7 +94,7 @@ $$
   - If we used this as our sieve limit, we would **miss the answer entirely**.
   - The $n \ln(\ln(n))$ term is **essential** for the bound to be a true upper bound.
 
-- **Step 5: Computing the Upper Bound**
+- **Step 3: Computing the Upper Bound**
   - Example for $n = 6$:
     - $\ln(6) \approx 1.79$
     - $\ln(\ln(6)) \approx 0.58$
@@ -127,7 +109,7 @@ $$
   $$\text{limit} = \lfloor n(\ln(n) + \ln(\ln(n))) \rfloor + 1$$
   - The $+1$ provides a small safety margin for floating-point rounding.
 
-- **Step 6: Half-Sieve Initialization**
+- **Step 4: Half-Sieve Initialization**
   - Create a boolean array `is_prime` of size `(limit+1)//2` to represent only odd numbers up to and including `limit`.
   - Index mapping: `is_prime[i]` corresponds to the number $2i + 1$.
     - `is_prime[0]` → $1$ (not prime, set to `False`)
@@ -138,7 +120,7 @@ $$
   - Initialize all entries to `True` (assume all odd numbers are prime initially).
   - Set `is_prime[0] = False` because $1$ is not prime.
 
-- **Step 7: Sieve Process**
+- **Step 5: Sieve Process**
   - Loop over odd candidates $i$ from $3$ to $\sqrt{\text{limit}}$ (step by 2).
   - **Why only up to $\sqrt{\text{limit}}$:**
     - If a composite number $n$ has a factor $f > \sqrt{n}$, it must have a corresponding factor $d < \sqrt{n}$ (since $n = f \times d$).
@@ -156,13 +138,13 @@ $$
       - **Starting point (`i*i//2`):** The index for $i^2$ in the half-sieve is $(i^2 - 1) / 2 = int(i^2/2)$ (integer division).
       - **Step size (`i`):** Consecutive odd multiples of $i$ differ by $2i$ in actual number space. In index space (where each index represents a jump of 2), the step is $2i / 2 = i$.
 
-- **Step 8: Extracting Primes**
+- **Step 6: Extracting Primes**
   - Use `np.nonzero(is_prime)[0]` to get indices of all `True` entries (odd primes).
   - Convert indices back to actual numbers: $2 \times \text{index} + 1$.
   - Prepend $2$ (the only even prime) using `np.r_[2, 2*np.nonzero(is_prime)[0]+1]`.
   - Because the sieve size is `(limit+1)//2`, all primes up to and including `limit` are automatically captured.
 
-- **Step 9: Accessing the $n$-th Prime**
+- **Step 7: Accessing the $n$-th Prime**
   - Use zero-based indexing: the element at position $n-1$ gives the $n$-th prime (since arrays are 0-indexed).
   - For $n = 6$, this returns $p_6 = 13$.
   - For $n = 10{,}001$, this returns $104{,}743$.
