@@ -81,20 +81,8 @@ $$
 
   - The bound consistently provides a safe margin (typically 5-10% above the actual value).
 
-- **Step 2: Why $n \ln(n)$ Alone is NOT Sufficient**
-  - The simpler approximation $p_n \approx n \ln(n)$ (without the $\ln(\ln(n))$ term) **underestimates** $p_n$ for practical values of $n$.
-  - Example for $n = 6$:
-    - $n \ln(n) = 6 \times \ln(6) \approx 6 \times 1.79 \approx 10.75$
-    - Actual $p_6 = 13$
-    - The approximation is **too small**!
-  - Example for $n = 100$:
-    - $n \ln(n) = 100 \times \ln(100) \approx 100 \times 4.61 \approx 461$
-    - Actual $p_{100} = 541$
-    - The approximation is **too small** by 80!
-  - If we used this as our sieve limit, we would **miss the answer entirely**.
-  - The $n \ln(\ln(n))$ term is **essential** for the bound to be a true upper bound.
 
-- **Step 3: Computing the Upper Bound**
+- **Step 2: Computing the Upper Bound**
   - Example for $n = 6$:
     - $\ln(6) \approx 1.79$
     - $\ln(\ln(6)) \approx 0.58$
@@ -109,7 +97,7 @@ $$
   $$\text{limit} = \lfloor n(\ln(n) + \ln(\ln(n))) \rfloor + 1$$
   - The $+1$ provides a small safety margin for floating-point rounding.
 
-- **Step 4: Half-Sieve Initialization**
+- **Step 3: Half-Sieve Initialization**
   - Create a boolean array `is_prime` of size `(limit+1)//2` to represent only odd numbers up to and including `limit`.
   - Index mapping: `is_prime[i]` corresponds to the number $2i + 1$.
     - `is_prime[0]` → $1$ (not prime, set to `False`)
@@ -120,7 +108,7 @@ $$
   - Initialize all entries to `True` (assume all odd numbers are prime initially).
   - Set `is_prime[0] = False` because $1$ is not prime.
 
-- **Step 5: Sieve Process**
+- **Step 4: Sieve Process**
   - Loop over odd candidates $i$ from $3$ to $\sqrt{\text{limit}}$ (step by 2).
   - **Why only up to $\sqrt{\text{limit}}$:**
     - If a composite number $n$ has a factor $f > \sqrt{n}$, it must have a corresponding factor $d < \sqrt{n}$ (since $n = f \times d$).
@@ -138,13 +126,13 @@ $$
       - **Starting point (`i*i//2`):** The index for $i^2$ in the half-sieve is $(i^2 - 1) / 2 = int(i^2/2)$ (integer division).
       - **Step size (`i`):** Consecutive odd multiples of $i$ differ by $2i$ in actual number space. In index space (where each index represents a jump of 2), the step is $2i / 2 = i$.
 
-- **Step 6: Extracting Primes**
+- **Step 5: Extracting Primes**
   - Use `np.nonzero(is_prime)[0]` to get indices of all `True` entries (odd primes).
   - Convert indices back to actual numbers: $2 \times \text{index} + 1$.
   - Prepend $2$ (the only even prime) using `np.r_[2, 2*np.nonzero(is_prime)[0]+1]`.
   - Because the sieve size is `(limit+1)//2`, all primes up to and including `limit` are automatically captured.
 
-- **Step 7: Accessing the $n$-th Prime**
+- **Step 6: Accessing the $n$-th Prime**
   - Use zero-based indexing: the element at position $n-1$ gives the $n$-th prime (since arrays are 0-indexed).
   - For $n = 6$, this returns $p_6 = 13$.
   - For $n = 10{,}001$, this returns $104{,}743$.
@@ -165,8 +153,8 @@ $$
 
 - The 10,001st prime number is $104{,}743$.
 - **Solution 2** is the optimal approach, leveraging rigorous mathematical theory (the Rosser-Schoenfeld bound) combined with the efficient Sieve of Eratosthenes algorithm.
-- The **Prime Number Theorem** provides the theoretical foundation for understanding prime distribution, while the **Rosser-Schoenfeld bound** gives a practical, provably correct upper limit for computation.
-- The upper bound $n(\ln(n) + \ln(\ln(n)))$ is **essential**. Using just $n \ln(n)$ would fail to find the answer.
+- The **Rosser-Schoenfeld bound** gives a practical, provably correct upper limit for computation.
+- The upper bound $n(\ln(n) + \ln(\ln(n)))$ is **essential**.
 - The half-sieve optimization (storing only odd numbers) is a standard technique that reduces memory usage by 50% and improves performance through better cache utilization.
 - For larger values of $n$, even tighter bounds exist (such as Dusart's refinements), but the Rosser-Schoenfeld bound is simple, elegant, and sufficient for all practical purposes.
 - The problem demonstrates the power of combining **pure mathematics** (analytic number theory) with **efficient algorithms** (sieving) to solve computational problems.
