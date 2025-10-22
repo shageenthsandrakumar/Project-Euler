@@ -10,11 +10,11 @@ What is the $10001$-st prime number?
 
 ---
 
-## Solution 1: Trial Division
+## Solution 1: Modular Trial Division
 
 ### Approach
 
-- Use **trial division** to find prime numbers incrementally.
+- Use **modular division** to find prime numbers incrementally.
 - Maintain a list of all primes found so far.
 - For each candidate number, test divisibility against all previously found primes.
 - If the candidate is not divisible by any existing prime, it is prime and added to the list.
