@@ -141,6 +141,84 @@ $$
 
 ---
 
+## Solution 3: Incremental Sieve of Eratosthenes using Generators
+
+### Approach
+
+- Implement an **incremental sieve** that generates primes on demand without requiring an upper bound.
+- Use a Python **generator** with lazy evaluation to produce primes one at a time.
+- Maintain a dictionary `D` that tracks the **next composite** to be marked for each prime.
+- Only store information about composites that are currently relevant, achieving **O(1) amortized time** per prime and **O(√n log n) space** complexity.
+- This elegant approach combines memory efficiency with the power of the sieve algorithm.
+
+**Reference:** The full Python implementation is available in [`solution_3.py`](solution_3.py).
+
+### Detailed Explanation
+
+- **Step 1: Generator Initialization**
+  - Define `prime_generator()` as a Python generator function that yields primes indefinitely.
+  - Special case: `yield 2` immediately, since 2 is the only even prime.
+  - Initialize empty dictionary `D = {}` to track composite numbers.
+  - Use `itertools.count(3, 2)` to generate candidate numbers: $3, 5, 7, 9, 11, \ldots$ (all odd numbers starting from 3).
+
+- **Step 2: The Dictionary D - The Heart of the Algorithm**
+  - **Key concept:** `D` maps composite numbers to their "step size" (the prime that generated them).
+  - **Dictionary structure:** `D[composite] = step`
+    - `composite`: A composite number that will be encountered in the future.
+    - `step`: The amount to add to find the next odd multiple of the generating prime.
+  - **Why this works:** Instead of pre-marking all multiples (like classical sieve), we only track the **next** composite for each prime we've discovered.
+  - **Memory efficiency:** At any point, `D` contains roughly $\sqrt{n}$ entries (one per prime up to $\sqrt{n}$), not $n$ entries.
+
+- **Step 3: Processing Each Candidate**
+  - For each candidate `c` from the sequence $3, 5, 7, 9, 11, \ldots$:
+  
+  **Case 1: `c not in D` (c is prime)**
+  - If `c` is not a key in `D`, then `c` has never been marked as composite, so it must be prime.
+  - **Yield the prime:** `yield c`
+  - **Schedule future composites:** Store `D[c * c] = 2 * c`
+    - `c * c`: The first composite we need to mark is $c^2$ (all smaller multiples have already been handled by smaller primes).
+    - `2 * c`: The step size between consecutive odd multiples of `c` (e.g., for $c=3$: $9, 15, 21, 27, \ldots$ differ by $6 = 2 \times 3$).
+  - **Example:** When we discover prime $5$:
+    - Store `D[25] = 10` (mark $25 = 5^2$ as composite, with step $10 = 2 \times 5$).
+    - Future odd multiples: $25, 35, 45, 55, \ldots$ (each differs by 10).
+
+  **Case 2: `c in D` (c is composite)**
+  - If `c` is a key in `D`, then `c` was previously marked as composite by some prime.
+  - **Retrieve step size:** `step = D.pop(c)` (remove `c` from dictionary and get its step).
+  - **Find next unmarked multiple:** Compute `next_multiple = c + step`.
+  - **Handle collisions:** While `next_multiple` is already in `D`, keep adding `step` until finding an available slot.
+    - This handles the case where multiple primes have the same composite multiple.
+    - Example: $15$ is a multiple of both $3$ and $5$, so we need to find the next available slot.
+  - **Update dictionary:** Store `D[next_multiple] = step`.
+  - **Do not yield:** `c` is composite, so we continue to the next candidate.
+
+- **Step 4: Why Collisions Are Rare but Handled**
+  - Collisions occur when multiple primes have the same composite multiple.
+  - Example: $15 = 3 \times 5 = 5 \times 3$
+  - The `while next_multiple in D` loop ensures we find the next available slot.
+  - In practice, collisions are rare, so the loop typically executes once.
+
+- **Step 5: Finding the nth Prime**
+  - Create an instance of the generator: `prime_gen = prime_generator()`
+  - Iterate through the generator, counting primes: `for p in prime_gen`
+  - Track the count: `primes_found += 1`
+  - When `primes_found == nth`, store the prime and break: `last_prime = p; break`
+  - Print the result: `print(last_prime)`
+
+- **Performance Characteristics:**
+  - Dictionary operations are very fast on average, making each prime check efficient.
+  - Dictionary `D` contains approximately $\sqrt{n}$ entries at any point, making it much more memory-efficient than storing all primes or a large sieve array.
+  - **No upper bound needed:** Unlike Solution 2, no mathematical formula for upper bounds is required.
+
+- **Advantages over Other Solutions:**
+  - **vs Solution 1 (Trial Division):** Exponentially faster. No repeated divisibility checks.
+  - **vs Solution 2 (Classical Sieve):** No need to know upper bound in advance. Can generate primes indefinitely. Uses less memory for finding a specific nth prime.
+  - **Elegance:** The algorithm is remarkably simple and demonstrates the power of lazy evaluation and dynamic tracking.
+
+- **Efficiency:** This solution strikes an excellent balance between speed and memory usage. It's significantly faster than trial division and avoids the memory overhead of allocating a large sieve array. The incremental nature makes it ideal for finding specific primes without generating all smaller ones simultaneously.
+
+---
+
 ## Output
 
 ```
@@ -152,9 +230,11 @@ $$
 ## Notes
 
 - The 10,001st prime number is $104{,}743$.
-- **Solution 2** is the optimal approach, leveraging rigorous mathematical theory (the Rosser-Schoenfeld bound) combined with the efficient Sieve of Eratosthenes algorithm.
-- The **Rosser-Schoenfeld bound** gives a practical, provably correct upper limit for computation.
-- The upper bound $n(\ln(n) + \ln(\ln(n)))$ is **essential**.
-- The half-sieve optimization (storing only odd numbers) is a standard technique that reduces memory usage by 50% and improves performance through better cache utilization.
-- For larger values of $n$, even tighter bounds exist (such as Dusart's refinements), but the Rosser-Schoenfeld bound is simple, elegant, and sufficient for all practical purposes.
-- The problem demonstrates the power of combining **pure mathematics** (analytic number theory) with **efficient algorithms** (sieving) to solve computational problems.
+- **Solution 2** is optimal when you need all primes up to a limit (batch generation), leveraging the Rosser-Schoenfeld bound with the classical Sieve of Eratosthenes.
+- **Solution 3** is optimal when you need a specific nth prime or want to generate primes on demand without knowing an upper bound in advance. The incremental sieve with generators showcases elegant Python programming and efficient algorithm design.
+- The incremental sieve algorithm was popularized by Melissa O'Neill in her 2009 paper "The Genuine Sieve of Eratosthenes" and represents a significant improvement over naive implementations.
+- For educational purposes, all three solutions demonstrate different algorithmic paradigms:
+  - **Solution 1:** Brute force with trial division
+  - **Solution 2:** Batch processing with mathematical bounds
+  - **Solution 3:** Lazy evaluation with incremental discovery
+- The problem beautifully illustrates the progression from naive algorithms to sophisticated, mathematically-grounded solutions.
