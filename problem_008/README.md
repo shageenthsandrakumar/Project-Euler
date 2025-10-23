@@ -154,7 +154,7 @@ Find the thirteen adjacent digits in the 1000-digit number that have the greates
       for k in range(left + 1, right + 1):
           current_product *= digits[k]
       ```
-    - This loops through the 12 remaining digits in the window (O(13) operation).
+    - This loops through the 12 remaining digits in the window.
   - Advance the left boundary: `left += 1`.
 
 - **Step 5: Why This Approach is Efficient**
