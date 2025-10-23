@@ -148,7 +148,7 @@ $$
 - Implement an **incremental sieve** that generates primes on demand without requiring an upper bound.
 - Use a Python **generator** with lazy evaluation to produce primes one at a time.
 - Maintain a dictionary `D` that tracks the **next composite** to be marked for each prime.
-- Only store information about composites that are currently relevant, achieving **O(1) amortized time** per prime and **O(√n log n) space** complexity.
+- Only store information about composites that are currently relevant.
 - This elegant approach combines memory efficiency with the power of the sieve algorithm.
 
 **Reference:** The full Python implementation is available in [`solution_3.py`](solution_3.py).
@@ -208,12 +208,6 @@ $$
 - **Performance Characteristics:**
   - Dictionary operations are very fast on average, making each prime check efficient.
   - Dictionary `D` contains approximately $\sqrt{n}$ entries at any point, making it much more memory-efficient than storing all primes or a large sieve array.
-  - **No upper bound needed:** Unlike Solution 2, no mathematical formula for upper bounds is required.
-
-- **Advantages over Other Solutions:**
-  - **vs Solution 1 (Trial Division):** Exponentially faster. No repeated divisibility checks.
-  - **vs Solution 2 (Classical Sieve):** No need to know upper bound in advance. Can generate primes indefinitely. Uses less memory for finding a specific nth prime.
-  - **Elegance:** The algorithm is remarkably simple and demonstrates the power of lazy evaluation and dynamic tracking.
 
 - **Efficiency:** This solution strikes an excellent balance between speed and memory usage. It's significantly faster than trial division and avoids the memory overhead of allocating a large sieve array. The incremental nature makes it ideal for finding specific primes without generating all smaller ones simultaneously.
 
