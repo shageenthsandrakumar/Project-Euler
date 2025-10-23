@@ -110,8 +110,8 @@ Find the thirteen adjacent digits in the 1000-digit number that have the greates
 - Maintain a running product (`current_product`) that is efficiently updated as the window slides.
 - When adding a digit, multiply it into the product.
 - When removing a digit:
-  - If the digit is non-zero, divide it out (O(1) operation).
-  - If the digit is zero, recalculate the product for the new window (O(13) operation).
+  - If the digit is non-zero, divide it out.
+  - If the digit is zero, recalculate the product for the new window.
 - Track the maximum product and corresponding digits throughout the process.
 
 **Reference:** The full Python implementation is available in [`solution_2.py`](solution_2.py).
