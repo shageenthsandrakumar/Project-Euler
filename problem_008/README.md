@@ -171,7 +171,6 @@ Find the thirteen adjacent digits in the 1000-digit number that have the greates
 
 - **Efficiency:** This solution is very efficient in practice. In the best case (no zeros), it processes each digit once with simple multiplication and division operations. When zeros are encountered, it occasionally needs to recalculate the product for a window (multiplying 13 numbers), but these recalculations are infrequent. For the given input with approximately 1000 digits, this performs roughly 1000 operations with occasional recalculations.
 
-- **Code Bug Note:** The provided code has a variable name inconsistency: `length = 13` is defined, but the code uses `LENGTH` (uppercase) in the condition `if right - left + 1 == LENGTH:`. This would cause a `NameError` unless `LENGTH` is defined elsewhere. The corrected version should use lowercase `length` throughout.
 
 ---
 
