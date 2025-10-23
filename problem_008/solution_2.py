@@ -24,5 +24,5 @@ for right in range(N):
                 current_product *= digits[k]
         left += 1
 
-print(f"The greatest product of {LENGTH} adjacent digits is: {max_product}")
+print(f"The greatest product of {length} adjacent digits is: {max_product}")
 print(f"The digits are: {', '.join(map(str, best_digits))}")
