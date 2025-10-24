@@ -135,7 +135,7 @@ Find the thirteen adjacent digits in the 1000-digit number that have the greates
   - The left boundary advances one position, shifting the window rightward.
 
 - **Step 5: Why This Approach is Efficient**
-  - **Best case (no zeros):** Every window update requires only one multiplication and one division—extremely fast.
+  - **Best case (no zeros):** Every window update requires only one multiplication and one division.
   - **Worst case (many zeros):** Occasional recalculations multiply 12-13 numbers together, but these are infrequent.
   - **Average case:** For inputs with relatively few zeros, the vast majority of updates are constant-time operations.
 
