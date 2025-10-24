@@ -196,5 +196,5 @@ What is the **smallest positive number** that is evenly divisible by all of the 
 - The problem is equivalent to finding $\text{LCM}(1, 2, 3, \dots, 20)$.
 - Simply multiplying all numbers from $1$ to $20$ would produce a much larger number with redundant prime factors. The LCM approach ensures each prime appears with the minimal necessary exponent.
 - The logarithmic method for computing exponents avoids iterative division and is highly efficient for vectorized operations.
-- Using array size `(nums+1)//2` ensures all odd numbers up to and including `nums` are represented in the sieve.
+- In Solution 2, using array size `(nums+1)//2` ensures all odd numbers up to and including `nums` are represented in the sieve.
 - The incremental sieve's dictionary size is proportional to the number of primes up to $\sqrt{n}$, which grows much slower than $n$ itself.
