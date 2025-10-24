@@ -116,7 +116,7 @@ What is the **smallest positive number** that is evenly divisible by all of the 
 ### Approach
 
 - Use an **incremental sieve of Eratosthenes** implemented as a Python generator that yields primes one at a time.
-- Unlike Solutions 1 and 2, this approach doesn't store all primes in memory—it generates them on-demand as needed.
+- Unlike Solutions 1 and 2, this approach doesn't store all primes in memory. It generates them on-demand as needed.
 - The algorithm uses a dictionary to track composite numbers and their step sizes, allowing it to identify primes without pre-computing a full sieve.
 - Process each prime as it's generated, computing its exponent and immediately multiplying it into the running product.
 - This streaming approach is extremely memory-efficient and well-suited for this problem.
