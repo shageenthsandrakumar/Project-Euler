@@ -202,8 +202,8 @@ $$
   - Create an instance of the generator: `prime_gen = prime_generator()`
   - Iterate through the generator, counting primes: `for p in prime_gen`
   - Track the count: `primes_found += 1`
-  - When `primes_found == nth`, store the prime and break: `last_prime = p; break`
-  - Print the result: `print(last_prime)`
+  - When `primes_found == nth`, break.
+  - Print the last prime found: `print(p)`
 
 - **Performance Characteristics:**
   - Dictionary operations are very fast on average, making each prime check efficient.
