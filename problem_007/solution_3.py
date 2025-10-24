@@ -18,7 +18,6 @@ def prime_generator():
 prime_gen = prime_generator()
 for p in prime_gen:
     primes_found += 1
-    last_prime = p
     if primes_found == nth:
         break
-print(last_prime)
+print(p)
