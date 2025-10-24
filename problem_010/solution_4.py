@@ -16,8 +16,8 @@ def prime_generator():
             D[next_multiple] = step
 prime_gen = prime_generator()
 for p in prime_gen:
-    if p >= threshold:
-        break
-    else:
+    if p < threshold:
         prime_sum += p
+    else:
+        break
 print(prime_sum)
