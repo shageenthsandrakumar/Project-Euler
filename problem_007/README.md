@@ -203,7 +203,7 @@ $$
   - Iterate through the generator, counting primes: `for p in prime_gen`
   - Track the count: `primes_found += 1`
   - When `primes_found == nth`, break.
-  - Print the last prime found: `print(p)`
+  - Print the last prime found: `print(prime)`
 
 - **Performance Characteristics:**
   - Dictionary operations are very fast on average, making each prime check efficient.
