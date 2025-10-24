@@ -16,8 +16,8 @@ def prime_generator():
                 next_multiple += step
             D[next_multiple] = step
 prime_gen = prime_generator()
-for p in prime_gen:
+for prime in prime_gen:
     primes_found += 1
     if primes_found == nth:
         break
-print(p)
+print(prime)
