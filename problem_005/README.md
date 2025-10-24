@@ -165,14 +165,7 @@ What is the **smallest positive number** that is evenly divisible by all of the 
   - $c = 15$: In `D`! → composite, `step = 6`, set `D[21] = 6`
   - And so on...
 
-- **Step 5: Memory Efficiency**
-  - **Solution 1:** Stores all primes up to $n$ in a list, then converts to a NumPy array. For $n = 20$, this is 8 primes.
-  - **Solution 2:** Stores a boolean array of size $(n+1)/2$. For $n = 20$, this is 10 boolean values.
-  - **Solution 3:** Stores only dictionary entries for composites near the current candidate. For $n = 20$, the dictionary peaks at about 2-3 entries.
-  - **Key difference:** Solution 3 doesn't keep any primes in memory—each prime is generated, used to update the answer, then discarded.
-  - **No NumPy overhead:** Solution 3 uses only native Python types, avoiding the memory overhead of NumPy arrays and the import cost.
-
-- **Step 6: Computing the LCM**
+- **Step 5: Computing the LCM**
   - Initialize `answer = 1` to accumulate the product.
   - Create the generator: `prime_gen = prime_generator()`.
   - Loop through primes using `for p in prime_gen`:
