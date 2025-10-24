@@ -20,5 +20,5 @@ for p in prime_gen:
     if p > nums:
         break
     else:
-        answer *= int(p**(math.log(nums)//math.log(p)))
+        answer *= p**int(math.log(nums)/math.log(p))
 print(answer)
