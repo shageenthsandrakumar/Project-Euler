@@ -48,57 +48,53 @@ Find the thirteen adjacent digits in the 1000-digit number that have the greates
 ### Detailed Explanation
 
 - **Step 1: Initialization and Data Preparation**
-  - Convert the 1000-digit string into a NumPy array of integers: `array = np.array([int(digit) for digit in number], dtype=np.int64)`.
-  - Using `np.int64` ensures no overflow when computing products of 13 digits.
-  - Initialize tracking variables:
-    - `max_product = -1` (will store the largest product found)
-    - `start_index = -1` and `end_index = -1` (will store positions of best digits)
-    - `length = 13` (the window size)
+  - The 1000-digit string is converted into a NumPy array of 64-bit integers to prevent overflow when computing products.
+  - Variables are initialized to track the maximum product found and the positions of the digits that produce it.
+  - The target window size is set to 13 digits.
 
 - **Step 2: Identify Zero Positions**
-  - Use `end_indices = np.where(array == 0)[0]` to find all positions where zeros occur.
+  - NumPy's array indexing identifies all positions where zeros occur in the digit array.
   - These positions act as "boundaries" that divide the number into zero-free segments.
-  - Example: If zeros are at positions [10, 25, 50], the segments are [0-9], [11-24], [26-49], [51-999].
+  - Example: If zeros are at positions [10, 25, 50], these boundaries separate the array into distinct regions.
 
-- **Step 3: Calculate Segment Lengths**
-  - Create `pre_indices = np.r_[-1, end_indices[:-1]]` to get the position before each zero.
-    - `np.r_[-1, ...]` prepends -1 to handle the first segment (which starts at position 0).
-    - `end_indices[:-1]` excludes the last zero to align arrays.
-  - Compute segment lengths: `diff = end_indices - pre_indices`.
-  - This gives the distance between consecutive zeros (length of each segment).
+- **Step 3: Set Up Segment Boundaries**
+  - Two arrays are created to represent segment boundaries:
+    - One array tracks positions before each segment (starting with -1 for the initial segment)
+    - Another array tracks positions after each segment (ending with the array length for the final segment)
+  - This creates pairs of boundaries that define each segment.
+  - Example with zeros at [10, 25, 50] in a 100-digit array:
+    - Previous boundaries: [-1, 10, 25, 50]
+    - End boundaries: [10, 25, 50, 100]
+    - This creates 4 segments spanning the entire array
 
-- **Step 4: Filter Valid Segments**
-  - Use `good = np.where(diff > length)[0]` to find segments longer than 13 digits.
-  - Only these segments can contain a valid 13-digit window.
-  - Calculate starting positions: `start_indices = pre_indices + 1`.
+- **Step 4: Calculate Segment Lengths and Filter**
+  - The distance between consecutive boundaries is calculated to determine segment lengths.
+  - Only segments where the distance exceeds 13 are kept for further processing.
+  - **Critical insight:** Requiring a distance greater than 13 (not equal to 13) ensures enough non-zero digits exist to form at least one valid 13-digit window.
+  - Example: A segment with distance 15 between boundaries can accommodate multiple 13-digit windows without including any zeros.
 
-- **Step 5: Calculate Window Counts**
-  - For each valid segment, compute how many 13-digit windows fit inside it.
-  - Formula: `extrass = end_indices - (start_indices + length - 1)`.
-  - **Explanation:**
-    - `start_indices + length - 1` gives the position of the last digit in the first window.
-    - Subtracting this from `end_indices` (position of the zero) gives the number of additional windows.
-    - Example: If a segment spans positions 0-29 (30 digits), it contains 30 - 13 + 1 = 18 windows.
+- **Step 5: Calculate Starting Positions and Window Counts**
+  - For each valid segment, the starting position is determined (one position after the previous boundary).
+  - The number of possible 13-digit windows within each segment is calculated.
+  - A segment with distance 15 between boundaries can fit 3 different 13-digit windows (sliding from the start to different positions).
 
 - **Step 6: Sliding Window Within Each Segment**
-  - For each valid segment (indexed by `index` in `good`):
-    - `extras = extrass[index]` gives the number of windows to check.
-    - `first_start = start_indices[index]` is the segment's starting position.
-    - Inner loop: `for j in range(extras)`:
-      - Calculate window start: `start = first_start + j`.
-      - Compute product: `product = 1` then multiply all 13 digits using `for i in range(length)`.
-      - Update maximum if this product is larger.
+  - For each valid segment, a sliding window approach examines all possible 13-digit windows.
+  - Each window's product is calculated by multiplying all 13 digits together.
+  - The maximum product and its corresponding digit positions are tracked throughout the process.
+  - This nested iteration only processes segments guaranteed to be zero-free, avoiding wasted computation.
 
 - **Step 7: Result Extraction**
-  - After checking all segments, `max_product` contains the answer.
-  - Extract the digits using slice notation: `number[start_index:end_index + 1]`.
+  - After all valid segments have been examined, the maximum product represents the answer.
+  - The actual digits are extracted using the stored start and end positions.
 
-- **Efficiency:** This approach is **highly optimized** compared to checking all 988 possible windows (1000 - 13 + 1). By skipping zero-containing windows, it dramatically reduces the number of products to compute. For the given input, this reduces computations by approximately 60-70%.
+- **Why This Approach Works:**
+  - **Mathematical insight:** Any product containing a zero equals zero, so it can never be the maximum.
+  - **Segmentation:** By identifying segments between zeros and filtering by distance, only windows without zeros are examined.
+  - **Boundary handling:** Even though segment boundaries technically include zero positions, the distance constraint guarantees enough non-zero digits exist to form valid windows.
+  - **Efficiency gain:** Instead of computing approximately 988 products (all possible windows in 1000 digits), only products in valid segments are computed—dramatically reducing computations when the input contains many zeros.
 
-- **Why This Works:**
-  - **Mathematical insight:** Any product containing a zero equals zero, so it can never be the maximum (unless all products are zero).
-  - **Segmentation:** By dividing the number into zero-free segments, we guarantee that all products computed are non-zero.
-  - **Efficiency gain:** Instead of computing ~988 products, we only compute products in segments between zeros.
+- **Efficiency:** This approach is highly optimized for inputs with many zeros. For the given 1000-digit number, this reduces computations by approximately 60-70% compared to a naive approach. The NumPy operations for identifying segments are very fast, and the nested loop only processes segments with sufficient non-zero digits.
 
 ---
 
@@ -106,12 +102,12 @@ Find the thirteen adjacent digits in the 1000-digit number that have the greates
 
 ### Approach
 
-- Use a **fixed-size sliding window** that moves through all digits from left to right.
-- Maintain a running product (`current_product`) that is efficiently updated as the window slides.
+- Use a fixed-size sliding window that moves through all digits from left to right.
+- Maintain a running product that is efficiently updated as the window slides.
 - When adding a digit, multiply it into the product.
 - When removing a digit:
-  - If the digit is non-zero, divide it out.
-  - If the digit is zero, recalculate the product for the new window.
+  - If non-zero, divide it out.
+  - If zero, recalculate the product for the new window.
 - Track the maximum product and corresponding digits throughout the process.
 
 **Reference:** The full Python implementation is available in [`solution_2.py`](solution_2.py).
@@ -119,58 +115,37 @@ Find the thirteen adjacent digits in the 1000-digit number that have the greates
 ### Detailed Explanation
 
 - **Step 1: Initialization**
-  - Convert the string to a list of integers: `digits = [int(digit) for digit in number]`.
-  - Initialize tracking variables:
-    - `max_product = 0` (stores the largest product found)
-    - `current_product = 1` (running product of the current window)
-    - `left = 0` (left boundary of the sliding window)
-    - `best_digits = []` (stores the digits that produce the maximum product)
-  - Set `length = 13` (window size).
+  - The input string is converted to a list of integer digits.
+  - Variables are initialized to track the current window's product, the maximum product found, and the digits producing that maximum.
+  - The window size is set to 13 digits.
 
 - **Step 2: Expanding the Window**
-  - Loop through all positions: `for right in range(N)`.
-  - The variable `right` represents the right boundary of the window.
-  - Add the new digit to the window: `current_product *= digits[right]`.
-  - This expands the window by one position to the right.
+  - A loop processes each digit position, expanding the window rightward.
+  - Each new digit is multiplied into the current running product.
+  - This efficiently builds up the product without recalculating from scratch.
 
 - **Step 3: Window at Target Size**
-  - Check if the window has reached the desired size: `if right - left + 1 == length`.
-  - Window size = (right position - left position + 1).
-  - When the window is exactly 13 digits:
-    - Compare with the maximum: `if current_product > max_product`.
-    - Update the maximum and store the digits: `best_digits = digits[left:right + 1]`.
+  - When the window reaches exactly 13 digits, its product is compared against the current maximum.
+  - If larger, the maximum is updated and the current window's digits are stored.
 
 - **Step 4: Sliding the Window (Critical Logic)**
-  - To move the window forward, remove the leftmost digit: `digit_to_remove = digits[left]`.
-  - **Case 1: Non-zero digit removal**
-    - If `digit_to_remove != 0`, simply divide it out: `current_product //= digit_to_remove`.
-    - This is an O(1) operation (constant time).
-    - **Why integer division?** We use `//` to maintain integer arithmetic and avoid floating-point precision issues.
-  - **Case 2: Zero digit removal**
-    - If `digit_to_remove == 0`, we cannot divide by zero.
-    - Recalculate the product from scratch for the new window:
-      ```python
-      current_product = 1
-      for k in range(left + 1, right + 1):
-          current_product *= digits[k]
-      ```
-    - This loops through the 12 remaining digits in the window.
-  - Advance the left boundary: `left += 1`.
+  - To advance the window, the leftmost digit must be removed.
+  - **For non-zero digits:** Division removes the digit's contribution in constant time, maintaining the running product efficiently.
+  - **For zero digits:** Division by zero is impossible, so the entire product is recalculated from scratch for the new window position.
+  - The left boundary advances one position, shifting the window rightward.
 
 - **Step 5: Why This Approach is Efficient**
-  - **Best case (no zeros):** Every window update is just a single multiplication and division.
-  - **Worst case (many zeros):** Occasional recalculations when encountering zeros require multiplying 12-13 numbers.
-  - **Average case:** For the given input (which has relatively few zeros), most updates are very fast.
-  - This approach is **much faster** than recalculating the product from scratch for each window.
+  - **Best case (no zeros):** Every window update requires only one multiplication and one division—extremely fast.
+  - **Worst case (many zeros):** Occasional recalculations multiply 12-13 numbers together, but these are infrequent.
+  - **Average case:** For inputs with relatively few zeros, the vast majority of updates are constant-time operations.
 
 - **Step 6: Handling the Zero Problem Elegantly**
-  - The algorithm doesn't skip windows containing zeros; it processes them naturally.
-  - When a zero enters the window, the product becomes 0 (correctly).
-  - When a zero exits the window, we recalculate (unavoidable, but infrequent).
-  - This design ensures **correctness** while maintaining **efficiency**.
+  - The algorithm processes all windows naturally, including those containing zeros.
+  - When a zero enters the window, the product correctly becomes zero.
+  - When a zero exits the window, a recalculation occurs—unavoidable but infrequent.
+  - This design ensures correctness while maintaining efficiency for typical inputs.
 
-- **Efficiency:** This solution is very efficient in practice. In the best case (no zeros), it processes each digit once with simple multiplication and division operations. When zeros are encountered, it occasionally needs to recalculate the product for a window (multiplying 13 numbers), but these recalculations are infrequent. For the given input with approximately 1000 digits, this performs roughly 1000 operations with occasional recalculations.
-
+- **Efficiency:** This solution is very efficient in practice. When zeros are absent, each digit is processed with simple arithmetic operations. When zeros appear, occasional recalculations are needed, but these remain infrequent. For a 1000-digit input, this performs approximately 1000 operations with sporadic recalculations.
 
 ---
 
