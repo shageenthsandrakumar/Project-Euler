@@ -1,9 +1,10 @@
 import numpy as np
 limit = 2000000
-K_max_plus = (limit - 2) // 6 + 1
+limit -= 1
+K_max_plus = (limit - 1) // 6 + 1
 sieve_plus1 = np.ones(K_max_plus, dtype=bool) 
 sieve_plus1[0] = False 
-K_max_minus = (limit - 6) // 6 + 1 # Use 6k+5 < LIMIT (since 6k+5 >= 5)
+K_max_minus = (limit - 5) // 6 + 1 # Use 6k+5 < LIMIT (since 6k+5 >= 5)
 sieve_minus1 = np.ones(K_max_minus, dtype=bool) 
 sqrt_limit = int(np.sqrt(limit))
 p = 5
