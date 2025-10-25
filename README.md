@@ -14,6 +14,7 @@ This repository contains Python solutions to Project Euler problems. Each proble
 - **[Problem 6: Sum Square Difference](./problem_006/README.md)**
 - **[Problem 7: 10001st Prime](./problem_007/README.md)**
 - **[Problem 8: Largest Product in a Series](./problem_008/README.md)**
+- **[Problem 10: Summation of Primes](./problem_010/README.md)**
 
 Each problem folder contains one or more solutions with explanations, code, and output.
 
