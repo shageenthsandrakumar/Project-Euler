@@ -1,6 +1,7 @@
 import numpy as np
 limit = 2000000
-K_max =  (limit-2)//2
+limit -= 1
+K_max =  (limit-1)//2
 is_prime_k = np.ones(K_max+1, dtype=bool)
 is_prime_k[0] = False
 i_max = int((-1 + np.sqrt(1 + 2 * K_max))/ 2)
