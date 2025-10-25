@@ -24,4 +24,5 @@ for index in good:
             start_index = start
             end_index = start+length-1
 print(f"The greatest product of {length} adjacent digits is: {max_product}")
-print(f"The digits are: {', '.join(list(number[start_index:end_index + 1]))}")
+if max_product:
+    print(f"The digits are: {', '.join(list(number[start_index:end_index + 1]))}")
