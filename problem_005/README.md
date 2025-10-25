@@ -192,7 +192,7 @@ What is the **smallest positive number** that is evenly divisible by all of the 
 - Prime factorization: $232{,}792{,}560 = 2^4 \times 3^2 \times 5 \times 7 \times 11 \times 13 \times 17 \times 19$.
 - **Solution 2** is the optimal approach for generating large batches of primes, leveraging the half-sieve optimization for efficient prime generation.
 - **Solution 3** is the most memory-efficient approach and is ideal for this specific problem, using only standard Python libraries and generating primes on-demand.
-- This incremental sieve algorithm is sometimes called the **"Postponed Sieve"** or **"Priority Queue Sieve"** and was popularized by Melissa O'Neill in her 2009 paper *"The Genuine Sieve of Eratosthenes"*.
+- This incremental sieve algorithm is sometimes called the **"Postponed Sieve"** or **"Priority Queue Sieve"** and was popularized by **Melissa O'Neill** in her 2009 paper **"The Genuine Sieve of Eratosthenes"**.
 - The problem is equivalent to finding $\text{LCM}(1, 2, 3, \dots, 20)$.
 - Simply multiplying all numbers from $1$ to $20$ would produce a much larger number with redundant prime factors. The LCM approach ensures each prime appears with the minimal necessary exponent.
 - The logarithmic method for computing exponents avoids iterative division and is highly efficient for vectorized operations.
