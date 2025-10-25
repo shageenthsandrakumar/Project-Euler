@@ -196,7 +196,7 @@ Find the sum of all the primes below two million.
     - Prepend $2$ using `np.r_[2, 2*np.nonzero(is_prime_k)[0]+1]`
     - Calculate sum: `np.sum(primes)`
 
-- **Efficiency:** The Sieve of Sundaram is **mathematically elegant** but **practically slower** than the Sieve of Eratosthenes. The nested structure over $i$ and $j$ results in more computational work than the simple half-sieve—for each value of $i$ (up to roughly $\sqrt{n/2}$), the algorithm iterates through many valid $j$ values. However, the vectorized NumPy implementation helps mitigate this. Memory usage is similar to the half-sieve (storing only odd numbers). The main advantage of this algorithm is its **pedagogical value**—it demonstrates a completely different approach to prime identification based on direct algebraic computation rather than iterative sieving.
+- **Efficiency:** The Sieve of Sundaram is **mathematically elegant** but **practically slower** than the Sieve of Eratosthenes. The nested structure over $i$ and $j$ results in more computational work than the simple half-sieve. For each value of $i$ (up to roughly $\sqrt{n/2}$), the algorithm iterates through many valid $j$ values. However, the vectorized NumPy implementation helps mitigate this. Memory usage is similar to the half-sieve (storing only odd numbers). The main advantage of this algorithm is its **pedagogical value**. The algorithm demonstrates a completely different approach to prime identification based on direct algebraic computation rather than iterative sieving.
 
 ---
 
@@ -207,7 +207,7 @@ Find the sum of all the primes below two million.
 - Use an **incremental prime generator** that yields primes one at a time without pre-computing a sieve.
 - Maintain a dictionary tracking the next multiple to mark for each prime discovered.
 - For each candidate odd number, check if it appears in the dictionary:
-  - If not, it's prime—yield it and add $p^2$ to the dictionary.
+  - If not, it's considered a prime number. The generator yields it and adds $p^2$ to the dictionary.
   - If yes, advance the multiple by the prime's step until finding an empty slot.
 - Sum primes as they're generated until reaching the threshold.
 
@@ -258,7 +258,7 @@ Find the sum of all the primes below two million.
   - Collision handling adds overhead when multiple primes share the same composite.
   - No vectorization benefits like NumPy sieves.
   
-  The main advantage is **simplicity and incremental generation**—primes are produced one at a time without needing to know the limit in advance. This makes it useful for finding the $n$-th prime or generating primes in a stream. For computing the sum below a known limit, sieve methods are faster.
+  The main advantage is **simplicity and incremental generation**. Primes are produced one at a time without needing to know the limit in advance. This makes it useful for finding the $n$-th prime or generating primes in a stream. For computing the sum below a known limit, sieve methods are faster.
 
 ---
 
