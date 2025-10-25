@@ -226,8 +226,8 @@ $$
 - The 10,001st prime number is $104{,}743$.
 - **Solution 2** is optimal when you need all primes up to a limit (batch generation), leveraging the Rosser-Schoenfeld bound with the classical Sieve of Eratosthenes.
 - **Solution 3** is optimal when you need a specific nth prime or want to generate primes on demand without knowing an upper bound in advance. The incremental sieve with generators showcases elegant Python programming and efficient algorithm design.
-- The inequality $p_n < n(\ln(n) + \ln(\ln(n)))$ for the $n$-th prime, $p_n$, is a key explicit upper bound proven by J. Barkley Rosser and Lowell Schoenfeld in their 1962 paper, "Approximate Formulas for Some Functions of Prime Numbers." It holds true for all integers $n \ge 6$ (and thus for all primes $p_n \ge 13$).
-- The incremental sieve algorithm was popularized by Melissa O'Neill in her 2009 paper "The Genuine Sieve of Eratosthenes" and represents a significant improvement over naive implementations.
+- The inequality **$p_n < n(\ln(n) + \ln(\ln(n)))$** for the $n$-th prime, $p_n$, is a key explicit upper bound proven by **J. Barkley Rosser and Lowell Schoenfeld** in their 1962 paper, **"Approximate Formulas for Some Functions of Prime Numbers."** It holds true for all integers $n \ge 6$ (and thus for all primes $p_n \ge 13$).
+- The incremental sieve algorithm was popularized by **Melissa O'Neill** in her 2009 paper **"The Genuine Sieve of Eratosthenes"** and represents a significant improvement over naive implementations.
 - For educational purposes, all three solutions demonstrate different algorithmic paradigms:
   - **Solution 1:** Brute force with trial division
   - **Solution 2:** Batch processing with mathematical bounds
