@@ -1,11 +1,11 @@
 import math
 P = 1000
 triplets = []
-for a in range(1, P // 3):
+for a in range(1,(P-1)//3+1):
     numerator = P * (P - 2 * a)
     denominator = 2 * (P - a)
     if not numerator % denominator:
-        b = numerator // denominator
+        b = numerator//denominator
         c = P - a - b
         if a < b:
             if a**2 + b**2 == c**2:
