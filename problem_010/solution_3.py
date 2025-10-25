@@ -12,6 +12,6 @@ for i in range(1, i_max + 1):
     J_slice = np.arange(j_start, j_end + 1)
     k_values = i + J_slice + 2 * i * J_slice 
     is_prime_k[k_values] = False
-prime_k_indices = np.nonzero(is_prime_k)[0]
-answer = 2 + 2 * np.sum(prime_k_indices) + len(prime_k_indices)
+primes = np.r_[2,2*np.nonzero(is_prime_k)[0]+1]
+answer = np.sum(primes)
 print(answer)
