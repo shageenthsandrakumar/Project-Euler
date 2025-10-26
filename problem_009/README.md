@@ -48,10 +48,12 @@ Find the product $abc$.
 
 - **Step 2: Loop Constraints**
   - **Lower bound for $a$:** $a$ starts at $1$ (smallest natural number).
-  - **Upper bound for $a$:** Since $a < b < c$ and $a + b + c = P$, the maximum value of $a$ occurs when the three numbers are as close as possible.
-    - If $a = b = c$, then $3a = P$, so $a = \frac{P}{3}$.
-    - Since $a < b < c$, we have $a < \frac{P}{3}$.
-    - Therefore, the upper bound is $(P - 1) // 3$ (using integer division).
+  - **Upper bound for $a$:** Since $a \leq b < c$ and $a + b + c = P$, we need to find the maximum possible value of $a$.
+    - Since $c > b$ and $c$ is an integer, we have $c \geq b + 1$.
+    - Since $b \geq a$ (allowing equality in the limiting case), and $c \geq b + 1$, we have $c \geq a + 1$.
+    - The minimum perimeter occurs when $b = a$ and $c = a + 1$: $a + a + (a + 1) = 3a + 1 \leq P$.
+    - Solving for $a$: $3a \leq P - 1$, so $a \leq \frac{P - 1}{3}$.
+    - The upper bound is $(P - 1) // 3$ (using integer division).
   - Example for $P = 1000$: $a$ ranges from $1$ to $333$.
 
 - **Step 3: Integer Check**
@@ -62,7 +64,7 @@ Find the product $abc$.
 - **Step 4: Verification**
   - Once an integer $b$ is found, compute $c = P - a - b$.
   - Verify two conditions:
-    - $a < b$ (ensures correct ordering)
+    - $a \leq b$ (ensures correct ordering)
     - $a^2 + b^2 = c^2$ (verifies Pythagorean relationship)
 
 - **Step 5: Result**
