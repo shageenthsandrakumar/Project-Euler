@@ -202,6 +202,7 @@ This is why both solutions check `if P % 2 != 0` at the beginning to immediately
 ```
 Found 1 Pythagorean Triplet(s) where a + b + c = 1000:
 a, b, c = 200, 375, 425
+Therefore product abc is 31875000
 ```
 
 ---
