@@ -10,7 +10,7 @@ else:
         if not numerator % denominator:
             b = numerator//denominator
             c = P - a - b
-            if a < b:
+            if a <= b:
                 if a**2 + b**2 == c**2:
                     triplets.append((a, b, c))
 if triplets:
