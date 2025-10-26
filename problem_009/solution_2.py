@@ -25,7 +25,8 @@ if triples:
     for triplet in triples:
         a, b, c = triplet
         print(f"a, b, c = {a}, {b}, {c}")
+        answer = a*b*c
+        print(f"Therefore product abc is {answer}") 
 else:
     print(f"No Pythagorean Triples found for perimeter P = {P}.")
-answer = a*b*c
-print(f"Therefore product abc is {answer}") 
+
