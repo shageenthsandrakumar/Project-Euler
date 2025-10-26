@@ -1,5 +1,5 @@
 import math
-P = 1001
+P = 1000
 triplets = []
 if P % 2 != 0:
     print(f"Perimeter {P} is not an even integer, no integer Pythagorean Triples can exist.")
