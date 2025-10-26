@@ -1,7 +1,7 @@
 import math
 P = 1000
 if P % 2 != 0:
-    print(f"Perimeter {P} is odd, no integer Pythagorean Triples can exist.")
+    print(f"Perimeter {P} is not an even integer, no integer Pythagorean Triples can exist.")
 else:
     target_value = P // 2
     unique_triplets = set()
