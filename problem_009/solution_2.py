@@ -27,3 +27,5 @@ if triples:
         print(f"a, b, c = {a}, {b}, {c}")
 else:
     print(f"No Pythagorean Triples found for perimeter P = {P}.")
+answer = a*b*c
+print(f"Therefore product abc is {answer}") 
