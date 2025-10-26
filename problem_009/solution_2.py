@@ -20,11 +20,10 @@ else:
                             unique_triplets.add(tuple(sorted((a, b, c))))
 triples = list(unique_triplets)
 if triples:
-    print(f"Found {len(triples)} unique triplet(s):")
-    # Sort the list of tuples for clean output
+    print(f"Found {len(triples)} Pythagorean Triplet(s) where a + b + c = {P}:")
     triples.sort()
     for triplet in triples:
         a, b, c = triplet
-        print(f"  ({a}, {b}, {c}) | Check: {a} + {b} + {c} = {a+b+c}")
+        print(f"a, b, c = {a}, {b}, {c}")
 else:
     print(f"No Pythagorean Triples found for perimeter P = {P}.")
