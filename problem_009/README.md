@@ -42,9 +42,9 @@ Find the product $abc$.
   - Simplify by canceling $a^2$ and $b^2$ from both sides:
     $$0 = P^2 - 2Pa - 2Pb + 2ab$$
   - Rearrange to solve for $b$:
-    $$2Pb - 2ab = P^2 - 2Pa$$
-    $$b(2P - 2a) = P^2 - 2Pa$$
-    $$b = \frac{P^2 - 2Pa}{2P - 2a} = \frac{P(P - 2a)}{2(P - a)}$$
+  - $$2Pb - 2ab = P^2 - 2Pa$$
+  - $$b(2P - 2a) = P^2 - 2Pa$$
+  - $$b = \frac{P^2 - 2Pa}{2P - 2a} = \frac{P(P - 2a)}{2(P - a)}$$
 
 - **Step 2: Loop Constraints**
   - **Lower bound for $a$:** $a$ starts at $1$ (smallest natural number).
