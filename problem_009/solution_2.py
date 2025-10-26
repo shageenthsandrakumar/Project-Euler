@@ -1,6 +1,6 @@
 import math
 P = 1000
-if P%2 != 0:
+if P%2:
     print(f"Perimeter {P} is not an even integer, no integer Pythagorean Triples can exist.")
 else:
     target_value = P // 2
