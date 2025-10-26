@@ -19,3 +19,5 @@ if triplets:
         print(f"a, b, c = {a}, {b}, {c}")
 else:
     print(f"No Pythagorean Triplet found where a + b + c = {P}.")
+answer = a*b*c
+print(f"Therefore product abc is {answer}") 
