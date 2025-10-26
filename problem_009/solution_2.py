@@ -1,10 +1,10 @@
 import math
 P = 1000
+unique_triplets = set()
 if P%2:
     print(f"Perimeter {P} is not an even integer, no integer Pythagorean Triples can exist.")
 else:
     target_value = P // 2
-    unique_triplets = set()
     for k in range(1, target_value + 1):
         if target_value % k == 0:
             E = target_value//k
