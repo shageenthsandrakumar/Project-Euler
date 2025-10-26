@@ -176,7 +176,7 @@ If $a$ is odd and $b$ is even, then:
 
 So $c^2$ is odd, which means $c$ is odd.
 
-Perimeter: $P =$ odd + even + odd = even + odd = **EVEN** ✓
+Perimeter: $P =$ odd + even + odd = odd + odd = **EVEN** ✓
 
 **Conclusion:** All three possible parity combinations result in an even perimeter. Therefore, any Pythagorean triple must have an even perimeter.
 
