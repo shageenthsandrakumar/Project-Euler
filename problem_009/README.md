@@ -23,7 +23,6 @@ Find the product $abc$.
 - For each candidate value of $a$, calculate $b$ using: $b = \frac{P(P - 2a)}{2(P - a)}$.
 - Check if $b$ is an integer (using modular arithmetic).
 - If $b$ is an integer, compute $c = P - a - b$ and verify the Pythagorean relationship.
-- This eliminates one loop entirely, reducing complexity from $O(n^2)$ to $O(n)$.
 
 **Reference:** The full Python implementation is available in [`solution_1.py`](solution_1.py).
 
