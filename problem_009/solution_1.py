@@ -17,8 +17,8 @@ if triplets:
     print(f"Found {len(triplets)} Pythagorean Triplet(s) where a + b + c = {P}:")
     for a, b, c in triplets:
         print(f"a, b, c = {a}, {b}, {c}")
-    answer = a*b*c
-    print(f"Therefore product abc is {answer}") 
+        answer = a*b*c
+        print(f"Therefore product abc is {answer}") 
 else:
     print(f"No Pythagorean Triplet found where a + b + c = {P}.")
 
