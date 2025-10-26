@@ -180,7 +180,7 @@ Perimeter: $P =$ odd + even + odd = even + odd = **EVEN** ✓
 
 **Conclusion:** All three possible parity combinations result in an even perimeter. Therefore, any Pythagorean triple must have an even perimeter.
 
-This is why both solutions check `if P % 2 != 0` at the beginning to immediately reject odd perimeters.
+This is why both solutions check `if P%2` at the beginning to immediately reject odd perimeters.
 
 ---
 
