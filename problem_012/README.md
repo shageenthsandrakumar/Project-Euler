@@ -270,4 +270,3 @@ This formula captures how dividing by 2 reduces the power of 2 in the factorizat
 - The formula $\tau(T_n) = \tau(n) \cdot \tau(n+1) \cdot \frac{\nu_2(n) + \nu_2(n+1)}{\nu_2(n) + \nu_2(n+1) + 1}$ works uniformly for both even and odd $n$ because exactly one of $n$ or $n+1$ is always even.
 - The coprimality of consecutive integers ($\gcd(n, n+1) = 1$) is fundamental to Solution 2's efficiency, allowing us to factor smaller numbers independently and use the multiplicative property.
 - This problem illustrates how **number theory, combinatorics, and algorithmic optimization** combine to solve computational problems efficiently.
-- **Historical note:** This is Project Euler Problem #12, one of the classic problems that separates those who understand divisor functions and efficient factorization from those who rely solely on brute force.
