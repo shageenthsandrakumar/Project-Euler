@@ -25,7 +25,7 @@ F_{11} &= 89\\
 F_{12} &= 144 
 \end{align}$$
 
-The $12$th term, $F_{12}$, is the first term to contain three digits.
+The $12$ th term, $F_{12}$, is the first term to contain three digits.
 
 What is the index of the first term in the Fibonacci sequence to contain $1000$ digits?
 
