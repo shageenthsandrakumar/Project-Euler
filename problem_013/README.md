@@ -52,16 +52,59 @@ Work out the first ten digits of the sum of the following one-hundred 50-digit n
 
 ---
 
-## Solution 2: Naive Truncation (11 digits)
+## Solution 2: Complete Summation (Map Function)
+
+### Approach
+
+- Parse all 100 fifty-digit numbers from the input string.
+- Use `map()` function to convert each number to an integer.
+- Compute their sum directly using Python's arbitrary-precision arithmetic.
+- Extract the first 10 digits by converting to string and slicing.
+- This is functionally identical to Solution 1 but uses a more functional programming style.
+
+**Reference:** The full Python implementation is available in [`solution_2.py`](solution_2.py).
+
+### Detailed Explanation
+
+- **Step 1: Parse Input**
+  - Split the multi-line string by newlines: `numbers.splitlines()`.
+  - Each line contains one 50-digit number as a string.
+  
+- **Step 2: Convert Using Map**
+  - Use `map(int, numbers.splitlines())` to lazily convert each string to an integer.
+  - `map()` returns an iterator, making this memory-efficient.
+  - The conversion happens as the sum is computed.
+
+- **Step 3: Compute Sum**
+  - Pass the map object directly to `sum()`: `sum(map(int, numbers.splitlines()))`.
+  - Python handles arbitrary-precision arithmetic automatically.
+  - The sum is computed in a single pass through the data.
+
+- **Step 4: Extract First 10 Digits**
+  - Convert the sum to a string: `str(sum(...))`.
+  - Slice the first 10 characters: `str(sum(...))[:10]`.
+  - The result is a string containing the first 10 digits.
+
+- **Comparison to Solution 1:**
+  - **Solution 1:** Uses generator expression with explicit `for` syntax.
+  - **Solution 2:** Uses `map()` function, more functional programming style.
+  - Both compute the exact same result with the full 50-digit numbers.
+  - Performance is essentially identical.
+
+- **Efficiency:** Like Solution 1, this performs one full addition of 100 fifty-digit numbers. The use of `map()` provides a slight memory advantage by using lazy evaluation, though the difference is negligible for only 100 numbers.
+
+---
+
+## Solution 3: Truncation (11 digits)
 
 ### Approach
 
 - Truncate each 50-digit number to its first 11 digits before summing.
-- Sum these truncated values.
+- Sum these truncated values using a generator expression.
 - Extract the first 10 digits from the result.
-- This approach is based on the intuition that trailing digits have minimal impact on the leading digits of the sum.
+- This approach is based on the mathematical proof that trailing digits have minimal impact on the leading digits of the sum.
 
-**Reference:** The full Python implementation is available in [`solution_2.py`](solution_2.py).
+**Reference:** The full Python implementation is available in [`solution_3.py`](solution_3.py).
 
 ### Detailed Explanation
 
@@ -77,6 +120,7 @@ Work out the first ten digits of the sum of the following one-hundred 50-digit n
 
 - **Step 3: Extract First 10 Digits**
   - Convert sum to string and slice: `str(sum(...))[:10]`.
+  - The entire operation is a single chained expression.
 
 - **Step 4: Why This Works (Mathematical Justification)**
   - Each number $n_i$ can be written as: $n_i = a_i \times 10^{39} + r_i$
@@ -88,39 +132,7 @@ Work out the first ten digits of the sum of the following one-hundred 50-digit n
   - Since $S \geq 10^{51}$ (at least 52 digits), the 10th digit from the left is in the $10^{42}$ place.
   - Since $R < 10^{41} < 10^{42}$, the error cannot affect the first 10 digits.
 
-- **Efficiency:** This solution is faster than Solution 1 because it operates on smaller numbers (11 digits instead of 50). The reduction in precision is mathematically guaranteed not to affect the first 10 digits.
-
----
-
-## Solution 3: Optimized Truncation (11 digits)
-
-### Approach
-
-- Use the same 11-digit truncation as Solution 2.
-- Employ a more Pythonic implementation with list comprehension.
-- Convert to string and slice in a single elegant expression.
-
-**Reference:** The full Python implementation is available in [`solution_3.py`](solution_3.py).
-
-### Detailed Explanation
-
-- **Step 1: Parse and Truncate**
-  - Split the input: `numbers.splitlines()`.
-  - Take first 11 digits of each: `num[:11]`.
-  - Convert to integer: `int(num[:11])`.
-  - All in one generator: `int(num[:11]) for num in numbers.splitlines()`.
-
-- **Step 2: Sum and Extract**
-  - Compute sum and convert to string: `str(sum(...))`.
-  - Slice first 10 characters: `[:10]`.
-  - The entire operation is a single chained expression.
-
-- **Comparison to Solution 2:**
-  - **Solution 2:** More explicit, easier to debug.
-  - **Solution 3:** More concise, idiomatic Python.
-  - Both produce identical results and have similar performance.
-
-- **Efficiency:** Identical to Solution 2 in terms of computational complexity. The difference is purely stylistic.
+- **Efficiency:** This solution is faster than Solutions 1 and 2 because it operates on smaller numbers (11 digits instead of 50). The reduction in precision is mathematically guaranteed not to affect the first 10 digits.
 
 ---
 
@@ -206,15 +218,15 @@ This proof demonstrates that the truncation in Solutions 2, 3, and 4 is not just
 
 ## Comparison of Solutions
 
-| Aspect | Solution 1<br>(Complete Sum) | Solution 2<br>(Truncation) | Solution 3<br>(Optimized) | Solution 4<br>(Regex) |
-|--------|------------------------------|----------------------------|---------------------------|----------------------|
-| **Digits Used** | All 50 digits | First 11 digits | First 11 digits | First 11 digits |
-| **Method** | Full arithmetic | String slicing | List comprehension | Regex extraction |
-| **Correctness** | Exact | Mathematically proven | Mathematically proven | Mathematically proven |
-| **Speed** | Fast | Faster | Faster | Slightly slower |
-| **Code Clarity** | ★★★★★ | ★★★★ | ★★★★★ | ★★★ |
+| Aspect | Solution 1<br>(Generator) | Solution 2<br>(Map Function) | Solution 3<br>(Truncation) | Solution 4<br>(Regex) |
+|--------|---------------------------|------------------------------|----------------------------|----------------------|
+| **Digits Used** | All 50 digits | All 50 digits | First 11 digits | First 11 digits |
+| **Method** | Generator expression | Map function | String slicing | Regex extraction |
+| **Correctness** | Exact | Exact | Mathematically proven | Mathematically proven |
+| **Speed** | Fast | Fast | Faster | Slightly slower |
+| **Code Clarity** | ★★★★★ | ★★★★★ | ★★★★★ | ★★★ |
 | **Robustness** | ★★★ | ★★★ | ★★★ | ★★★★★ |
-| **Best For** | Baseline/verification | Production use | Pythonic code | Handling varied input |
+| **Best For** | Readable baseline | Functional style | Optimal performance | Handling varied input |
 
 ---
 
@@ -230,8 +242,9 @@ This proof demonstrates that the truncation in Solutions 2, 3, and 4 is not just
 
 - The first 10 digits of the sum of the 100 fifty-digit numbers is **5537376230**.
 - The complete sum is a 52-digit number: **55373762302354218056071609583022009681477084096389**
-- **Solution 1** is the most straightforward and serves as a verification baseline.
-- **Solutions 2, 3, and 4** demonstrate that truncating to 11 digits is mathematically sufficient, backed by rigorous proof.
+- **Solution 1** is the most straightforward and serves as a readable baseline using generator expressions.
+- **Solution 2** demonstrates functional programming style with `map()`, computing the exact same result as Solution 1.
+- **Solutions 3 and 4** demonstrate that truncating to 11 digits is mathematically sufficient, backed by rigorous proof.
 - The truncation theorem shows that only 22% of the input data (11 out of 50 digits per number) is needed to guarantee correctness of the first 10 digits.
 - This problem elegantly illustrates how mathematical analysis can dramatically reduce computational requirements while maintaining guaranteed correctness.
 - The key insight is that the relative magnitude of the error (discarded digits) compared to the magnitude of the sum determines which digits are affected.
