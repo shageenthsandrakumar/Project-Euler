@@ -153,7 +153,7 @@ Find the sum of the digits in the number $100!$.
 | **Readability** | Moderate | High | High | High |
 | **Pythonic Style** | Traditional | Very Pythonic | Functional style | Idiomatic |
 | **Memory** | Minimal | String storage | String storage | Minimal |
-| **Best For** | Avoiding strings | Readability | Functional programming | Clean arithmetic |
+| **Best For** | Avoiding strings | Conciseness | Functional programming | Clean arithmetic |
 
 ---
 
