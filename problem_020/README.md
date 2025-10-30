@@ -209,4 +209,3 @@ Find the sum of the digits in the number $100!$.
 - The digit extraction techniques are **identical** across both problems - only the initial calculation differs.
 - Both problems demonstrate Python's strength in handling arbitrary-precision integers.
 - If you've solved Problem 16, you already know all four techniques needed for Problem 20 (and vice versa).
-- This is a common pattern in Project Euler: introducing a technique in one problem and applying it to different mathematical contexts in another.
