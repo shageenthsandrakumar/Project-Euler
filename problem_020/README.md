@@ -202,3 +202,11 @@ Find the sum of the digits in the number $100!$.
 - **Solution 2** is arguably the most Pythonic, combining clarity with brevity.
 - **Solution 4** demonstrates the elegant use of `divmod()` for digit extraction, a common pattern in Python programming.
 - This problem demonstrates that sometimes the most straightforward approach (computing the factorial and summing digits) is both correct and efficient, requiring no advanced algorithmic optimization.
+
+### Relationship to Problem 16
+
+- **Problem 16** asks for the sum of digits in $2^{1000}$, while **Problem 20** asks for the sum of digits in $100!$.
+- The digit extraction techniques are **identical** across both problems - only the initial calculation differs.
+- Both problems demonstrate Python's strength in handling arbitrary-precision integers.
+- If you've solved Problem 16, you already know all four techniques needed for Problem 20 (and vice versa).
+- This is a common pattern in Project Euler: introducing a technique in one problem and applying it to different mathematical contexts in another.
