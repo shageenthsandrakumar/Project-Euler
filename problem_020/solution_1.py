@@ -1,5 +1,5 @@
 import math
-number = math.prod(list(range(1,101)))
+number = math.factorial(100)
 answer = 0
 while number > 0:
     answer += number%10
