@@ -161,7 +161,7 @@ What is the sum of the digits of the number $2^{1000}$?
 | **Readability** | Moderate | High | High | High |
 | **Pythonic Style** | Traditional | Very Pythonic | Functional style | Idiomatic |
 | **Memory** | Minimal | String storage | String storage | Minimal |
-| **Best For** | Avoiding strings | Conciseness | One-liner fans | Clean arithmetic |
+| **Best For** | Avoiding strings | Conciseness | Functional programming | Clean arithmetic |
 
 ---
 
