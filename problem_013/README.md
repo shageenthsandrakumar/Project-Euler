@@ -243,4 +243,3 @@ This proof demonstrates that the truncation in Solutions 2, 3, and 4 is not just
 - This problem elegantly illustrates how mathematical analysis can dramatically reduce computational requirements while maintaining guaranteed correctness.
 - The key insight is that the relative magnitude of the error (discarded digits) compared to the magnitude of the sum determines which digits are affected.
 - For problems requiring the first $d$ digits of a sum of $n$ numbers of $m$ digits each, the formula generalizes: you need at least $d + 1 + \lceil \log_{10}(n) \rceil$ digits to guarantee correctness.
-- The proof technique—bounding the maximum error and comparing it to the place value of interest—is widely applicable in numerical analysis and computer arithmetic.
