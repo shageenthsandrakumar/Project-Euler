@@ -35,7 +35,6 @@ v_corr = signal.correlate2d(log_matrix, v_kernel, mode='valid')
 n = len(Matrix)
 padded_dr = np.pad(log_matrix, ((0, 0), (0, n-1)), constant_values=-np.inf)
 skewed_dr = np.array([np.roll(padded_dr[i], i) for i in range(n)])
-
 dr_corr = signal.correlate2d(skewed_dr, v_kernel, mode='valid')
 
 flipped = np.fliplr(log_matrix)
@@ -45,5 +44,4 @@ dl_corr = signal.correlate2d(skewed_dl, v_kernel, mode='valid')
 
 max_log = max(h_corr.max(), v_corr.max(), dr_corr.max(), dl_corr.max())
 max_product = int(round(np.exp(max_log)))
-
 print(max_product)
