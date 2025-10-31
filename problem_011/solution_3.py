@@ -24,7 +24,9 @@ grid_str = """08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
 
 Matrix = np.array([line.split() for line in grid_str.splitlines()], dtype=int)
 
-log_matrix = np.log(Matrix.astype(float))
+Matrix_safe = np.where(Matrix == 0, 1, Matrix) 
+log_matrix = np.log(Matrix_safe.astype(float))
+log_matrix[Matrix == 0] = -np.inf
 
 h_kernel = np.ones((1, 4))
 h_corr = signal.correlate2d(log_matrix, h_kernel, mode='valid')
@@ -33,12 +35,10 @@ v_kernel = np.ones((4, 1))
 v_corr = signal.correlate2d(log_matrix, v_kernel, mode='valid')
 
 n = len(Matrix)
-padded_dr = np.pad(log_matrix, ((0, 0), (0, n-1)), constant_values=-np.inf)
-skewed_dr = np.array([np.roll(padded_dr[i], i) for i in range(n)])
+padded_dr = np.pad(log_matrix, ((0, 0), (n-1, 0)), constant_values=-np.inf)
+skewed_dr = np.array([np.roll(padded_dr[i], -i) for i in range(n)])
 dr_corr = signal.correlate2d(skewed_dr, v_kernel, mode='valid')
-
-flipped = np.fliplr(log_matrix)
-padded_dl = np.pad(flipped, ((0, 0), (0, n-1)), constant_values=-np.inf)
+padded_dl = np.pad(log_matrix, ((0, 0), (0, n-1)), constant_values=-np.inf)
 skewed_dl = np.array([np.roll(padded_dl[i], i) for i in range(n)])
 dl_corr = signal.correlate2d(skewed_dl, v_kernel, mode='valid')
 
