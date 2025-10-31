@@ -206,7 +206,7 @@ With $k = 11$ (keeping first 11 digits), the maximum error is $R < 100 \times 10
 - **11 digits is sufficient:** With $k = 11$, we have $R < 10^{41}$, providing a full order of magnitude of safety.
 - **12+ digits provide extra margin:** While mathematically unnecessary, using 12 digits gives additional confidence but requires more computation.
 
-This proof demonstrates that the truncation in Solutions 2, 3, and 4 is not just a heuristic—it's mathematically rigorous.
+This proof demonstrates that the truncation in Solutions 2, 3, and 4 is not just a heuristic. It's mathematically rigorous.
 
 ---
 
@@ -242,4 +242,3 @@ This proof demonstrates that the truncation in Solutions 2, 3, and 4 is not just
 - The truncation theorem shows that only 22% of the input data (11 out of 50 digits per number) is needed to guarantee correctness of the first 10 digits.
 - This problem elegantly illustrates how mathematical analysis can dramatically reduce computational requirements while maintaining guaranteed correctness.
 - The key insight is that the relative magnitude of the error (discarded digits) compared to the magnitude of the sum determines which digits are affected.
-- For problems requiring the first $d$ digits of a sum of $n$ numbers of $m$ digits each, the formula generalizes: you need at least $d + 1 + \lceil \log_{10}(n) \rceil$ digits to guarantee correctness.
