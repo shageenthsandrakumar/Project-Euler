@@ -122,15 +122,9 @@ Work out the first ten digits of the sum of the following one-hundred 50-digit n
   - Convert sum to string and slice: `str(sum(...))[:10]`.
   - The entire operation is a single chained expression.
 
-- **Step 4: Why This Works (Mathematical Justification)**
-  - Each number $n_i$ can be written as: $n_i = a_i \times 10^{39} + r_i$
-    - $a_i$ is the first 11 digits (the kept part)
-    - $r_i < 10^{39}$ is the discarded part (last 39 digits)
-  - The true sum is: $S = \sum_{i=1}^{100} (a_i \times 10^{39} + r_i) = 10^{39} \sum a_i + \sum r_i$
-  - Our approximation computes: $S_{\text{approx}} = 10^{39} \sum a_i$
-  - The error is: $R = \sum r_i < 100 \times 10^{39} = 10^{41}$
-  - Since $S \geq 10^{51}$ (at least 52 digits), the 10th digit from the left is in the $10^{42}$ place.
-  - Since $R < 10^{41} < 10^{42}$, the error cannot affect the first 10 digits.
+- **Step 4: Why This Works**
+  - See the **Mathematical Foundation** section below for the rigorous proof that 11 digits is mathematically sufficient.
+  - The proof shows that the maximum error from discarding the last 39 digits cannot affect the first 10 digits of the sum.
 
 - **Efficiency:** This solution is faster than Solutions 1 and 2 because it operates on smaller numbers (11 digits instead of 50). The reduction in precision is mathematically guaranteed not to affect the first 10 digits.
 
