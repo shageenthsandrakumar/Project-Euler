@@ -1,5 +1,4 @@
 import numpy as np
-
 grid_str = """08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
 49 49 99 40 17 81 18 57 60 87 17 40 98 43 69 48 04 56 62 00
 81 49 31 73 55 79 14 29 93 71 40 67 53 88 30 03 49 13 36 65
@@ -22,31 +21,26 @@ grid_str = """08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
 01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48"""
 
 Matrix = np.array([line.split() for line in grid_str.splitlines()], dtype=int)
+grid_size = len(Matrix)
 adj_size = 4
 
-# Horizontal products
-horizontal = np.prod(np.lib.stride_tricks.sliding_window_view(Matrix, (1, adj_size)), axis=-1).squeeze()
+class CustomError(Exception):
+    pass
+if adj_size <= 0 or adj_size > grid_size or not isinstance(adj_size, int):
+    raise CustomError("Not a valid adj_size. It must be a positive integer less than the grid size")
 
-# Vertical products
+horizontal = np.prod(np.lib.stride_tricks.sliding_window_view(Matrix, (1, adj_size)), axis=-1).squeeze()
 vertical = np.prod(np.lib.stride_tricks.sliding_window_view(Matrix, (adj_size, 1)), axis=-1).squeeze()
 
-# Down-right diagonal products
 dr_products = []
-for offset in range(-16, 17):  # All diagonals from bottom-left to top-right
-    diag = np.diagonal(Matrix, offset=offset)
-    if len(diag) >= adj_size:
-        for i in range(len(diag) - adj_size + 1):
-            dr_products.append(np.prod(diag[i:i+adj_size]))
-
-# Down-left diagonal products (flip horizontally, then extract diagonals)
 dl_products = []
 flipped = np.fliplr(Matrix)
-for offset in range(-16, 17):
-    diag = np.diagonal(flipped, offset=offset)
-    if len(diag) >= adj_size:
-        for i in range(len(diag) - adj_size + 1):
-            dl_products.append(np.prod(diag[i:i+adj_size]))
+for offset in range(adj_size-grid_size, grid_size-adj_size+1):  # All diagonals from bottom-left to top-right
+    diag = np.diagonal(Matrix, offset=offset)
+    diag_flip = np.diagonal(flipped, offset=offset)
+    for i in range(len(diag) - adj_size + 1):
+        dr_products.append(np.prod(diag[i:i+adj_size]))
+        dl_products.append(np.prod(diag_flip[i:i+adj_size]))
 
 max_product = max(horizontal.max(),vertical.max(),max(dr_products),max(dl_products))
-
 print(max_product)
