@@ -206,7 +206,7 @@ With $k = 11$ (keeping first 11 digits), the maximum error is $R < 100 \times 10
 - **11 digits is sufficient:** With $k = 11$, we have $R < 10^{41}$, providing a full order of magnitude of safety.
 - **12+ digits provide extra margin:** While mathematically unnecessary, using 12 digits gives additional confidence but requires more computation.
 
-This proof demonstrates that the truncation in Solutions 2, 3, and 4 is not just a heuristic. It's mathematically rigorous.
+This proof demonstrates that the truncation in Solutions 3 and 4 is not just a heuristic. It's mathematically rigorous.
 
 ---
 
