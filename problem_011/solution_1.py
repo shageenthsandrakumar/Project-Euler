@@ -30,8 +30,8 @@ for i in range(grid_size-adj_size+1):
         product_dr = 1
         product_dl = 1
         for a in range(adj_size):
-            product_x *= Matrix[i+a][j]
-            product_y *= Matrix[j][i+a]
+            product_y *= Matrix[i+a][j]
+            product_x *= Matrix[j][i+a]
             if j <= grid_size-adj_size:
                 product_dr *= Matrix[i+a][j+a]
             if j >= adj_size-1:
