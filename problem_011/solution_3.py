@@ -23,7 +23,7 @@ grid_str = """08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
 01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48"""
 
 Matrix = np.array([line.split() for line in grid_str.splitlines()], dtype=int)
-
+grid_size = len(Matrix)
 adj_size = 4
 
 class CustomError(Exception):
@@ -35,19 +35,18 @@ Matrix_safe = np.where(Matrix == 0, 1, Matrix)
 log_matrix = np.log(Matrix_safe.astype(float))
 log_matrix[Matrix == 0] = -np.inf
 
-h_kernel = np.ones((1, 4))
+h_kernel = np.ones((1, adj_size))
 h_corr = signal.correlate2d(log_matrix, h_kernel, mode='valid')
  
-v_kernel = np.ones((4, 1))
+v_kernel = np.ones((adj_size, 1))
 v_corr = signal.correlate2d(log_matrix, v_kernel, mode='valid')
 
-n = len(Matrix)
-padded_dr = np.pad(log_matrix, ((0, 0), (n-1, 0)), constant_values=-np.inf)
-skewed_dr = np.array([np.roll(padded_dr[i], -i) for i in range(n)])
+padded_dr = np.pad(log_matrix, ((0, 0), (grid_size-1, 0)), constant_values=-np.inf)
+skewed_dr = np.array([np.roll(padded_dr[i], -i) for i in range(grid_size)])
 dr_corr = signal.correlate2d(skewed_dr, v_kernel, mode='valid')
 
-padded_dl = np.pad(log_matrix, ((0, 0), (0, n-1)), constant_values=-np.inf)
-skewed_dl = np.array([np.roll(padded_dl[i], i) for i in range(n)])
+padded_dl = np.pad(log_matrix, ((0, 0), (0, grid_size-1)), constant_values=-np.inf)
+skewed_dl = np.array([np.roll(padded_dl[i], i) for i in range(grid_size)])
 dl_corr = signal.correlate2d(skewed_dl, v_kernel, mode='valid')
 
 max_log = max(h_corr.max(), v_corr.max(), dr_corr.max(), dl_corr.max())
