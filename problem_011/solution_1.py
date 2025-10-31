@@ -23,6 +23,12 @@ Matrix = [list(map(int, line.split())) for line in grid.splitlines()]
 max_product = 0
 grid_size = 20
 adj_size = 4
+
+class CustomError(Exception):
+    pass
+if adj_size <= 0 or adj_size > grid_size or not isinstance(adj_size, int):
+    raise CustomError("Not a valid adj_size. It must be a positive integer less than the grid size")
+
 for i in range(grid_size-adj_size+1):
     for j in range(grid_size):
         product_x = 1
