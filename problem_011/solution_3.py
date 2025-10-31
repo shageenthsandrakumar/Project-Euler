@@ -24,33 +24,26 @@ grid_str = """08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
 
 Matrix = np.array([line.split() for line in grid_str.splitlines()], dtype=int)
 
-# Convert to log space for convolution (products become sums)
 log_matrix = np.log(Matrix.astype(float))
 
-# Horizontal: convolve with [1,1,1,1] kernel
 h_kernel = np.ones((1, 4))
-h_conv = signal.correlate2d(log_matrix, h_kernel, mode='valid')
-
-# Vertical: convolve with [[1],[1],[1],[1]] kernel  
+h_corr = signal.correlate2d(log_matrix, h_kernel, mode='valid')
+ 
 v_kernel = np.ones((4, 1))
-v_conv = signal.correlate2d(log_matrix, v_kernel, mode='valid')
+v_corr = signal.correlate2d(log_matrix, v_kernel, mode='valid')
 
-# Down-right diagonals: Skew the matrix so diagonals become columns
-# Add padding and shift each row
 n = len(Matrix)
 padded_dr = np.pad(log_matrix, ((0, 0), (0, n-1)), constant_values=-np.inf)
 skewed_dr = np.array([np.roll(padded_dr[i], i) for i in range(n)])
-# Now diagonals are vertical! Apply vertical kernel
-dr_conv = signal.correlate2d(skewed_dr, v_kernel, mode='valid')
 
-# Down-left diagonals: Flip matrix horizontally first, then skew
+dr_corr = signal.correlate2d(skewed_dr, v_kernel, mode='valid')
+
 flipped = np.fliplr(log_matrix)
 padded_dl = np.pad(flipped, ((0, 0), (0, n-1)), constant_values=-np.inf)
 skewed_dl = np.array([np.roll(padded_dl[i], i) for i in range(n)])
-dl_conv = signal.correlate2d(skewed_dl, v_kernel, mode='valid')
+dl_corr = signal.correlate2d(skewed_dl, v_kernel, mode='valid')
 
-# Find maximum in log space, then convert back
-max_log = max(h_conv.max(), v_conv.max(), dr_conv.max(), dl_conv.max())
+max_log = max(h_corr.max(), v_corr.max(), dr_corr.max(), dl_corr.max())
 max_product = int(round(np.exp(max_log)))
 
 print(max_product)
