@@ -29,8 +29,8 @@ class CustomError(Exception):
 if adj_size <= 0 or adj_size > grid_size or not isinstance(adj_size, int):
     raise CustomError("Not a valid adj_size. It must be a positive integer less than the grid size")
 
-horizontal = np.prod(np.lib.stride_tricks.sliding_window_view(Matrix, (1, adj_size)), axis=-1).squeeze()
-vertical = np.prod(np.lib.stride_tricks.sliding_window_view(Matrix, (adj_size, 1)), axis=-1).squeeze()
+horizontal = np.prod(np.lib.stride_tricks.sliding_window_view(Matrix, (1, adj_size)), axis=-1)
+vertical = np.prod(np.lib.stride_tricks.sliding_window_view(Matrix, (adj_size, 1)), axis=-2)
 
 dr_products = []
 dl_products = []
