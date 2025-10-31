@@ -24,6 +24,13 @@ grid_str = """08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
 
 Matrix = np.array([line.split() for line in grid_str.splitlines()], dtype=int)
 
+adj_size = 4
+
+class CustomError(Exception):
+    pass
+if adj_size <= 0 or adj_size > grid_size or not isinstance(adj_size, int):
+    raise CustomError("Not a valid adj_size. It must be a positive integer less than the grid size")
+
 Matrix_safe = np.where(Matrix == 0, 1, Matrix) 
 log_matrix = np.log(Matrix_safe.astype(float))
 log_matrix[Matrix == 0] = -np.inf
