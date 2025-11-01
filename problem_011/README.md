@@ -35,15 +35,48 @@ What is the greatest product of four adjacent numbers in the same direction (up,
 
 ---
 
+## Generalization and Input Validation
+
+All three solutions are designed to be **fully generalizable** beyond the specific problem parameters. The key parameters are:
+
+- **`grid_size`:** The dimension of the square grid (20 in this problem, but can be any size).
+- **`adj_size`:** The number of adjacent elements to multiply together (4 in this problem, but fully configurable).
+
+### Input Validation
+
+All three solutions implement a **critical validation check** to ensure the parameters are valid:
+
+```python
+class CustomError(Exception):
+    pass
+
+if adj_size <= 0 or adj_size > grid_size or not isinstance(adj_size, int):
+    raise CustomError("Not a valid adj_size. It must be a positive integer less than the grid size")
+```
+
+This validation enforces three essential constraints:
+1. **Positive adjacency:** `adj_size > 0` ensures we're multiplying at least one number.
+2. **Feasibility:** `adj_size <= grid_size` ensures the adjacency length fits within the grid dimensions.
+3. **Integer constraint:** `isinstance(adj_size, int)` prevents floating-point or invalid types.
+
+**Why this matters:** Without validation, invalid parameters could cause:
+- **Index errors:** Attempting to access non-existent grid positions.
+- **Infinite loops:** Negative values causing range errors.
+- **Logical errors:** Non-integer values producing unexpected behavior.
+
+This defensive programming practice ensures the solutions are robust and provide clear error messages when misused.
+
+---
+
 ## Solution 1: Index-Swapping Loop Optimization
 
 ### Approach
 
 - Use a **clever index-swapping technique** to check horizontal, vertical, and both diagonal directions simultaneously.
-- Iterate through valid starting positions where 4 adjacent numbers can fit.
+- Iterate through valid starting positions where `adj_size` adjacent numbers can fit.
 - For each position, compute products in all four directions using compact loop logic.
 - Track the maximum product found across all directions.
-- This solution demonstrates elegant algorithm design through symmetry exploitation.
+- **Fully generalizable:** Works for any `grid_size` and `adj_size` combination.
 
 **Reference:** The full Python implementation is available in [`solution_1.py`](solution_1.py).
 
@@ -51,47 +84,52 @@ What is the greatest product of four adjacent numbers in the same direction (up,
 
 - **Step 1: Initialization and Input Validation**
   - Parse the grid string into a 2D list: `Matrix = [list(map(int, line.split())) for line in grid.splitlines()]`.
-  - Define `grid_size = 20` and `adj_size = 4` (number of adjacent elements to multiply).
-  - Include validation to ensure `adj_size` is a positive integer less than `grid_size`.
+  - Define `grid_size = 20` and `adj_size = 4` (both fully configurable).
+  - **Validate parameters** using the custom error check described above.
+  - This ensures the algorithm only runs with valid, safe parameters.
 
 - **Step 2: Loop Structure and Boundary Handling**
-  - **Outer loop:** `for i in range(grid_size - adj_size + 1)` iterates from 0 to 16.
-    - This ensures we can fit 4 consecutive numbers starting at position `i`.
-  - **Inner loop:** `for j in range(grid_size)` iterates through all 20 positions.
+  - **Outer loop:** `for i in range(grid_size - adj_size + 1)`:
+    - This range ensures we can fit `adj_size` consecutive numbers starting at position `i`.
+    - For `grid_size=20` and `adj_size=4`: iterates from 0 to 16 (17 positions).
+    - General formula: last valid starting position is `grid_size - adj_size`.
+  - **Inner loop:** `for j in range(grid_size)` iterates through all positions.
     - Not all positions are valid for all directions (handled with conditionals).
 
 - **Step 3: The Index-Swapping Technique**
   - **Vertical products:** `product_y *= Matrix[i+a][j]`
-    - Fixed column `j`, varying rows `i` through `i+3`.
+    - Fixed column `j`, varying rows from `i` to `i+adj_size-1`.
   - **Horizontal products:** `product_x *= Matrix[j][i+a]`
-    - Fixed row `j`, varying columns `i` through `i+3`.
+    - Fixed row `j`, varying columns from `i` to `i+adj_size-1`.
     - **Key insight:** By swapping `i` and `j` indices, we avoid writing separate loops for horizontal direction.
   - This symmetry exploitation is the elegant core of this solution.
 
-- **Step 4: Diagonal Products**
+- **Step 4: Diagonal Products with Boundary Checks**
   - **Down-right diagonals (↘):**
-    - Condition: `if j <= grid_size - adj_size` ensures we don't go out of bounds.
-    - Product: `product_dr *= Matrix[i+a][j+a]`
-    - Both row and column indices increase together: `(i, j) → (i+1, j+1) → (i+2, j+2) → (i+3, j+3)`.
+    - Condition: `if j <= grid_size - adj_size` ensures we have space for `adj_size` diagonal elements.
+    - Product: `product_dr *= Matrix[i+a][j+a]` for `a` in `range(adj_size)`.
+    - Both row and column indices increase together.
+    - **General form:** Starting at `(i, j)`, elements are at positions `(i+a, j+a)` for `a = 0, 1, ..., adj_size-1`.
+  
   - **Down-left diagonals (↙):**
-    - Condition: `if j >= adj_size - 1` ensures column index remains valid.
-    - Product: `product_dl *= Matrix[i+a][j-a]`
-    - Row increases, column decreases: `(i, j) → (i+1, j-1) → (i+2, j-2) → (i+3, j-3)`.
+    - Condition: `if j >= adj_size - 1` ensures column index remains valid when decreasing.
+    - Product: `product_dl *= Matrix[i+a][j-a]` for `a` in `range(adj_size)`.
+    - Row increases, column decreases.
+    - **General form:** Starting at `(i, j)`, elements are at positions `(i+a, j-a)` for `a = 0, 1, ..., adj_size-1`.
 
 - **Step 5: Computing Products**
-  - For each position, initialize four products to 1: `product_x`, `product_y`, `product_dr`, `product_dl`.
-  - Loop through 4 adjacent positions: `for a in range(adj_size)`.
+  - For each position, initialize products to 1: `product_x`, `product_y`, `product_dr`, `product_dl`.
+  - Loop through adjacent positions: `for a in range(adj_size)`.
   - Multiply the appropriate matrix elements for each direction.
   - Update the maximum: `max_product = max(max_product, product_x, product_y, product_dr, product_dl)`.
 
-- **Step 6: Why This Works**
-  - The outer loop ensures vertical and diagonal products stay within bounds (need 4 rows).
-  - The inner loop's full range (0-19) works because:
-    - Horizontal products always fit (we only go up to column `i+3` where `i ≤ 16`).
-    - Diagonal conditions prevent out-of-bounds access.
-  - Each iteration checks up to 4 different products at the current position.
+- **Step 6: Why This Generalization Works**
+  - The outer loop bound `grid_size - adj_size + 1` automatically adjusts to any adjacency length.
+  - Diagonal boundary checks `j <= grid_size - adj_size` and `j >= adj_size - 1` scale with `adj_size`.
+  - The inner product loops `for a in range(adj_size)` work for any adjacency length.
+  - **Example:** For `adj_size=6` on a 30×30 grid, the algorithm would find products of 6 consecutive elements.
 
-- **Efficiency:** This solution is clean and efficient. It checks all valid 4-element sequences in all four directions with minimal code duplication. The index-swapping technique eliminates the need for separate horizontal/vertical loops, demonstrating elegant algorithm design.
+- **Efficiency:** This solution is clean and efficient. It checks all valid `adj_size`-element sequences in all four directions with minimal code duplication. The index-swapping technique eliminates the need for separate horizontal/vertical loops, demonstrating elegant algorithm design.
 
 ---
 
@@ -101,52 +139,58 @@ What is the greatest product of four adjacent numbers in the same direction (up,
 
 - Use **NumPy's `sliding_window_view`** for efficient horizontal and vertical product computation.
 - Extract diagonals using **`np.diagonal`** with different offsets to get all diagonal lines.
-- Apply sliding windows to each diagonal to compute products of 4 consecutive elements.
+- Apply sliding windows to each diagonal to compute products of `adj_size` consecutive elements.
 - Leverage NumPy's vectorized operations for maximum performance.
-- This solution showcases modern array processing techniques.
+- **Fully generalizable:** Automatically adapts to any `grid_size` and `adj_size`.
 
 **Reference:** The full Python implementation is available in [`solution_2.py`](solution_2.py).
 
 ### Detailed Explanation
 
-- **Step 1: NumPy Array Conversion**
+- **Step 1: NumPy Array Conversion and Validation**
   - Convert the grid to a NumPy array: `Matrix = np.array([line.split() for line in grid_str.splitlines()], dtype=int)`.
-  - Using `dtype=int` ensures proper integer arithmetic (no overflow for products up to $99^4 \approx 96$ million).
+  - Extract `grid_size = len(Matrix)` dynamically from the input.
+  - Define `adj_size` (configurable parameter).
+  - **Apply input validation** to ensure parameters are valid before processing.
 
 - **Step 2: Horizontal Products with Sliding Windows**
   - Create sliding windows: `np.lib.stride_tricks.sliding_window_view(Matrix, (1, adj_size))`.
-  - **Window shape:** `(1, 4)` means 1 row and 4 columns.
-  - This creates all possible 1×4 horizontal windows in the grid.
-  - Compute products: `np.prod(..., axis=-1)` multiplies along the last axis (the 4 elements).
-  - Result shape: `(20, 17)` — one product for each valid starting position.
+  - **Window shape:** `(1, adj_size)` means 1 row and `adj_size` columns.
+  - This creates all possible 1×`adj_size` horizontal windows in the grid.
+  - Compute products: `np.prod(..., axis=-1)` multiplies along the last axis (the `adj_size` elements).
+  - Result shape: `(grid_size, grid_size - adj_size + 1)`.
+  - **Generalization:** For `adj_size=5` on a 25×25 grid, this would create 25×21 windows.
 
 - **Step 3: Vertical Products with Sliding Windows**
   - Create sliding windows: `np.lib.stride_tricks.sliding_window_view(Matrix, (adj_size, 1))`.
-  - **Window shape:** `(4, 1)` means 4 rows and 1 column.
+  - **Window shape:** `(adj_size, 1)` means `adj_size` rows and 1 column.
   - Compute products: `np.prod(..., axis=-2)` multiplies along the row axis.
-  - Result shape: `(17, 20)` — one product for each valid starting position.
+  - Result shape: `(grid_size - adj_size + 1, grid_size)`.
+  - **Generalization:** Window size automatically scales with `adj_size`.
 
 - **Step 4: Diagonal Extraction Logic**
   - **Understanding `np.diagonal(Matrix, offset=k)`:**
     - `offset=0` gives the main diagonal: elements where row index equals column index.
     - `offset=1` gives the diagonal one step above the main diagonal.
     - `offset=-1` gives the diagonal one step below the main diagonal.
-    - Range `offset` from `-(n-4)` to `(n-4)` covers all diagonals with at least 4 elements.
+    - **General range:** `offset` from `-(grid_size - adj_size)` to `(grid_size - adj_size)` covers all diagonals with at least `adj_size` elements.
 
 - **Step 5: Down-Right Diagonals**
   - Loop through offsets: `for offset in range(adj_size - grid_size, grid_size - adj_size + 1)`.
-  - This gives offsets from -16 to 16, covering all diagonals.
+  - This range ensures we only process diagonals long enough to contain `adj_size` elements.
   - Extract diagonal: `diag = np.diagonal(Matrix, offset=offset)`.
-  - Filter valid diagonals: `if len(diag) >= adj_size` ensures at least 4 elements.
+  - Filter valid diagonals: `if len(diag) >= adj_size` ensures at least `adj_size` elements.
   - Apply sliding window to the diagonal: `np.lib.stride_tricks.sliding_window_view(diag, adj_size)`.
-  - Compute products: `np.prod(..., axis=1)` gives products of each 4-element window.
+  - Compute products: `np.prod(..., axis=1)` gives products of each `adj_size`-element window.
   - Collect all products: `dr_products.extend(...)`.
+  - **Generalization:** For `adj_size=7`, only diagonals with ≥7 elements are processed.
 
 - **Step 6: Down-Left Diagonals**
   - Flip the matrix horizontally: `flipped = np.fliplr(Matrix)`.
   - **Why flipping works:** Down-left diagonals (↙) in the original matrix become down-right diagonals (↘) in the flipped matrix.
   - Apply the same diagonal extraction logic as down-right diagonals.
   - This elegant trick avoids writing separate down-left diagonal code.
+  - **Generalization:** Works for any grid size and adjacency length.
 
 - **Step 7: Finding the Maximum**
   - Compute maximums from each direction:
@@ -156,7 +200,7 @@ What is the greatest product of four adjacent numbers in the same direction (up,
     - `max(dl_products)` — maximum down-left diagonal product.
   - Take the overall maximum: `max(...)` across all four values.
 
-- **Efficiency:** This solution leverages NumPy's highly optimized C implementations. The sliding window view creates efficient memory views without copying data. Vectorized operations eliminate Python loops, making this approach very fast for large grids.
+- **Efficiency:** This solution leverages NumPy's highly optimized C implementations. The sliding window view creates efficient memory views without copying data. Vectorized operations eliminate Python loops, making this approach very fast for large grids. The generalization works seamlessly—changing `adj_size` from 4 to 10 requires only modifying one variable.
 
 ---
 
@@ -165,17 +209,18 @@ What is the greatest product of four adjacent numbers in the same direction (up,
 ### Approach
 
 - Transform the problem into a **2D convolution** task using signal processing techniques.
-- Convert products to sums using **logarithms**: $\log(a \times b) = \log(a) + \log(b)$.
-- Apply **`signal.correlate2d`** with simple kernels for horizontal and vertical directions.
+- Convert products to sums using **logarithms**: $\log(a \times b \times c) = \log(a) + \log(b) + \log(c)$.
+- Apply **`signal.correlate2d`** with kernels of size `adj_size` for horizontal and vertical directions.
 - Use **matrix skewing** to transform diagonals into columns, enabling vertical convolution.
 - Handle zeros in the grid by replacing them before taking logarithms.
-- This solution demonstrates advanced mathematical transformations.
+- **Fully generalizable:** Kernel sizes and padding automatically scale with `adj_size`.
 
 **Reference:** The full Python implementation is available in [`solution_3.py`](solution_3.py).
 
 ### Detailed Explanation
 
-- **Step 1: Handling Zeros in the Grid**
+- **Step 1: Input Validation and Zero Handling**
+  - **Validate parameters** using the custom error check to ensure safety.
   - Some grid values are 0, which creates problems: $\log(0)$ is undefined.
   - Strategy: Replace zeros with 1, then mark those positions as $-\infty$ in log space.
   - Implementation:
@@ -184,56 +229,62 @@ What is the greatest product of four adjacent numbers in the same direction (up,
     log_matrix = np.log(Matrix_safe.astype(float))
     log_matrix[Matrix == 0] = -np.inf
     ```
-  - **Why this works:** $\log(1) = 0$, so replacing zeros with 1 doesn't affect products. The $-\infty$ ensures these positions are ignored when taking the maximum.
+  - **Why this works:** $\log(1) = 0$, so replacing zeros with 1 doesn't affect sums. The $-\infty$ ensures these positions are ignored when taking the maximum.
 
 - **Step 2: Horizontal Convolution**
-  - Create a kernel: `h_kernel = np.ones((1, adj_size))` — shape `(1, 4)`.
+  - Create a kernel: `h_kernel = np.ones((1, adj_size))` — shape `(1, adj_size)`.
   - Apply correlation: `h_corr = signal.correlate2d(log_matrix, h_kernel, mode='valid')`.
-  - **What this does:** Slides a 1×4 window across each row, summing 4 consecutive log values.
-  - In log space, summing = multiplying in normal space: $\log(a) + \log(b) = \log(a \times b)$.
-  - `mode='valid'` ensures only complete 4-element windows are included.
+  - **What this does:** Slides a 1×`adj_size` window across each row, summing `adj_size` consecutive log values.
+  - In log space, summing = multiplying in normal space: $\log(a) + \log(b) + \log(c) = \log(a \times b \times c)$.
+  - `mode='valid'` ensures only complete `adj_size`-element windows are included.
+  - **Generalization:** For `adj_size=6`, the kernel becomes `(1, 6)`, automatically finding products of 6 numbers.
 
 - **Step 3: Vertical Convolution**
-  - Create a kernel: `v_kernel = np.ones((adj_size, 1))` — shape `(4, 1)`.
+  - Create a kernel: `v_kernel = np.ones((adj_size, 1))` — shape `(adj_size, 1)`.
   - Apply correlation: `v_corr = signal.correlate2d(log_matrix, v_kernel, mode='valid')`.
-  - This slides a 4×1 window down each column.
+  - This slides an `adj_size`×1 window down each column.
+  - **Generalization:** Kernel height scales with `adj_size`.
 
 - **Step 4: Understanding Matrix Skewing for Diagonals**
   - **The Problem:** Diagonals don't align with rows or columns, so simple convolution doesn't work.
   - **The Solution:** Transform the matrix so diagonals become vertical columns.
-  - **Skewing Visualization (4×4 example):**
+  - **Skewing Visualization (for general `adj_size`):**
     ```
-    Original:           After padding left + rolling left:
+    Original:           After padding + rolling:
     a b c d            a b c d
     e f g h            _ e f g h
     i j k l     →      _ _ i j k l
     m n o p            _ _ _ m n o p
     
-    Now column 3 contains: d, g, j, m (down-left diagonal!)
+    Diagonals now align vertically in different columns
     ```
 
 - **Step 5: Down-Right Diagonal Skewing**
   - **Pad left:** `padded_dr = np.pad(log_matrix, ((0, 0), (grid_size-1, 0)), constant_values=-np.inf)`.
-    - Adds 19 columns of $-\infty$ on the left.
+    - Adds `grid_size-1` columns of $-\infty$ on the left.
+    - **Generalization:** Padding width scales with `grid_size`, not `adj_size`.
   - **Roll each row left:** `skewed_dr = np.array([np.roll(padded_dr[i], -i) for i in range(grid_size)])`.
     - Row 0: no shift.
     - Row 1: shift left by 1.
     - Row 2: shift left by 2.
     - ...
-    - Row 19: shift left by 19.
+    - Row `grid_size-1`: shift left by `grid_size-1`.
   - **Result:** Down-right diagonals now align vertically.
   - Apply vertical convolution: `dr_corr = signal.correlate2d(skewed_dr, v_kernel, mode='valid')`.
+  - **Generalization:** The vertical kernel size `(adj_size, 1)` determines how many diagonal elements are multiplied.
 
 - **Step 6: Down-Left Diagonal Skewing**
   - **Pad right:** `padded_dl = np.pad(log_matrix, ((0, 0), (0, grid_size-1)), constant_values=-np.inf)`.
   - **Roll each row right:** `skewed_dl = np.array([np.roll(padded_dl[i], i) for i in range(grid_size)])`.
   - **Result:** Down-left diagonals now align vertically.
   - Apply vertical convolution: `dl_corr = signal.correlate2d(skewed_dl, v_kernel, mode='valid')`.
+  - **Generalization:** Same kernel `v_kernel` works for any `adj_size`.
 
 - **Step 7: The Role of $-\infty$ Padding**
   - When correlation encounters $-\infty$, the sum becomes $-\infty$.
   - These invalid windows are automatically excluded when taking the maximum.
   - This is cleaner than manually tracking valid regions.
+  - **Generalization:** Works regardless of `adj_size` or `grid_size`.
 
 - **Step 8: Converting Back from Log Space**
   - Find maximum in log space: `max_log = max(h_corr.max(), v_corr.max(), dr_corr.max(), dl_corr.max())`.
@@ -245,7 +296,7 @@ What is the greatest product of four adjacent numbers in the same direction (up,
   - `correlate2d` doesn't flip the kernel.
   - For our symmetric kernels (all 1s), it doesn't matter, but `correlate2d` is conceptually clearer.
 
-- **Efficiency:** This solution is highly efficient for large grids. The convolution operations are implemented in optimized C code. The skewing transformation is clever but adds some overhead. For a 20×20 grid, the difference is negligible, but for very large grids, this approach scales well.
+- **Efficiency:** This solution is highly efficient for large grids. The convolution operations are implemented in optimized C code. The skewing transformation adds some overhead but scales well. The beauty is that changing `adj_size` from 4 to 8 only requires changing one variable—all kernel sizes and convolution operations adjust automatically.
 
 ---
 
@@ -253,46 +304,36 @@ What is the greatest product of four adjacent numbers in the same direction (up,
 
 ### Matrix Skewing for Diagonal Extraction
 
-**Theorem:** By padding a matrix on one side and shifting each row by its index, diagonals can be transformed into vertical columns.
+**Theorem:** By padding a matrix on one side and shifting each row by its index, diagonals can be transformed into vertical columns for any adjacency length.
 
-**Proof for Down-Right Diagonals:**
+**Proof for Down-Right Diagonals (General Case):**
 
-Consider a 4×4 matrix with elements at positions $(i, j)$:
-```
-(0,0) (0,1) (0,2) (0,3)
-(1,0) (1,1) (1,2) (1,3)
-(2,0) (2,1) (2,2) (2,3)
-(3,0) (3,1) (3,2) (3,3)
-```
+Consider an $n \times n$ matrix with elements at positions $(i, j)$ where $0 \leq i, j < n$.
 
-The main down-right diagonal contains elements where $j - i = 0$: $(0,0), (1,1), (2,2), (3,3)$.
+A down-right diagonal with offset $k$ contains elements where $j - i = k$.
 
-After padding left with 3 columns and rolling row $i$ left by $i$ positions:
-- Row 0 (no shift): elements at columns 3, 4, 5, 6.
-- Row 1 (shift -1): elements at columns 2, 3, 4, 5.
-- Row 2 (shift -2): elements at columns 1, 2, 3, 4.
-- Row 3 (shift -3): elements at columns 0, 1, 2, 3.
+After padding left with $n-1$ columns and rolling row $i$ left by $i$ positions:
+- The original element $(i, j)$ now appears at column position $j + (n-1) - i$.
+- For elements on a diagonal where $j - i = k$, the new column position is:
+  $$\text{new\_col} = j + (n-1) - i = (j-i) + (n-1) = k + (n-1)$$
 
-The original element $(i, j)$ now appears at column position $j + 3 - i$.
+Since all elements on the same diagonal have the same $k$ value, they all align in the same column.
 
-For the main diagonal ($j = i$), this becomes column $i + 3 - i = 3$ for all $i$.
-
-**Therefore, all elements of the main diagonal align in column 3.** ∎
-
-**Generalization:** For a diagonal with offset $k$ (where $j - i = k$), all elements align in column $3 + k$.
+**Key insight:** The adjacency length `adj_size` doesn't affect the skewing transformation itself—it only determines the kernel size used in the subsequent convolution. This is why the solution generalizes seamlessly. ∎
 
 ---
 
 ### Logarithmic Product-to-Sum Transformation
 
-**Property:** For positive numbers $a_1, a_2, \ldots, a_n$:
-$$\log(a_1 \times a_2 \times \cdots \times a_n) = \log(a_1) + \log(a_2) + \cdots + \log(a_n)$$
+**Property:** For positive numbers $a_1, a_2, \ldots, a_m$ where $m$ is any positive integer:
+$$\log(a_1 \times a_2 \times \cdots \times a_m) = \log(a_1) + \log(a_2) + \cdots + \log(a_m)$$
 
 **Application to Convolution:**
 - Convolution with a kernel of all 1s computes sums of elements.
 - By working in log space, these sums represent products in normal space.
 - This transforms a multiplication problem into an addition problem.
 - Addition is the fundamental operation in convolution, making this transformation natural.
+- **Generalization:** Works for any adjacency length—a kernel of size $m$ sums $m$ log values, representing a product of $m$ numbers.
 
 **Caution:** This transformation assumes all values are positive. Zeros must be handled separately (as done in Solution 3).
 
@@ -304,9 +345,11 @@ $$\log(a_1 \times a_2 \times \cdots \times a_n) = \log(a_1) + \log(a_2) + \cdots
 |--------|-------------------------------|-------------------------------------|-----------------------------------|
 | **Approach** | Compact loops with index symmetry | Vectorized sliding windows | Signal processing with skewing |
 | **Dependencies** | Pure Python (lists) | NumPy | NumPy + Scipy |
+| **Generalizability** | Fully general with simple bounds | Automatic with window sizes | Kernel sizes scale automatically |
 | **Code Clarity** | Very readable | Clear with NumPy knowledge | Requires advanced understanding |
-| **Mathematical Insight** | Index manipulation | Array processing | Log transform + convolution |
-| **Scalability** | Good for small grids | Excellent for large grids | Excellent for very large grids |
+| **Parameter Changes** | Modify loop bounds and conditions | Only change window dimensions | Only change kernel sizes |
+| **Validation** | Custom error handling | Custom error handling | Custom error handling |
+| **Scalability** | Good for small-medium grids | Excellent for large grids | Excellent for very large grids |
 | **Educational Value** | ★★★★★ | ★★★★ | ★★★★★ |
 | **Production Use** | ★★★ | ★★★★★ | ★★★★ |
 
@@ -324,10 +367,17 @@ $$\log(a_1 \times a_2 \times \cdots \times a_n) = \log(a_1) + \log(a_2) + \cdots
 
 - The greatest product of four adjacent numbers in the 20×20 grid is **70,600,674**.
 - This product comes from four numbers arranged horizontally, vertically, or diagonally.
-- **Solution 1** demonstrates elegant algorithm design through symmetry exploitation—checking multiple directions with minimal code duplication.
-- **Solution 2** showcases modern array processing with NumPy's `sliding_window_view`, providing excellent performance through vectorization.
-- **Solution 3** illustrates advanced mathematical transformations, converting a grid search problem into signal processing via logarithms and matrix skewing.
-- The **matrix skewing technique** in Solution 3 is a brilliant insight: by transforming diagonals into columns, we can apply the same convolution operation used for vertical products.
-- All three solutions correctly handle the boundary conditions to ensure no out-of-bounds access occurs.
-- The problem demonstrates multiple valid approaches to the same computational task, each with different trade-offs between simplicity, performance, and mathematical elegance.
-- For grid-based problems, choosing between direct iteration (Solution 1), vectorized array operations (Solution 2), or signal processing techniques (Solution 3) depends on grid size, performance requirements, and code maintainability considerations.
+- **All three solutions are fully generalizable:**
+  - Changing `adj_size` from 4 to any other value (e.g., 6, 8, 10) requires modifying only the parameter definition.
+  - The algorithms automatically adjust loop bounds, window sizes, kernel dimensions, and padding to accommodate the new adjacency length.
+  - Grid size can also be changed by providing a different input matrix.
+- **Input validation is crucial:**
+  - All three solutions implement the same validation check to prevent invalid parameters.
+  - This defensive programming ensures robustness and provides clear error messages.
+  - Without validation, attempting `adj_size=25` on a 20×20 grid would cause index errors rather than a helpful error message.
+- **Solution 1** demonstrates elegant algorithm design through symmetry exploitation—checking multiple directions with minimal code duplication. The boundary conditions automatically scale with `adj_size`.
+- **Solution 2** showcases modern array processing with NumPy's `sliding_window_view`, providing excellent performance through vectorization. Window dimensions scale naturally with the adjacency parameter.
+- **Solution 3** illustrates advanced mathematical transformations, converting a grid search problem into signal processing via logarithms and matrix skewing. Kernel sizes adjust automatically to any adjacency length.
+- The **matrix skewing technique** in Solution 3 is independent of adjacency length—it transforms diagonals into columns regardless of how many elements we plan to multiply. The adjacency length only affects the convolution kernel size.
+- For grid-based problems with configurable parameters, choosing between direct iteration (Solution 1), vectorized array operations (Solution 2), or signal processing techniques (Solution 3) depends on grid size, performance requirements, and code maintainability considerations.
+- The generalizability of these solutions makes them suitable for extended versions of this problem, such as finding products of 6, 8, or even 12 adjacent numbers in larger grids.
