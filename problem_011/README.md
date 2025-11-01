@@ -307,8 +307,8 @@ This defensive programming practice ensures the solutions are robust and provide
 **Property:** For positive numbers $a_1, a_2, \ldots, a_m$ where $m$ is any positive integer:
 $$\log(a_1 \times a_2 \times \cdots \times a_m) = \log(a_1) + \log(a_2) + \cdots + \log(a_m)$$
 
-**Application to Convolution:**
-- Convolution with a kernel of all 1s computes sums of elements.
+**Application to Correlation/Convolution:**
+- Convolution/Correlation with a kernel of all 1s computes sums of elements.
 - By working in log space, these sums represent products in normal space.
 - This transforms a multiplication problem into an addition problem.
 - Addition is the fundamental operation in convolution, making this transformation natural.
