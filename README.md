@@ -16,6 +16,9 @@ This repository contains Python solutions to Project Euler problems. Each proble
 - **[Problem 8:  Largest Product in a Series](./problem_008/README.md)**
 - **[Problem 9:  Special Pythagorean Triplet](./problem_009/README.md)**
 - **[Problem 10: Summation of Primes](./problem_010/README.md)**
+- **[Problem 11: Largest Product in a Grid](./problem_011/README.md)**
+- **[Problem 12: Highly Divisible Triangular Number](./problem_012/README.md)**
+- **[Problem 13: Large Sum](./problem_013/README.md)**
 
 Each problem folder contains one or more solutions with explanations, code, and output.
 
