@@ -296,7 +296,7 @@ This defensive programming practice ensures the solutions are robust and provide
   - `correlate2d` doesn't flip the kernel.
   - For our symmetric kernels (all 1s), it doesn't matter, but `correlate2d` is conceptually clearer.
 
-- **Efficiency:** This solution is highly efficient for large grids. The convolution operations are implemented in optimized C code. The skewing transformation adds some overhead but scales well. The beauty is that changing `adj_size` from 4 to 8 only requires changing one variable.All kernel sizes and convolution operations adjust automatically.
+- **Efficiency:** This solution is highly efficient for large grids. The convolution operations are implemented in optimized C code. The skewing transformation adds some overhead but scales well. The beauty is that changing `adj_size` from 4 to 8 only requires changing one variable. All kernel sizes and convolution operations adjust automatically.
 
 ---
 
@@ -312,7 +312,7 @@ $$\log(a_1 \times a_2 \times \cdots \times a_m) = \log(a_1) + \log(a_2) + \cdots
 - By working in log space, these sums represent products in normal space.
 - This transforms a multiplication problem into an addition problem.
 - Addition is the fundamental operation in convolution, making this transformation natural.
-- **Generalization:** Works for any adjacency length. A kernel of size $m$ sums $m$ log values, representing a product of $m$ numbers.
+- **Generalization:** Works for any adjacency length.  A kernel of size $m$ sums $m$ log values, representing a product of $m$ numbers.
 
 **Caution:** This transformation assumes all values are positive. Zeros must be handled separately (as done in Solution 3).
 
