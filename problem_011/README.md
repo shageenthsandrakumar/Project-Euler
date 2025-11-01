@@ -302,27 +302,6 @@ This defensive programming practice ensures the solutions are robust and provide
 
 ## Mathematical Foundation
 
-### Matrix Skewing for Diagonal Extraction
-
-**Theorem:** By padding a matrix on one side and shifting each row by its index, diagonals can be transformed into vertical columns for any adjacency length.
-
-**Proof for Down-Right Diagonals (General Case):**
-
-Consider an $n \times n$ matrix with elements at positions $(i, j)$ where $0 \leq i, j < n$.
-
-A down-right diagonal with offset $k$ contains elements where $j - i = k$.
-
-After padding left with $n-1$ columns and rolling row $i$ left by $i$ positions:
-- The original element $(i, j)$ now appears at column position $j + (n-1) - i$.
-- For elements on a diagonal where $j - i = k$, the new column position is:
-  $$\text{new-col} = j + (n-1) - i = (j-i) + (n-1) = k + (n-1)$$
-
-Since all elements on the same diagonal have the same $k$ value, they all align in the same column.
-
-**Key insight:** The adjacency length `adj_size` doesn't affect the skewing transformation itself.It only determines the kernel size used in the subsequent convolution. This is why the solution generalizes seamlessly. ∎
-
----
-
 ### Logarithmic Product-to-Sum Transformation
 
 **Property:** For positive numbers $a_1, a_2, \ldots, a_m$ where $m$ is any positive integer:
