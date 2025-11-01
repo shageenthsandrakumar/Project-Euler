@@ -208,10 +208,10 @@ This defensive programming practice ensures the solutions are robust and provide
 
 ### Approach
 
-- Transform the problem into a **2D convolution** task using signal processing techniques.
+- Transform the problem into a **2D correlation** task using signal processing techniques.
 - Convert products to sums using **logarithms**: $\log(a \times b \times c) = \log(a) + \log(b) + \log(c)$.
 - Apply **`signal.correlate2d`** with kernels of size `adj_size` for horizontal and vertical directions.
-- Use **matrix skewing** to transform diagonals into columns, enabling vertical convolution.
+- Use **matrix skewing** to transform diagonals into columns, enabling vertical correlation.
 - Handle zeros in the grid by replacing them before taking logarithms.
 - **Fully generalizable:** Kernel sizes and padding automatically scale with `adj_size`.
 
@@ -231,7 +231,7 @@ This defensive programming practice ensures the solutions are robust and provide
     ```
   - **Why this works:** $\log(1) = 0$, so replacing zeros with 1 doesn't affect sums. The $-\infty$ ensures these positions are ignored when taking the maximum.
 
-- **Step 2: Horizontal Convolution**
+- **Step 2: Horizontal Correlation**
   - Create a kernel: `h_kernel = np.ones((1, adj_size))` with shape `(1, adj_size)`.
   - Apply correlation: `h_corr = signal.correlate2d(log_matrix, h_kernel, mode='valid')`.
   - **What this does:** Slides a 1×`adj_size` window across each row, summing `adj_size` consecutive log values.
@@ -239,14 +239,14 @@ This defensive programming practice ensures the solutions are robust and provide
   - `mode='valid'` ensures only complete `adj_size`-element windows are included.
   - **Generalization:** For `adj_size=6`, the kernel becomes `(1, 6)`, automatically finding products of 6 numbers.
 
-- **Step 3: Vertical Convolution**
+- **Step 3: Vertical Correlation**
   - Create a kernel: `v_kernel = np.ones((adj_size, 1))` with shape `(adj_size, 1)`.
   - Apply correlation: `v_corr = signal.correlate2d(log_matrix, v_kernel, mode='valid')`.
   - This slides an `adj_size`×1 window down each column.
   - **Generalization:** Kernel height scales with `adj_size`.
 
 - **Step 4: Understanding Matrix Skewing for Diagonals**
-  - **The Problem:** Diagonals don't align with rows or columns, so simple convolution doesn't work.
+  - **The Problem:** Diagonals don't align with rows or columns, so simple correlation doesn't work.
   - **The Solution:** Transform the matrix so diagonals become vertical columns.
   - **Skewing Visualization (for general `adj_size`):**
     ```
@@ -270,14 +270,14 @@ This defensive programming practice ensures the solutions are robust and provide
     - ...
     - Row `grid_size-1`: shift left by `grid_size-1`.
   - **Result:** Down-right diagonals now align vertically.
-  - Apply vertical convolution: `dr_corr = signal.correlate2d(skewed_dr, v_kernel, mode='valid')`.
+  - Apply vertical correlation: `dr_corr = signal.correlate2d(skewed_dr, v_kernel, mode='valid')`.
   - **Generalization:** The vertical kernel size `(adj_size, 1)` determines how many diagonal elements are multiplied.
 
 - **Step 6: Down-Left Diagonal Skewing**
   - **Pad right:** `padded_dl = np.pad(log_matrix, ((0, 0), (0, grid_size-1)), constant_values=-np.inf)`.
   - **Roll each row right:** `skewed_dl = np.array([np.roll(padded_dl[i], i) for i in range(grid_size)])`.
   - **Result:** Down-left diagonals now align vertically.
-  - Apply vertical convolution: `dl_corr = signal.correlate2d(skewed_dl, v_kernel, mode='valid')`.
+  - Apply vertical correlation: `dl_corr = signal.correlate2d(skewed_dl, v_kernel, mode='valid')`.
   - **Generalization:** Same kernel `v_kernel` works for any `adj_size`.
 
 - **Step 7: The Role of $-\infty$ Padding**
@@ -296,7 +296,7 @@ This defensive programming practice ensures the solutions are robust and provide
   - `correlate2d` doesn't flip the kernel.
   - For our symmetric kernels (all 1s), it doesn't matter, but `correlate2d` is conceptually clearer.
 
-- **Efficiency:** This solution is highly efficient for large grids. The convolution operations are implemented in optimized C code. The skewing transformation adds some overhead but scales well. The beauty is that changing `adj_size` from 4 to 8 only requires changing one variable. All kernel sizes and convolution operations adjust automatically.
+- **Efficiency:** This solution is highly efficient for large grids. The correlation operations are implemented in optimized C code. The skewing transformation adds some overhead but scales well. The beauty is that changing `adj_size` from 4 to 8 only requires changing one variable. All kernel sizes and correlation operations adjust automatically.
 
 ---
 
@@ -320,7 +320,7 @@ $$\log(a_1 \times a_2 \times \cdots \times a_m) = \log(a_1) + \log(a_2) + \cdots
 
 ## Comparison of Solutions
 
-| Aspect | Solution 1<br>(Index-Swapping) | Solution 2<br>(NumPy Sliding Window) | Solution 3<br>(Scipy Convolution) |
+| Aspect | Solution 1<br>(Index-Swapping) | Solution 2<br>(NumPy Sliding Window) | Solution 3<br>(Scipy Correlation) |
 |--------|-------------------------------|-------------------------------------|-----------------------------------|
 | **Approach** | Compact loops with index symmetry | Vectorized sliding windows | Signal processing with skewing |
 | **Dependencies** | Pure Python (lists) | NumPy | NumPy + Scipy |
@@ -357,6 +357,6 @@ $$\log(a_1 \times a_2 \times \cdots \times a_m) = \log(a_1) + \log(a_2) + \cdots
 - **Solution 1** demonstrates elegant algorithm design through symmetry exploitation. Checking multiple directions with minimal code duplication. The boundary conditions automatically scale with `adj_size`.
 - **Solution 2** showcases modern array processing with NumPy's `sliding_window_view`, providing excellent performance through vectorization. Window dimensions scale naturally with the adjacency parameter.
 - **Solution 3** illustrates advanced mathematical transformations, converting a grid search problem into signal processing via logarithms and matrix skewing. Kernel sizes adjust automatically to any adjacency length.
-- The **matrix skewing technique** in Solution 3 is independent of adjacency length. It transforms diagonals into columns regardless of how many elements we plan to multiply. The adjacency length only affects the convolution kernel size.
+- The **matrix skewing technique** in Solution 3 is independent of adjacency length. It transforms diagonals into columns regardless of how many elements we plan to multiply. The adjacency length only affects the correlation kernel size.
 - For grid-based problems with configurable parameters, choosing between direct iteration (Solution 1), vectorized array operations (Solution 2), or signal processing techniques (Solution 3) depends on grid size, performance requirements, and code maintainability considerations.
 - The generalizability of these solutions makes them suitable for extended versions of this problem, such as finding products of 6, 8, or even 12 adjacent numbers in larger grids.
