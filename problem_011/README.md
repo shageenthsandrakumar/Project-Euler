@@ -315,7 +315,7 @@ A down-right diagonal with offset $k$ contains elements where $j - i = k$.
 After padding left with $n-1$ columns and rolling row $i$ left by $i$ positions:
 - The original element $(i, j)$ now appears at column position $j + (n-1) - i$.
 - For elements on a diagonal where $j - i = k$, the new column position is:
-  $$\text{new\_col} = j + (n-1) - i = (j-i) + (n-1) = k + (n-1)$$
+  $$\text{new-col} = j + (n-1) - i = (j-i) + (n-1) = k + (n-1)$$
 
 Since all elements on the same diagonal have the same $k$ value, they all align in the same column.
 
