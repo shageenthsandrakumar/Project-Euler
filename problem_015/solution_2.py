@@ -1,6 +1,6 @@
 from functools import lru_cache
 grid_size = 20
-@lru_cache(None)
+@lru_cache((grid_size+1)**2)
 def paths(i, j):
     if i == grid_size or j == grid_size:
         return 1
