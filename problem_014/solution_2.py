@@ -1,5 +1,4 @@
-collatz_lengths = {}
-collatz_lengths[1] = 1
+collatz_lengths = {1: 1}
 
 def collatz_length(n):
     if n in collatz_lengths:
