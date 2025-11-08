@@ -37,8 +37,6 @@ The Collatz conjecture is deceptively simple: take any positive integer, apply t
 
 In 2019, mathematician Terence Tao made significant progress by proving that for "almost all" starting numbers (in a technical density sense), the Collatz sequence eventually reaches a value arbitrarily close to 1. However, this "almost all" result still leaves open the possibility of rare exceptions, and proving the sequence reaches exactly 1 for every number remains an open problem.
 
-The work demonstrates how mathematicians tackle seemingly impossible problems by proving progressively weaker versions. Each step brings us closer to the full solution.
-
 ---
 
 ## Solution 1: Naive Recursion
