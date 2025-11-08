@@ -20,6 +20,7 @@ This repository contains Python solutions to Project Euler problems. Each proble
 - **[Problem 12: Highly Divisible Triangular Number](./problem_012/README.md)**
 - **[Problem 13: Large Sum](./problem_013/README.md)**
 - **[Problem 14: Longest Collatz Sequence](./problem_014/README.md)**
+- **[Problem 15: Lattice Paths](./problem_015/README.md)**
 
 Each problem folder contains one or more solutions with explanations, code, and output.
 
