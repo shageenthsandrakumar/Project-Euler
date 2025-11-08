@@ -15,7 +15,7 @@ def collatz_length(n):
 
 max_length = 0
 start_number = 0
-for i in range(1000000-1,1,-1):
+for i in range(1000000-1,0,-1):
     c = collatz_length(i)
     if max_length < c:
         max_length = c
