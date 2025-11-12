@@ -264,16 +264,16 @@ If all the numbers from $1$ to $1000$ (one thousand) inclusive were written out 
 
 ## Comparison of Solutions
 
-| Aspect | Solution 1<br>(num2words) | Solution 2<br>(Compact Formula) | Solution 3<br>(Explicit Loop) |
+| Aspect | Solution 1<br>(num2words) | Solution 2<br>(Explicit Loop) | Solution 3<br>(Compact Formula) |
 |--------|---------------------------|----------------------------------|-------------------------------|
-| **Approach** | External library | Mathematical formula | Explicit calculation |
+| **Approach** | External library | Explicit calculation | Mathematical formula |
 | **Dependencies** | Requires `num2words` | None | None |
-| **Code Length** | 1 line | ~10 lines | ~20 lines |
+| **Code Length** | 1 line | ~20 lines | ~10 lines |
 | **Performance** | Fast | Instant | Instant |
-| **Extensibility** | Easy (change range) | Manual formula update | Easy (change loops) |
+| **Extensibility** | Easy (change range) | Easy (change loops) | Manual formula update  |
 | **Educational Value** | Low | High | Very High |
 | **Maintenance** | Depends on library | Self-contained | Self-contained |
-| **Best For** | Quick prototyping | Optimal efficiency | Learning/verification |
+| **Best For** | Quick prototyping | Learning/verification | Optimal efficiency |
 
 ---
 
