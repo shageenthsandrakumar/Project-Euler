@@ -269,7 +269,6 @@ If all the numbers from $1$ to $1000$ (one thousand) inclusive were written out 
 | **Approach** | External library | Mathematical formula | Explicit calculation |
 | **Dependencies** | Requires `num2words` | None | None |
 | **Code Length** | 1 line | ~10 lines | ~20 lines |
-| **Readability** | â˜…â˜…â˜…â˜…â˜… | â˜…â˜…â˜… | â˜…â˜…â˜…â˜…â˜… |
 | **Performance** | Fast | Instant | Instant |
 | **Extensibility** | Easy (change range) | Manual formula update | Easy (change loops) |
 | **Educational Value** | Low | High | Very High |
