@@ -1,6 +1,7 @@
-ones = [3, 3, 5, 4, 4, 3, 5, 5, 4]  #  one, two,three, ..., nine
-teens = [3, 6, 6, 8, 8, 7, 7, 9, 8, 8]  # ten, eleven, ..., nineteen
-tens = [6, 6, 5, 5, 5, 7, 6, 6]   # twenty, thirty, ..., ninety
+# Letter counts for basic number words
+ones = [3, 3, 5, 4, 4, 3, 5, 5, 4]      # one through nine
+teens = [3, 6, 6, 8, 8, 7, 7, 9, 8, 8]  # ten through nineteen
+tens = [6, 6, 5, 5, 5, 7, 6, 6]         # twenty through ninety
 
 total = sum(ones)+sum(teens)
 for t in range(8):
