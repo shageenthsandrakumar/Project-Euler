@@ -19,3 +19,4 @@ total_1_99 = 10 * sum(tens) + total_10_19 + 9 * total_1_9
 # + 10 * 854 (the 1-99 pattern appears in standalone 1-99 plus each hundred)
 # + 11 (onethousand)
 total = 100 * (10 * 9 + total_1_9) - 9 * 3 + 10 * total_1_99 + 11
+print(total)
