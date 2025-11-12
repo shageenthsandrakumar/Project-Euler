@@ -69,7 +69,7 @@ If all the numbers from $1$ to $1000$ (one thousand) inclusive were written out 
 ### Detailed Explanation
 
 - **Step 1: Base Letter Counts**
-  - Same as Solution 1: ones, teens, and tens arrays store letter counts.
+  - ones, teens, and tens arrays store letter counts.
   - **Ones (1-9):** `[3, 3, 5, 4, 4, 3, 5, 5, 4]`
   - **Teens (10-19):** `[3, 6, 6, 8, 8, 7, 7, 9, 8, 8]`
   - **Tens (20-90):** `[6, 6, 5, 5, 5, 7, 6, 6]`
