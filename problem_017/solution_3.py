@@ -14,7 +14,7 @@ total_1_99 = 10 * sum(tens) + total_10_19 + 9 * total_1_9
 
 # 1-1000:
 # 100 * (sum of "X hundred" for X=1-9, plus "and" for 1-99 in each hundred)
-# = 100 * (10*9 letters for "hundred" + 36 letters for digit words) 
+# = 100 * (10*9 hundredand has ten letters that repeat nine times  + 36 letters for digit words) 
 # - 9*3 (no "and" for round hundreds like "one hundred")
 # + 10 * 854 (the 1-99 pattern appears in standalone 1-99 plus each hundred)
 # + 11 (onethousand)
