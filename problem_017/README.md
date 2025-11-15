@@ -35,25 +35,25 @@ If all the numbers from $1$ to $1000$ (one thousand) inclusive were written out 
   - This is necessary because the problem explicitly states: "Do not count spaces or hyphens."
   - Example: `"three hundred and forty-two"` becomes `"threehundredandfortytwo"`.
 
-- **Step 3: List Comprehension**
-  - The code uses a list comprehension to process all numbers from 1 to 1000:
+- **Step 3: Generator Expression**
+  - The code uses a generator expression to process all numbers from 1 to 1000:
     ```python
-    [len(num2words(i).replace(" ", "").replace("-", "")) for i in range(1, 1001)]
+    sum(len(num2words(i).replace(" ", "").replace("-", "")) for i in range(1, 1001))
     ```
   - For each number `i`, it:
     1. Converts `i` to words using `num2words(i)`
     2. Removes spaces and hyphens
     3. Calculates the length using `len()`
-  - This creates a list of 1000 integers, where each integer is the letter count for that number.
+  - The generator expression produces values one at a time as `sum()` consumes them.
+  - This is more memory-efficient than creating an intermediate list.
 
 - **Step 4: Summation**
-  - The `sum()` function adds all 1000 letter counts together.
+  - The `sum()` function adds all 1000 letter counts together as they're generated.
   - This gives the total number of letters used for all numbers from 1 to 1000.
 
 - **Efficiency:** This solution is straightforward and highly readable. The `num2words` library handles all edge cases correctly, including British usage of "and". Performance is excellent for 1000 numbers, completing in milliseconds. However, this approach requires an external dependency.
 
 ---
-
 ## Solution 2: Explicit Loop-Based Calculation
 
 ### Approach
