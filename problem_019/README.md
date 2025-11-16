@@ -324,7 +324,7 @@ This means the calendar on 1 Jan 2001 is identical to 1 Jan 2401.
 |--------|------------------------------|--------------------------|------------------------------|-------------------------------|
 | **Approach** | Iterate all days with clever check | Iterate first of months | Precomputed year patterns | Precomputed 4-year cycles |
 | **Iterations** | 36,525 days | 1,200 months | 100 years | 25 cycles |
-| **Dependencies** | None | Python datetime | None | None |
+| **Dependencies** | Python datetime | Python datetime | None | None |
 | **Precomputation** | None | None | 14 patterns (7×2) | 7 quartet arrays |
 | **Code Clarity** | ★★★★★ | ★★★★★ | ★★★ | ★★★ |
 | **Speed** | Slowest | Very fast | Very fast | Fastest |
