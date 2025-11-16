@@ -18,51 +18,62 @@ How many Sundays fell on the first of the month during the twentieth century (1 
 
 ---
 
-## Solution 1: Brute Force Day Iteration
+## Solution 1: Brute Force Day Iteration with Clever Condition
 
 ### Approach
 
-- Start from 1 Jan 1900 (Monday) and iterate through every single day.
-- Track the current day of the week as we advance through dates.
-- Check if each day is both the 1st of the month and a Sunday.
-- Count all such occurrences from 1 Jan 1901 to 31 Dec 2000.
-- This is the most straightforward approach but requires iterating through all 36,525 days.
+- Use Python's `datetime` module to iterate through every single day from 1 Jan 1901 to 31 Dec 2000.
+- Use a clever mathematical condition to check if a day is both the 1st of the month AND a Sunday.
+- The condition `not (dt.day - 1 + (dt.weekday() + 1) % 7)` combines both checks in one expression.
+- Count all matching days.
+- This requires iterating through all 36,525 days in the range.
 
 **Reference:** The full Python implementation is available in [`solution_1.py`](solution_1.py).
 
 ### Detailed Explanation
 
-- **Step 1: Initialization**
-  - Start from 1 Jan 1900: `year = 1900`, `month = 1`, `day = 1`.
-  - Initialize `day_of_week = 1` (Monday, using 0=Sunday convention).
-  - Set `count = 0` to track Sundays on the first.
+- **Step 1: Date Range Setup**
+  - Use `daterange()` generator function to iterate from 1 Jan 1901 to 31 Dec 2000.
+  - The generator yields each date using `timedelta(n)` to advance day by day.
+  - This creates a memory-efficient iterator rather than a large list.
 
-- **Step 2: Day-by-Day Iteration**
-  - The outer loop `while year <= 2000:` continues until the end of year 2000.
-  - The middle loop `while month <= 12:` iterates through all months in a year.
-  - The innermost loop `while day <= days_in_month:` iterates through each day.
-  - **Key check:** `if day == 1 and day_of_week == 0 and year >= 1901:`
-    - Only count if it's the 1st of the month (`day == 1`).
-    - Only count if it's a Sunday (`day_of_week == 0`).
-    - Only count starting from 1901 (`year >= 1901`).
+- **Step 2: Understanding Python's weekday() Convention**
+  - `dt.weekday()` returns: Monday=0, Tuesday=1, ..., Saturday=5, Sunday=6.
+  - We need to detect Sunday (6) and the 1st of month (day=1).
 
-- **Step 3: Day of Week Tracking**
-  - After each day: `day_of_week = (day_of_week + 1) % 7`.
-  - This cycles through: Monday(1) → Tuesday(2) → ... → Saturday(6) → Sunday(0) → Monday(1).
+- **Step 3: The Clever Combined Condition**
+  - The condition is: `if not (dt.day - 1 + (dt.weekday() + 1) % 7):`
+  - This checks if the expression equals 0 (since `not 0` is `True`).
+  - **Breaking it down:**
+    - `dt.day - 1`: This is 0 when `dt.day == 1` (the 1st of the month), otherwise positive.
+    - `(dt.weekday() + 1) % 7`: This converts the weekday representation:
+      - Monday (0) → 1
+      - Tuesday (1) → 2
+      - ...
+      - Saturday (5) → 6
+      - Sunday (6) → 0
+    - **The sum is 0 only when BOTH parts are 0:**
+      - `dt.day - 1 == 0` (it's the 1st) AND
+      - `(dt.weekday() + 1) % 7 == 0` (it's Sunday)
+  - **Example cases:**
+    - Sunday, 1st: `(1-1) + (6+1)%7 = 0 + 0 = 0` ✓ Counted
+    - Sunday, 5th: `(5-1) + (6+1)%7 = 4 + 0 = 4` ✗ Not counted
+    - Monday, 1st: `(1-1) + (0+1)%7 = 0 + 1 = 1` ✗ Not counted
+    - Tuesday, 3rd: `(3-1) + (1+1)%7 = 2 + 2 = 4` ✗ Not counted
 
-- **Step 4: Month and Year Management**
-  - Determine `days_in_month` using the leap year rule:
-    - Most months have fixed days: 31 for Jan, Mar, May, Jul, Aug, Oct, Dec; 30 for Apr, Jun, Sep, Nov.
-    - February: 29 if leap year, 28 otherwise.
-  - **Leap year logic:**
-    ```python
-    if (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0):
-        # It's a leap year
-    ```
-  - After all days in a month: `month += 1`.
-  - After all months in a year: `year += 1`, `month = 1`.
+- **Step 4: Counting Mechanism**
+  - Each time the condition is true, increment the counter.
+  - The loop processes all 36,525 days, checking each one.
 
-- **Efficiency:** This solution iterates through all 36,525 days in the century (including the starting year 1900). While conceptually simple, it performs unnecessary work by checking every single day rather than just the first of each month.
+- **Step 5: Why This Approach Works**
+  - The `datetime` module handles all calendar complexity:
+    - Leap years (including century rules).
+    - Month lengths.
+    - Day-of-week calculations.
+  - The clever condition combines two checks into one expression, avoiding separate `and` logic.
+  - While it checks every day (inefficient), it's still fast enough for this problem size.
+
+- **Efficiency:** This solution iterates through all 36,525 days in the century, performing a check for each. While the datetime operations are fast, it does significantly more work than necessary since we only care about the 1,200 first-of-month dates. The clever condition is mathematically elegant but doesn't improve the fundamental iteration cost.
 
 ---
 
@@ -311,7 +322,7 @@ This means the calendar on 1 Jan 2001 is identical to 1 Jan 2401.
 
 | Aspect | Solution 1<br>(Day Iteration) | Solution 2<br>(datetime) | Solution 3<br>(Year Pattern) | Solution 4<br>(Quartet Cycle) |
 |--------|------------------------------|--------------------------|------------------------------|-------------------------------|
-| **Approach** | Iterate all days | Library functions | Precomputed year patterns | Precomputed 4-year cycles |
+| **Approach** | Iterate all days with clever check | Iterate first of months | Precomputed year patterns | Precomputed 4-year cycles |
 | **Iterations** | 36,525 days | 1,200 months | 100 years | 25 cycles |
 | **Dependencies** | None | Python datetime | None | None |
 | **Precomputation** | None | None | 14 patterns (7×2) | 7 quartet arrays |
@@ -336,7 +347,7 @@ This means the calendar on 1 Jan 2001 is identical to 1 Jan 2401.
 - **Solution 2** (datetime library) is the recommended approach for production code: it's concise, reliable, and leverages well-tested library code.
 - **Solution 4** (quartet optimization) demonstrates deep understanding of calendar mathematics and is the most computationally efficient, but at the cost of complexity.
 - **Solution 3** bridges the gap between manual calculation and extreme optimization, showing how recognizing patterns can dramatically improve efficiency.
-- **Solution 1** is valuable for understanding the problem but impractical due to excessive iteration.
+- **Solution 1** is valuable for showing a clever mathematical trick for combining conditions, though it's inefficient due to checking every day rather than just the first of each month.
 - The problem illustrates an important software engineering principle: **use existing, well-tested libraries when available** (Solution 2), but understanding the underlying mathematics (Solutions 3 & 4) enables optimization when needed.
 - The estimate $\frac{1200}{7} \approx 171.4$ is remarkably close to the actual answer, showing that Sundays are roughly evenly distributed across the first of months.
 - All four solutions correctly handle the century leap year rule: 1900 was not a leap year, but 2000 was.
