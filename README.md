@@ -22,6 +22,10 @@ This repository contains Python solutions to Project Euler problems. Each proble
 - **[Problem 14: Longest Collatz Sequence](./problem_014/README.md)**
 - **[Problem 15: Lattice Paths](./problem_015/README.md)**
 - **[Problem 16: Power Digit Sum](./problem_016/README.md)**
+- **[Problem 17: Number Letter Counts](./problem_017/README.md)**
+- **[Problem 18: Maximum Path Sum I](./problem_018/README.md)**
+- **[Problem 19: Counting Sundays](./problem_019/README.md)**
+- **[Problem 20: Factorial Digit Sum](./problem_020/README.md)**
 
 Each problem folder contains one or more solutions with explanations, code, and output.
 
