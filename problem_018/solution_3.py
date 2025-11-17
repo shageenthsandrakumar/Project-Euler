@@ -1,6 +1,4 @@
-
 import numpy as np
-
 text = """75
 95 64
 17 47 82
@@ -18,8 +16,8 @@ text = """75
 04 62 98 27 23 09 70 98 73 93 38 53 60 04 23"""
 
 triangle = [[int(x) for x in line.split()] for line in text.strip().split('\n')]
-
 levels = len(triangle)
+
 def tropical_matmul(A, B):
     result = np.full((A.shape[0], B.shape[1]), -np.inf)
     for i in range(A.shape[0]):
@@ -27,7 +25,7 @@ def tropical_matmul(A, B):
             for k in range(A.shape[1]):
                 result[i, j] = max(result[i, j], A[i, k] + B[k, j])
     return result
-    
+
 current = np.array(triangle[-1], dtype=float).reshape(-1, 1)
     
 for i in range(levels - 2, -1, -1):
