@@ -207,9 +207,7 @@ Find the maximum total from top to bottom of the triangle below:
   - Convert to integer: `int(current[0, 0])`.
 
 - **Library and Practical Notes**
-  - **`mplusa`** is a specialized Python library for max-plus algebra developed by Sébastien Lahaye at Université d'Angers (France). It's used in academic research on discrete event systems and scheduling, but is not available on PyPI and must be obtained from university sources.
-  - **Advantages:** Elegant mathematical framework, demonstrates connection to tropical geometry, can generalize to other semiring problems.
-  - **Disadvantages:** Requires non-standard library installation, more complex than standard DP, overkill for this specific problem.
+  - **`mplusa`** is a specialized Python library for max-plus algebra developed by Sébastien Lahaye at Université d'Angers (France). 
   - **When to use:** Educational purposes, research contexts, or when working with problems naturally expressed in tropical algebra.
 
 - **Efficiency:** This approach performs the same fundamental computations as standard DP—computing the maximum over valid children for each position. The matrix formulation adds some overhead (matrix construction, library calls) but demonstrates that path optimization problems can be expressed as linear algebra in a different algebraic structure. For practical applications, Solutions 1 or 2 are recommended.
