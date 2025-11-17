@@ -16,8 +16,8 @@ text = """75
 
 triangle = [[int(x) for x in line.split()] for line in text.strip().split('\n')]
 levels = len(triangle)
-for row in range(levels-2, -1, -1): 
-    for col in range(len(triangle[row])):
-        triangle[row][col] += max(triangle[row + 1][col], triangle[row + 1][col + 1])
+for i in range(levels-2, -1, -1): 
+    for j in range(len(triangle[i])):
+        triangle[i][j] += max(triangle[i+1][j], triangle[i+1][j+1])
 
 print(triangle[0][0])
