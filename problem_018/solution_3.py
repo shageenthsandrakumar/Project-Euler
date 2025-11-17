@@ -24,10 +24,8 @@ levels = len(triangle)
 current = np.array(triangle[-1], dtype=float).reshape(-1, 1)
     
 for i in range(levels - 2, -1, -1):
-    row_size = i + 1
-    next_row_size = i + 2
-    selector = np.full((row_size, next_row_size), -np.inf)
-    for j in range(row_size):
+    selector = np.full((i+1,i+2), -np.inf)
+    for j in range(i+1):
         selector[j, j] = triangle[i][j]
         selector[j, j + 1] = triangle[i][j]
     current = mp.mult_matrices(selector,current)
