@@ -278,14 +278,6 @@ For row $i$ with values $T[i][0], T[i][1], \ldots, T[i][i]$:
 - Rows: positions in current row
 - Columns: positions in next row
 
-**Entry values:**
-
-$
-\text{selector}[j][k] = \begin{cases}
-T[i][j] & \text{if } k = j \text{ or } k = j+1 \\\\
--\infty & \text{otherwise}
-\end{cases}
-$
 
 **Interpretation:** The selector matrix encodes both:
 1. The values at the current row
@@ -314,60 +306,6 @@ $= T[i][j] + \max(M[i+1][j], M[i+1][j+1])$
 
 This is exactly the DP recurrence! The tropical matrix multiplication naturally computes the maximum path sum.
 
-### Worked Example: Small Triangle
-
-Consider the 4-row triangle:
-```
-   3
-  7 4
- 2 4 6
-8 5 9 3
-```
-
-**Step 1: Initialize with bottom row**
-$V_3 = \begin{bmatrix} 8 \\ 5 \\ 9 \\ 3 \end{bmatrix}$
-
-**Step 2: Process row 2** (values $[2, 4, 6]$)
-
-Selector matrix:
-$S_2 = \begin{bmatrix} 
-2 & 2 & -\infty & -\infty \\
--\infty & 4 & 4 & -\infty \\
--\infty & -\infty & 6 & 6
-\end{bmatrix}$
-
-Tropical multiplication $V_2 = S_2 \otimes V_3$:
-$V_2[0] = \max(2+8, 2+5, -\infty, -\infty) = \max(10, 7) = 10$
-$V_2[1] = \max(-\infty, 4+5, 4+9, -\infty) = \max(9, 13) = 13$
-$V_2[2] = \max(-\infty, -\infty, 6+9, 6+3) = \max(15, 9) = 15$
-
-Result: $V_2 = \begin{bmatrix} 10 \\ 13 \\ 15 \end{bmatrix}$
-
-**Step 3: Process row 1** (values $[7, 4]$)
-
-Selector matrix:
-$S_1 = \begin{bmatrix} 
-7 & 7 & -\infty \\
--\infty & 4 & 4
-\end{bmatrix}$
-
-Tropical multiplication $V_1 = S_1 \otimes V_2$:
-$V_1[0] = \max(7+10, 7+13, -\infty) = \max(17, 20) = 20$
-$V_1[1] = \max(-\infty, 4+13, 4+15) = \max(17, 19) = 19$
-
-Result: $V_1 = \begin{bmatrix} 20 \\ 19 \end{bmatrix}$
-
-**Step 4: Process row 0** (value $[3]$)
-
-Selector matrix:
-$S_0 = \begin{bmatrix} 3 & 3 \end{bmatrix}$
-
-Tropical multiplication $V_0 = S_0 \otimes V_1$:
-$V_0[0] = \max(3+20, 3+19) = \max(23, 22) = 23$
-
-Result: $V_0 = \begin{bmatrix} 23 \end{bmatrix}$
-
-**Final answer:** The maximum path sum is $\boxed{23}$, matching the expected result from path $3 \to 7 \to 4 \to 9$.
 
 ### Historical Note on Tropical Algebra
 
