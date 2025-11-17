@@ -173,7 +173,7 @@ Find the maximum total from top to bottom of the triangle below:
       - This shifts the coordinate system: what appears as column 0 in the view is actually column 1 in the original matrix.
     - `np.fill_diagonal(selector[:, 1:], triangle[i])` fills the diagonal of this shifted view.
       - In the view's coordinates: positions `(0,0), (1,1), (2,2), ...`
-      - In the original matrix: positions `(0,1), (1,2), (2,3), ...` — the superdiagonal!
+      - In the original matrix: positions `(0,1), (1,2), (2,3), ...`  the superdiagonal!
     - The view modification directly affects the original matrix, so both diagonals are set.
   - This vectorized approach sets both diagonals efficiently without explicit loops.
 
@@ -210,7 +210,7 @@ Find the maximum total from top to bottom of the triangle below:
   - **`mplusa`** is a specialized Python library for max-plus algebra developed by Sébastien Lahaye at Université d'Angers (France). 
   - **When to use:** Educational purposes, research contexts, or when working with problems naturally expressed in tropical algebra.
 
-- **Efficiency:** This approach performs the same fundamental computations as standard DP—computing the maximum over valid children for each position. The matrix formulation adds some overhead (matrix construction, library calls) but demonstrates that path optimization problems can be expressed as linear algebra in a different algebraic structure. For practical applications, Solutions 1 or 2 are recommended.
+- **Efficiency:** This approach performs the same fundamental computations as standard DP which computes the maximum over valid children for each position. The matrix formulation adds some overhead (matrix construction, library calls) but demonstrates that path optimization problems can be expressed as linear algebra in a different algebraic structure. For practical applications, Solutions 1 or 2 are recommended.
 
 ---
 
