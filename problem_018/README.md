@@ -164,8 +164,8 @@ Find the maximum total from top to bottom of the triangle below:
   - **Vectorized implementation using NumPy:**
     ```python
     selector = np.full((i+1, i+2), -np.inf)
-    np.fill_diagonal(selector, triangle[i])           # Main diagonal (left child)
-    np.fill_diagonal(selector[:, 1:], triangle[i])    # Offset diagonal (right child)
+    np.fill_diagonal(selector, triangle[i])
+    np.fill_diagonal(selector[:, 1:], triangle[i]) 
     ```
   - **How the slicing works:**
     - `np.fill_diagonal(selector, triangle[i])` fills the main diagonal: positions `(0,0), (1,1), (2,2), ...`
