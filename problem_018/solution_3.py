@@ -18,16 +18,18 @@ text = """75
 04 62 98 27 23 09 70 98 73 93 38 53 60 04 23"""
 
 triangle = [[int(x) for x in line.split()] for line in text.strip().split('\n')]
-levels = len(triangle)
-current = np.array(triangle[-1], dtype=float).reshape(-1, 1)
 
+levels = len(triangle)
+    
+current = np.array(triangle[-1], dtype=float).reshape(-1, 1)
+    
 for i in range(levels - 2, -1, -1):
     row_size = i + 1
     next_row_size = i + 2
     selector = np.full((row_size, next_row_size), -np.inf)
     for j in range(row_size):
-        selector[j, j] = 0    
-        selector[j, j + 1] = 0
-    current = mp.mult_matrices(selector,current) + np.array(triangle[i]).reshape(-1, 1)
+        selector[j, j] = triangle[i][j]
+        selector[j, j + 1] = triangle[i][j]
+    current = mp.mult_matrices(selector,current)
     
 print(int(current[0, 0]))
