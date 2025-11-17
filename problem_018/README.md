@@ -370,4 +370,4 @@ The term "tropical" was coined as a tribute to Simon's Brazilian nationality. Th
 - **Problem 67** uses a 100-row triangle and cannot be solved by brute force (which would require checking $2^{99} \approx 6.3 \times 10^{29}$ paths). All three solutions presented here scale to Problem 67 without modification.
 - The dynamic programming solutions reduce the computational complexity from exponential (brute force) to quadratic (processing each cell once), making previously intractable problems easily solvable.
 - Tropical algebra finds real-world applications in scheduling theory, where "maximizing sum" corresponds to finding critical paths, and in network optimization, where finding longest paths determines system bottlenecks.
-- The distributive property in tropical algebra — $a + \max(b, c) = \max(a+b, a+c)$ — is the key mathematical fact that makes tropical matrix multiplication equivalent to the dynamic programming recurrence.
+- The distributive property in tropical algebra ($a + \max(b, c) = \max(a+b, a+c)$) is the key mathematical fact that makes tropical matrix multiplication equivalent to the dynamic programming recurrence.
