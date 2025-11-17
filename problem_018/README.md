@@ -367,7 +367,6 @@ The term "tropical" was coined as a tribute to Simon's Brazilian nationality. Th
 - **Solution 3** (Tropical Matrix Multiplication) demonstrates the deep connection between optimization problems and algebraic structures. While not practical for production use, it provides valuable mathematical insight.
 - The tropical algebra approach shows that the maximum path problem is fundamentally a **linear algebra problem in a different semiring**. This perspective connects discrete optimization to continuous algebraic structures.
 - The `mplusa` library is an academic research tool not widely available through standard package managers. For practical applications, Solutions 1 or 2 are strongly recommended.
-- **Problem 67** uses a 100-row triangle and cannot be solved by brute force (which would require checking $2^{99} \approx 6.3 \times 10^{29}$ paths). All three solutions presented here scale to Problem 67 without modification.
 - The dynamic programming solutions reduce the computational complexity from exponential (brute force) to quadratic (processing each cell once), making previously intractable problems easily solvable.
 - Tropical algebra finds real-world applications in scheduling theory, where "maximizing sum" corresponds to finding critical paths, and in network optimization, where finding longest paths determines system bottlenecks.
 - The distributive property in tropical algebra ( $a + \max(b, c) = \max(a+b, a+c)$ ) is the key mathematical fact that makes tropical matrix multiplication equivalent to the dynamic programming recurrence.
