@@ -33,19 +33,10 @@ current = np.array(triangle[-1], dtype=float).reshape(-1, 1)
 for i in range(levels - 2, -1, -1):
     row_size = i + 1
     next_row_size = i + 2
-        
-        # Create selection matrix: picks max of adjacent pairs
-        # In tropical algebra, this is just a 0/1 matrix
     selector = np.full((row_size, next_row_size), -np.inf)
     for j in range(row_size):
-        selector[j, j] = 0      # Can reach left child (0 cost)
-        selector[j, j + 1] = 0  # Can reach right child (0 cost)
-        
-        # Apply tropical matrix multiplication
-        # This gives us max of each pair
-    current = tropical_matmul(selector, current)
-        
-        # Add current row values
-    current = current + np.array(triangle[i]).reshape(-1, 1)
+        selector[j, j] = 0    
+        selector[j, j + 1] = 0 
+    current = tropical_matmul(selector, current) + np.array(triangle[i]).reshape(-1, 1)
     
 print(int(current[0, 0]))
