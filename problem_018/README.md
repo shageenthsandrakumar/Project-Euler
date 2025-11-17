@@ -279,20 +279,23 @@ For row $i$ with values $T[i][0], T[i][1], \ldots, T[i][i]$:
 - Columns: positions in next row
 
 **Entry values:**
-$$
+
+$
 \text{selector}[j][k] = \begin{cases}
-T[i][j] & \text{if } k = j \text{ or } k = j+1 \\
+T[i][j] & \text{if } k = j \text{ or } k = j+1 \\\\
 -\infty & \text{otherwise}
 \end{cases}
-$$
+$
 
 **Interpretation:** The selector matrix encodes both:
 1. The values at the current row
 2. The adjacency structure (which children are reachable)
 
 The $-\infty$ entries act as "blocked paths" because:
-$$-\infty \otimes x = -\infty + x = -\infty$$
-$$a \oplus (-\infty) = \max(a, -\infty) = a$$
+
+$-\infty \otimes x = -\infty + x = -\infty$
+
+$a \oplus (-\infty) = \max(a, -\infty) = a$
 
 So blocked paths don't contribute to the maximum.
 
