@@ -1,4 +1,6 @@
 import numpy as np
+from mplusa import maxplus as mp
+
 text = """75
 95 64
 17 47 82
@@ -17,24 +19,15 @@ text = """75
 
 triangle = [[int(x) for x in line.split()] for line in text.strip().split('\n')]
 levels = len(triangle)
-
-def tropical_matmul(A, B):
-    result = np.full((A.shape[0], B.shape[1]), -np.inf)
-    for i in range(A.shape[0]):
-        for j in range(B.shape[1]):
-            for k in range(A.shape[1]):
-                result[i, j] = max(result[i, j], A[i, k] + B[k, j])
-    return result
-
 current = np.array(triangle[-1], dtype=float).reshape(-1, 1)
-    
+
 for i in range(levels - 2, -1, -1):
     row_size = i + 1
     next_row_size = i + 2
     selector = np.full((row_size, next_row_size), -np.inf)
     for j in range(row_size):
         selector[j, j] = 0    
-        selector[j, j + 1] = 0 
-    current = tropical_matmul(selector, current) + np.array(triangle[i]).reshape(-1, 1)
+        selector[j, j + 1] = 0
+    current = mp.mult_matrices(selector,current) + np.array(triangle[i]).reshape(-1, 1)
     
 print(int(current[0, 0]))
