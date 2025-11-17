@@ -158,10 +158,24 @@ Find the maximum total from top to bottom of the triangle below:
   - For each row `i` of the triangle, create a **selector matrix** of shape `(i+1) × (i+2)`.
   - The matrix encodes both the triangle values and the adjacency structure (which children are reachable).
   - Most entries are `-np.inf` (which blocks paths in tropical algebra).
-  - For position `j` in row `i`:
-    - Set `selector[j, j] = triangle[i][j]`
-    - Set `selector[j, j+1] = triangle[i][j]`
-  - This encodes that from position `j`, you can reach children `j` or `j+1` in the next row.
+  - The selector matrix has two diagonals set to the row values:
+    - Main diagonal (offset 0): `selector[j, j] = triangle[i][j]` (left child connection)
+    - First superdiagonal (offset 1): `selector[j, j+1] = triangle[i][j]` (right child connection)
+  - **Vectorized implementation using NumPy:**
+    ```python
+    selector = np.full((i+1, i+2), -np.inf)
+    np.fill_diagonal(selector, triangle[i])           # Main diagonal (left child)
+    np.fill_diagonal(selector[:, 1:], triangle[i])    # Offset diagonal (right child)
+    ```
+  - **How the slicing works:**
+    - `np.fill_diagonal(selector, triangle[i])` fills the main diagonal: positions `(0,0), (1,1), (2,2), ...`
+    - `selector[:, 1:]` creates a **view** of the matrix starting from column 1 (skipping column 0).
+      - This shifts the coordinate system: what appears as column 0 in the view is actually column 1 in the original matrix.
+    - `np.fill_diagonal(selector[:, 1:], triangle[i])` fills the diagonal of this shifted view.
+      - In the view's coordinates: positions `(0,0), (1,1), (2,2), ...`
+      - In the original matrix: positions `(0,1), (1,2), (2,3), ...` — the superdiagonal!
+    - The view modification directly affects the original matrix, so both diagonals are set.
+  - This vectorized approach sets both diagonals efficiently without explicit loops.
 
 - **Step 4: Example Selector Matrix**
   - Row 1 of small triangle has values `[7, 4]`.
