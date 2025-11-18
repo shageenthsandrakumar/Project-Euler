@@ -1,4 +1,6 @@
 def d(n):
+    if not n:
+        return n
     orginal_n = n
     power_2 = 0
     while not n%2:
@@ -27,7 +29,7 @@ def d(n):
 threshold = 10000    
 amicable_sum = 0
 d_values = {}
-for a in range(1,threshold):
+for a in range(threshold):
     d_value = d(a)
     if d_values.get(d_value) == a and d_value != a:
         amicable_sum += d_value+a
