@@ -29,9 +29,8 @@ amicable_sum = 0
 d_values = {}
 for a in range(1,10000):
     d_value = d(a)
-    if d_value in d_values:
-        if d_values[d_value] == a and d_value != a:
-            amicable_sum += d_value+a
+    if d_values.get(d_value) == a and d_value != a:
+        amicable_sum += d_value+a
     else:
         d_values[a] = d_value
 print(amicable_sum)
