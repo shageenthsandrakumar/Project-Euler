@@ -24,10 +24,10 @@ def d(n):
     if n > 1:
         answer *= n+1
     return answer-orginal_n
-
+threshold = 10000    
 amicable_sum = 0
 d_values = {}
-for a in range(1,10000):
+for a in range(1,threshold):
     d_value = d(a)
     if d_values.get(d_value) == a and d_value != a:
         amicable_sum += d_value+a
