@@ -67,7 +67,7 @@ What is the millionth lexicographic permutation of the digits 0, 1, 2, 3, 4, 5, 
   - Position 0 maps to the first permutation (0123456789).
   - Position 1 maps to the second permutation (0123456798).
   - Position 999,999 maps to the millionth permutation.
-  - This is **not** about Python's indexing—it's how the factorial number system inherently works.
+  - This is **not** about Python's indexing. It's how the factorial number system inherently works.
   - The system encodes "how many permutations to skip" before reaching your target.
 
 - **Step 3: The Mathematical Principle**
@@ -110,7 +110,7 @@ What is the millionth lexicographic permutation of the digits 0, 1, 2, 3, 4, 5, 
   - At each level, the remainder represents "offset within the current subgroup."
   - A remainder of 0 means "select the first permutation of this subgroup."
   - The remainder naturally provides 0-indexed positions at every recursive level.
-  - This cascading property is what makes the algorithm work—the single `-1` at the start converts from ordinal counting (1st, 2nd, 3rd) to positional indexing (position 0, 1, 2).
+  - This cascading property is what makes the algorithm work. The single `-1` at the start converts from ordinal counting (1st, 2nd, 3rd) to positional indexing (position 0, 1, 2).
 
 - **Step 8: Connecting to Intuition**
   - Think of it like this analogy:
@@ -189,7 +189,7 @@ After that, every modulo operation maintains the 0-indexed structure naturally b
 - **Floor division counts completed groups**: `n // k` counts how many full groups fit before reaching n
 - **Group boundaries are multiples**: Positions 0, k, 2k, 3k, ... start new groups
 
-This is not an implementation detail—it's a mathematical property of modular arithmetic and factorial number systems.
+This is not an implementation detail. It's a mathematical property of modular arithmetic and factorial number systems.
 
 ---
 
