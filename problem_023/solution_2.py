@@ -34,8 +34,8 @@ for a in range(1,threshold):
     if d(a) > a:
         abundant_numbers.append(a)
 abundant_numbers = np.array(abundant_numbers)
-all_sums = abundant_numbers[:, None] + abundant_numbers
-valid_sums = all_sums[all_sums < threshold]
-is_non_abundant[valid_sums] = False
+i_values, j_values = np.triu_indices(len(abundant_numbers))
+all_sums = abundant_numbers[i_values] + abundant_numbers[j_values]
+is_non_abundant[all_sums[all_sums < threshold]] = False
 answer = sum(np.nonzero(is_non_abundant)[0])
 print(answer)
