@@ -37,4 +37,5 @@ abundant_numbers = np.array(abundant_numbers)
 all_sums = abundant_numbers[:, None] + abundant_numbers
 valid_sums = all_sums[all_sums < threshold]
 is_non_abundant[valid_sums] = False
-print(sum(np.nonzero(is_non_abundant)[0]))
+answer = sum(np.nonzero(is_non_abundant)[0])
+print(answer)
