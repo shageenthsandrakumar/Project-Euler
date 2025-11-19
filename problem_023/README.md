@@ -69,7 +69,7 @@ Find the sum of all the positive integers which cannot be written as the sum of 
 
 - **Step 4: Computing the Final Answer**
   - Calculate the sum of all integers from 1 to 28123 using the formula:
-    - $\text{sum}(1 \text{ to } n) = \frac{n(n-1)}{2}$
+    - $\text{sum}(1 \text{ to } n-1) = \frac{n(n-1)}{2}$
     - For threshold = 28124 (since we want numbers below 28124): `threshold * (threshold - 1) // 2`
   - Calculate the sum of all numbers that CAN be expressed as abundant sums: `sum(abundant_sums)`.
   - Subtract: `answer = (total sum) - (sum of abundant sums)`.
