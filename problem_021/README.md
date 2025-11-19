@@ -21,7 +21,7 @@ Evaluate the sum of all the amicable numbers under $10000$.
 - Compute $d(n)$ for each number from $0$ to $9999$ using an efficient factorization algorithm with wheel factorization.
 - Use a **dictionary** to track computed values and identify amicable pairs.
 - For each number $a$, compute $d(a)$ and check if we've already seen a number $b$ where $d(b) = a$.
-- If such a pair exists and $a \neq b$, we've found an amicable pair—add both numbers to the sum.
+- If such a pair exists and $a \neq b$, we've found an amicable pair. Add both numbers to the sum.
 - Store $d(a)$ in the dictionary for future lookups.
 - This approach identifies each amicable pair exactly once by checking if the "reverse direction" has already been computed.
 
@@ -114,8 +114,8 @@ Evaluate the sum of all the amicable numbers under $10000$.
   - **Key optimization:** `if d_value < a:`.
   - **Why this condition?**
     - For an amicable pair $(x, y)$ with $x < y$, we have two cases:
-      - When processing $x$: $d(x) = y$ where $y > x$, so the condition fails—skip.
-      - When processing $y$: $d(y) = x$ where $x < y$, so the condition passes—check the pair.
+      - When processing $x$: $d(x) = y$ where $y > x$, so the condition fails and we skip the pair.
+      - When processing $y$: $d(y) = x$ where $x < y$, so the condition passes and we check the pair.
     - This ensures each pair is examined exactly once, when we reach the larger element.
   - **Verification:** `if d(d_value) == a:`.
     - This checks if $d(d(a)) = a$, confirming the amicable relationship.
@@ -135,9 +135,8 @@ Evaluate the sum of all the amicable numbers under $10000$.
     - At that point, the smaller number's $d$ value is guaranteed to be cached.
 
 - **Step 5: Example Walkthrough (220, 284)**
-  - When `a = 220`: Compute $d(220) = 284$ (cached). Since $284 > 220$, condition fails—skip.
-  - When `a = 284`: Compute $d(284) = 220$ (cached). Since $220 < 284$, condition passes. Check $d(220)$ → cache hit returns $284$. Since $d(220) = 284 = a$, wait... let me recalculate.
-  - Actually: When `a = 284`, we have `d_value = d(284) = 220`. Since $220 < 284$, we check `d(d_value) = d(220) = 284`. Since $284 = a$, we add $220 + 284 = 504$.
+  - When `a = 220`: Compute $d(220) = 284$ (cached). Since $284 > 220$, condition fails.
+  - When `a = 284`: Compute $d(284) = 220$ (cached). Since $220 < 284$, condition passes. Check $d(220)$ → cache hit returns $284$. Since $d(220) = 284 = a$, we add $220 + 284 = 504$.
 
 - **Step 6: The Boolean Multiplication Trick**
   - Instead of writing:
