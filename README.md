@@ -26,6 +26,11 @@ This repository contains Python solutions to Project Euler problems. Each proble
 - **[Problem 18: Maximum Path Sum I](./problem_018/README.md)**
 - **[Problem 19: Counting Sundays](./problem_019/README.md)**
 - **[Problem 20: Factorial Digit Sum](./problem_020/README.md)**
+- **[Problem 21: Amicable Numbers](./problem_021/README.md)**
+- **[Problem 22: Names Scores](./problem_022/README.md)**
+- **[Problem 23: Non-Abundant Sums](./problem_023/README.md)**
+- **[Problem 24: Lexicographic Permutations](./problem_024/README.md)**
+- **[Problem 25: 1000-digit Fibonacci Number](./problem_025/README.md)**
 
 Each problem folder contains one or more solutions with explanations, code, and output.
 
