@@ -122,7 +122,7 @@ Evaluate the sum of all the amicable numbers under $10000$.
     - Thanks to memoization, `d(d_value)` is typically a cache hit, making this check very fast.
   - **Accumulate sum:** Use a clever multiplication trick: `amicable_sum += (d_value + a) * int(d(d_value) == a)`.
     - The expression `int(d(d_value) == a)` evaluates to $1$ if true, $0$ if false.
-    - This avoids an explicit `if` statement, adding `d_value)+a` only when the condition is met.
+    - This avoids an explicit `if` statement, adding `d_value+a` only when the condition is met.
     - Multiplying by the boolean-as-integer is a compact way to conditionally add values.
 
 - **Step 4: Why Memoization and Inequality Work Together**
