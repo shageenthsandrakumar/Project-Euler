@@ -32,9 +32,13 @@ for a in range(1,threshold):
     if d(a) > a:
         abundant_numbers.append(a)
 abundant_sums = set()
-for i in range(n):
-        for j in range(i, n):
-            if abundant_numbers[i]+abundant_numbers[j] < threshold:
-                abundant_sums.add(abundant_numbers[i]+abundant_numbers[j])
+L = len(abundant_numbers)
+for i in range(L):
+        for j in range(i, L):
+            s = abundant_numbers[i]+abundant_numbers[j] 
+            if s < threshold:
+                abundant_sums.add(s)
+            else:
+                break
 answer = threshold*(threshold-1)//2-sum(abundant_sums)
 print(answer)
