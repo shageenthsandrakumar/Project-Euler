@@ -1,5 +1,7 @@
 from functools import lru_cache
-@lru_cache(maxsize=None)
+amicable_sum = 0
+threshold = 10000
+@lru_cache(maxsize=threshold+1)
 def d(n):
     if not n:
         return float('inf')
@@ -28,8 +30,6 @@ def d(n):
     if n > 1:
         answer *= n+1
     return answer-orginal_n
-amicable_sum = 0
-threshold = 10000
 for a in range(threshold):
     d_value = d(a)
     if d_value < a:
