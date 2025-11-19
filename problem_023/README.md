@@ -122,7 +122,6 @@ Find the sum of all the positive integers which cannot be written as the sum of 
 
 - **Step 5: Compute All Sums Vectorized**
   - Calculate all sums at once: `all_sums = abundant_numbers[i_values] + abundant_numbers[j_values]`.
-  - This single line computes all $\frac{n(n+1)}{2}$ sums where $n$ is the count of abundant numbers.
   - For 6,965 abundant numbers, this generates approximately 24.3 million sums instantly.
   - NumPy performs this operation in highly optimized C code, making it much faster than Python loops.
 
