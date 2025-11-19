@@ -1,7 +1,5 @@
 import numpy as np
 def d(n):
-    if not n:
-        return float('inf')
     orginal_n = n
     power_2 = 0
     while not n%2:
