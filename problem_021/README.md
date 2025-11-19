@@ -59,7 +59,7 @@ Evaluate the sum of all the amicable numbers under $10000$.
   - Compute `d_value = d(a)`.
   - **Check for amicable pair:**
     - Look up `d_values.get(d_value)`.
-    - If this returns $a$ and $d\_value \neq a$, we've found an amicable pair.
+    - If this returns $a$ and `d_value` $\neq a$, we've found an amicable pair.
     - **Why this works:** We previously computed `d(d_value) = a`, stored it in the dictionary, and now we've found `d(a) = d_value`.
     - This confirms that `d(a) = d_value` and `d(d_value) = a` with $a \neq$ `d_value`.
   - **Add both numbers:** When a pair is found, add `d_value + a` to the running sum.
@@ -245,5 +245,5 @@ This reduces the search space by approximately $66\%$ compared to checking all n
 - The wheel factorization optimization (checking only $6k \pm 1$ candidates) provides significant speedup over naive trial division.
 - Both solutions correctly handle the edge case of $n = 0$ by returning `float('inf')`, though this doesn't affect the problem since we only check $n \geq 1$.
 - The inequality optimization ($d(a) < a$) is mathematically elegant: it ensures each pair is counted exactly once by deferring the check until we reach the larger element, at which point the smaller element's value is guaranteed to be cached.
-- Perfect numbers (where $d(n) = n$) are automatically excluded by the condition $a \neq b$ (or $d\_value \neq a$).
+- Perfect numbers (where $d(n) = n$) are automatically excluded by the condition $a \neq b$ (or `d_value` $\neq a$).
 - The problem demonstrates the power of combining efficient algorithms (wheel factorization), mathematical properties (multiplicativity of $\sigma$), and programming techniques (memoization, dictionary lookups) to solve number theory problems efficiently.
