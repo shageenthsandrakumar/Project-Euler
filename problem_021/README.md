@@ -14,7 +14,7 @@ Evaluate the sum of all the amicable numbers under $10000$.
 
 ---
 
-## Solution 1: Dictionary-Based Pair Tracking
+## Solution 1: Dictionary-Based Pair Tracking with Edge Case Handling
 
 ### Approach
 
@@ -23,7 +23,7 @@ Evaluate the sum of all the amicable numbers under $10000$.
 - For each number $a$, compute $d(a)$ and check if we've already seen a number $b$ where $d(b) = a$.
 - If such a pair exists and $a \neq b$, we've found an amicable pair. Add both numbers to the sum.
 - Store $d(a)$ in the dictionary for future lookups.
-- This approach identifies each amicable pair exactly once by checking if the "reverse direction" has already been computed.
+- **Edge case handling:** After the main loop, check for pairs where one number is below the threshold but its amicable partner is above it.
 
 **Reference:** The full Python implementation is available in [`solution_1.py`](solution_1.py).
 
@@ -61,7 +61,7 @@ Evaluate the sum of all the amicable numbers under $10000$.
     - Look up `d_values.get(d_value)`.
     - If this returns $a$ and `d_value` $\neq a$, we've found an amicable pair.
     - **Why this works:** We previously computed `d(d_value) = a`, stored it in the dictionary, and now we've found `d(a) = d_value`.
-    - This confirms that `d(a) = d_value` and `d(d_value) = a` with $a \neq$ `d_value`.
+    - This confirms that `d(a) = d_value` and `d(d_value) = a$ with $a \neq$ `d_value`.
   - **Add both numbers:** When a pair is found, add `d_value + a` to the running sum.
     - This adds both members of the pair in a single operation.
   - **Store the current value:** If no pair is found, store `d_values[a] = d_value` for future lookups.
@@ -72,25 +72,42 @@ Evaluate the sum of all the amicable numbers under $10000$.
     - When we process $b$: We compute $d(b) = a$. Now `d_values.get(a)` returns $b$ (which we stored earlier). Since $d(a) = b$ and $d(b) = a$ with $a \neq b$, we add both to the sum.
   - The pair is only counted when we reach the larger element $b$.
 
-- **Step 5: Example Walkthrough (220, 284)**
-  - When `a = 220`: Compute $d(220) = 284$. Check `d_values.get(284)` → not found (284 hasn't been processed). Store `d_values[220] = 284`.
-  - When `a = 284`: Compute $d(284) = 220$. Check `d_values.get(220)` → returns $284$. Since $284 = 220$? No, but $d(220) = 284$ and $d(284) = 220$ with $220 \neq 284$, add $220 + 284 = 504$ to the sum.
+- **Step 5: Edge Case Handling - Cross-Threshold Pairs**
+  - **The problem:** What if there's an amicable pair like $(9500, 12000)$ where one number is below the threshold but its partner is above?
+  - After the main loop completes, we have stored all $d(a)$ values for $a < 10000$ in the dictionary.
+  - **Second loop:** Iterate through all keys in the dictionary.
+    - For each `a` in `d_values`, check if `d_value = d_values[a]` is $\geq$ threshold.
+    - If `d_value >= threshold` and `d_value != a`, verify if $d(d\_value) = a$.
+    - **Optimization trick:** Use `amicable_sum += a*int(d(d_value)==a)` to avoid nested if statements.
+    - The expression `int(d(d_value)==a)` evaluates to $1$ if true, $0$ if false.
+    - This adds $a$ only when the amicable relationship is confirmed.
+  - **Why this is necessary:** Without this check, a number like $9500$ would never be counted even though it has an amicable partner.
+  - **Efficiency consideration:** The condition `threshold <= d_value < float('inf')` ensures we skip $n = 0$ (which returns infinity) and only check relevant candidates.
 
-- **Efficiency:** This solution processes each number from $0$ to $9999$ exactly once, computing its proper divisor sum using optimized factorization. The dictionary lookup is $O(1)$, making pair detection very fast. The wheel factorization reduces the number of trial divisions significantly compared to naive approaches.
+- **Step 6: Example Walkthrough (220, 284)**
+  - When `a = 220`: Compute $d(220) = 284$. Check `d_values.get(284)` → not found (284 hasn't been processed). Store `d_values[220] = 284`.
+  - When `a = 284`: Compute $d(284) = 220$. Check `d_values.get(220)` → returns $284$. Since $d(220) = 284$ and $d(284) = 220$ with $220 \neq 284$, add $220 + 284 = 504$ to the sum.
+
+- **Step 7: Example Walkthrough for Edge Case (9500, 12000 - Hypothetical)**
+  - When `a = 9500`: Compute $d(9500) = 12000$. Check `d_values.get(12000)` → not found. Store `d_values[9500] = 12000`.
+  - Main loop ends at $a = 9999$.
+  - Second loop: When checking `a = 9500`, find `d_value = 12000 >= threshold`. Compute $d(12000) = 9500$. Since this equals $a$, add $9500$ to the sum.
+
+- **Efficiency:** This solution processes each number from $0$ to $9999$ exactly once, computing its proper divisor sum using optimized factorization. The dictionary lookup is $O(1)$, making pair detection very fast. The second loop only checks numbers below the threshold, and computes $d(n)$ for numbers above the threshold only when necessary. The wheel factorization reduces the number of trial divisions significantly compared to naive approaches.
 
 ---
 
-## Solution 2: Memoized Function with Inequality Check
+## Solution 2: Memoized Function with Inequality Check and Edge Case Handling
 
 ### Approach
 
 - Use **memoization** to cache the results of $d(n)$ computations, avoiding redundant calculations.
 - Apply the `@lru_cache` decorator to automatically store and retrieve previously computed values.
 - For each number $a < 10000$, compute $d(a)$.
-- **Optimization:** Only check for amicable pairs when $d(a) < a$.
-  - This ensures each pair is counted exactly once when we reach the larger number.
-- When $d(a) < a$, verify if $d(d(a)) = a$ (the defining property of amicable numbers).
-- If verified, add both $a$ and $d(a)$ to the running sum.
+- **Optimization:** Check for amicable pairs using two conditions:
+  - When $d(a) < a$: Both numbers are below threshold, verify and add both.
+  - When $d(a) \geq$ threshold: One number is above threshold, verify and add only $a$.
+- This dual-condition approach handles all cases elegantly in a single loop.
 
 **Reference:** The full Python implementation is available in [`solution_2.py`](solution_2.py).
 
@@ -108,50 +125,59 @@ Evaluate the sum of all the amicable numbers under $10000$.
   - Same implementation as Solution 1, using wheel factorization for efficiency.
   - Returns $\sigma(n) - n$, the sum of proper divisors.
 
-- **Step 3: Main Loop with Inequality Optimization**
+- **Step 3: Main Loop with Dual-Condition Logic**
   - Loop through all numbers: `for a in range(threshold):`.
   - Compute `d_value = d(a)`.
-  - **Key optimization:** `if d_value < a:`.
-  - **Why this condition?**
-    - For an amicable pair $(x, y)$ with $x < y$, we have two cases:
-      - When processing $x$: $d(x) = y$ where $y > x$, so the condition fails and we skip the pair.
-      - When processing $y$: $d(y) = x$ where $x < y$, so the condition passes and we check the pair.
-    - This ensures each pair is examined exactly once, when we reach the larger element.
-  - **Verification:** `if d(d_value) == a:`.
-    - This checks if $d(d(a)) = a$, confirming the amicable relationship.
-    - Thanks to memoization, `d(d_value)` is typically a cache hit, making this check very fast.
-  - **Accumulate sum:** Use a clever multiplication trick: `amicable_sum += (d_value + a) * int(d(d_value) == a)`.
-    - The expression `int(d(d_value) == a)` evaluates to $1$ if true, $0$ if false.
-    - This avoids an explicit `if` statement, adding `d_value+a` only when the condition is met.
-    - Multiplying by the boolean-as-integer is a compact way to conditionally add values.
+  - **Condition 1:** `if d_value < a:`.
+    - **Why this condition?**
+      - For an amicable pair $(x, y)$ with $x < y < $ threshold, we have:
+        - When processing $x$: $d(x) = y$ where $y > x$, so the condition fails and we skip.
+        - When processing $y$: $d(y) = x$ where $x < y$, so the condition passes and we check the pair.
+      - This ensures each pair where both numbers are below threshold is examined exactly once.
+    - **Verification:** Check if $d(d\_value) = a$.
+    - **Accumulate sum:** `amicable_sum += (d_value+a)*int(d(d_value) == a)`.
+      - The expression `int(d(d_value) == a)` evaluates to $1$ if true, $0$ if false.
+      - This adds `d_value+a` (both numbers) only when the amicable relationship is confirmed.
+  - **Condition 2:** `elif threshold <= d_value < float('inf'):`.
+    - **Edge case handling:** This catches pairs where $a <$ threshold but $d(a) \geq$ threshold.
+    - For example, if $d(9500) = 12000$, this condition triggers when processing $a = 9500$.
+    - **Verification:** Check if $d(d\_value) = a$.
+    - **Accumulate sum:** `amicable_sum += a*int(d(d_value) == a)`.
+      - Add only $a$ (the number below threshold), not $d\_value$.
+    - **Why check `< float('inf')`?** To exclude the edge case where $d(0) = \infty$.
 
-- **Step 4: Why Memoization and Inequality Work Together**
+- **Step 4: Why Memoization and Dual Conditions Work Together**
   - **Cache hits maximize efficiency:**
     - When we process $a$ and compute $d(a)$, the result is cached.
-    - When we later process $d(a)$ and need to compute $d(d(a))$, it's a cache hit.
-    - This synergy is particularly powerful because $d(a) < a$ means we've already processed $d(a)$ earlier in the loop.
-  - **Inequality prevents double-counting:**
-    - By only acting when $d(a) < a$, we defer the check until we reach the larger number in the pair.
-    - At that point, the smaller number's $d$ value is guaranteed to be cached.
+    - When we check $d(d(a))$ for verification, it's almost always a cache hit.
+    - For Condition 1: $d(a) < a$ means we've already processed $d(a)$ earlier, so its value is definitely cached.
+    - For Condition 2: Even though $d(a) \geq$ threshold (potentially uncached), computing it once and caching ensures subsequent accesses are fast.
+  - **Dual conditions prevent double-counting:**
+    - Condition 1 handles pairs where both numbers are below threshold, counting each pair once when we reach the larger number.
+    - Condition 2 handles cross-threshold pairs, ensuring the number below threshold is counted.
+    - Together, they cover all possible amicable relationships involving at least one number below threshold.
 
 - **Step 5: Example Walkthrough (220, 284)**
-  - When `a = 220`: Compute $d(220) = 284$ (cached). Since $284 > 220$, condition fails.
-  - When `a = 284`: Compute $d(284) = 220$ (cached). Since $220 < 284$, condition passes. Check $d(220)$ → cache hit returns $284$. Since $d(220) = 284 = a$, we add $220 + 284 = 504$.
+  - When `a = 220`: Compute $d(220) = 284$ (cached). Since $284 > 220$ and $284 <$ threshold, neither condition triggers.
+  - When `a = 284`: Compute $d(284) = 220$ (cached). Since $220 < 284$, Condition 1 passes. Check $d(220)$ → cache hit returns $284$. Since $d(220) = 284 = a$, we add $220 + 284 = 504$.
 
-- **Step 6: The Boolean Multiplication Trick**
-  - Instead of writing:
+- **Step 6: Example Walkthrough for Edge Case (9500, 12000 - Hypothetical)**
+  - When `a = 9500`: Compute $d(9500) = 12000$ (cached). Since $12000 \geq$ threshold, Condition 2 passes. Compute $d(12000) = 9500$ (newly cached). Since $d(12000) = 9500 = a$, we add $9500$.
+
+- **Step 7: The Boolean Multiplication Trick**
+  - Instead of writing nested if statements:
     ```python
     if d(d_value) == a:
-        amicable_sum += d_value + a
+        amicable_sum += ...
     ```
   - We write:
     ```python
-    amicable_sum += (d_value + a) * int(d(d_value) == a)
+    amicable_sum += ... * int(d(d_value) == a)
     ```
-  - This is more compact and eliminates a branch in the code, which can be marginally faster.
+  - This is more compact and eliminates a branch in the code.
   - The expression `int(True)` evaluates to $1$, and `int(False)` evaluates to $0$.
 
-- **Efficiency:** Memoization ensures that each unique value of $d(n)$ is computed at most once. The inequality check reduces the number of verification steps by half, and ensures that `d(d_value)` is almost always a cache hit. The combination makes this solution very fast in practice.
+- **Efficiency:** Memoization ensures that each unique value of $d(n)$ is computed at most once. The dual-condition approach elegantly handles both standard pairs and edge cases in a single pass. The inequality check in Condition 1 ensures that `d(d_value)` is almost always a cache hit. The combination makes this solution very fast and remarkably concise.
 
 ---
 
@@ -209,16 +235,18 @@ This reduces the search space by approximately $66\%$ compared to checking all n
 
 ## Comparison of Solutions
 
-| Aspect | Solution 1 (Dictionary) | Solution 2 (Memoization + Inequality) |
-|--------|-------------------------|---------------------------------------|
-| **Approach** | Track pairs with dictionary | Cache with inequality optimization |
+| Aspect | Solution 1 (Dictionary) | Solution 2 (Memoization) |
+|--------|-------------------------|--------------------------|
+| **Approach** | Track pairs with dictionary | Cache with dual conditions |
 | **Caching** | Manual dictionary storage | Automatic with `@lru_cache` |
-| **Pair Detection** | Check if reverse exists in dict | Check $d(a) < a$ then verify |
+| **Pair Detection** | Check if reverse exists in dict | Check $d(a) < a$ or $d(a) \geq$ threshold |
+| **Edge Case Handling** | Separate second loop | Integrated into main loop |
 | **Cache Efficiency** | Stores only processed values | Stores all computed values |
-| **Double-Counting Prevention** | Dictionary lookup logic | Inequality condition |
+| **Double-Counting Prevention** | Dictionary lookup logic | Inequality and threshold conditions |
 | **Code Clarity** | ★★★★☆ | ★★★★★ |
+| **Lines of Code** | More lines (explicit logic) | Fewer lines (compact conditionals) |
 | **Speed** | Very fast | Very fast |
-| **Best For** | Explicit pair tracking | Clean, Pythonic solution |
+| **Best For** | Explicit control and clarity | Elegance and conciseness |
 
 ---
 
@@ -240,10 +268,12 @@ This reduces the search space by approximately $66\%$ compared to checking all n
   - $(5020, 5564)$ → sum: $10584$
   - $(6232, 6368)$ → sum: $12600$
   - **Total:** $504 + 2394 + 5544 + 10584 + 12600 = 31626$
-- **Solution 2** is the more elegant approach, using Python's built-in memoization and a clean inequality check.
-- **Solution 1** provides more explicit control over pair tracking and may be easier to understand for those unfamiliar with decorators.
+- **Solution 2** is the more elegant approach, handling edge cases within the main loop using a clean dual-condition structure.
+- **Solution 1** provides more explicit control with a separate loop for edge cases, which may be easier to understand and modify.
+- Both solutions correctly handle the important edge case of **cross-threshold pairs** where one amicable number is below 10,000 but its partner is above. This ensures completeness.
 - The wheel factorization optimization (checking only $6k \pm 1$ candidates) provides significant speedup over naive trial division.
 - Both solutions correctly handle the edge case of $n = 0$ by returning `float('inf')`, though this doesn't affect the problem since we only check $n \geq 1$.
-- The inequality optimization ($d(a) < a$) is mathematically elegant: it ensures each pair is counted exactly once by deferring the check until we reach the larger element, at which point the smaller element's value is guaranteed to be cached.
+- The inequality optimization ($d(a) < a$) in Solution 2 is mathematically elegant: it ensures each in-range pair is counted exactly once by deferring the check until we reach the larger element, at which point the smaller element's value is guaranteed to be cached.
 - Perfect numbers (where $d(n) = n$) are automatically excluded by the condition $a \neq b$ (or `d_value` $\neq a$).
-- The problem demonstrates the power of combining efficient algorithms (wheel factorization), mathematical properties (multiplicativity of $\sigma$), and programming techniques (memoization, dictionary lookups) to solve number theory problems efficiently.
+- The boolean multiplication trick `int(condition)` used in both solutions is a compact way to conditionally add values without explicit nested if statements.
+- The problem demonstrates the power of combining efficient algorithms (wheel factorization), mathematical properties (multiplicativity of $\sigma$), and programming techniques (memoization, dictionary lookups, conditional logic) to solve number theory problems efficiently and correctly.
