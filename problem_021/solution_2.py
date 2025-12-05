@@ -34,4 +34,6 @@ for a in range(threshold):
     d_value = d(a)
     if d_value < a:
         amicable_sum += (d_value+a)*int(d(d_value) == a)
+    elif threshold <= d_value < float('inf'):
+        amicable_sum += a*int(d(d_value) == a)
 print(amicable_sum)
