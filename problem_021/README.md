@@ -61,7 +61,7 @@ Evaluate the sum of all the amicable numbers under $10000$.
     - Look up `d_values.get(d_value)`.
     - If this returns $a$ and `d_value` $\neq a$, we've found an amicable pair.
     - **Why this works:** We previously computed `d(d_value) = a`, stored it in the dictionary, and now we've found `d(a) = d_value`.
-    - This confirms that `d(a) = d_value` and `d(d_value) = a$ with $a \neq$ `d_value`.
+    - This confirms that `d(a) = d_value` and `d(d_value) = a' with $a \neq$ `d_value`.
   - **Add both numbers:** When a pair is found, add `d_value + a` to the running sum.
     - This adds both members of the pair in a single operation.
   - **Store the current value:** If no pair is found, store `d_values[a] = d_value` for future lookups.
