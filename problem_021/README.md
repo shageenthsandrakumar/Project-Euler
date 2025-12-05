@@ -77,7 +77,7 @@ Evaluate the sum of all the amicable numbers under $10000$.
   - After the main loop completes, we have stored all $d(a)$ values for $a < 10000$ in the dictionary.
   - **Second loop:** Iterate through all keys in the dictionary.
     - For each `a` in `d_values`, check if `d_value = d_values[a]` is $\geq$ threshold.
-    - If `d_value >= threshold` and `d_value != a`, verify if $d(d\_value) = a$.
+    - If `d_value >= threshold` and `d_value != a`, verify if `d(d_value) = a`.
     - **Optimization trick:** Use `amicable_sum += a*int(d(d_value)==a)` to avoid nested if statements.
     - The expression `int(d(d_value)==a)` evaluates to $1$ if true, $0$ if false.
     - This adds $a$ only when the amicable relationship is confirmed.
@@ -134,14 +134,14 @@ Evaluate the sum of all the amicable numbers under $10000$.
         - When processing $x$: $d(x) = y$ where $y > x$, so the condition fails and we skip.
         - When processing $y$: $d(y) = x$ where $x < y$, so the condition passes and we check the pair.
       - This ensures each pair where both numbers are below threshold is examined exactly once.
-    - **Verification:** Check if $d(d\_value) = a$.
+    - **Verification:** Check if `d(d_value) = a`.
     - **Accumulate sum:** `amicable_sum += (d_value+a)*int(d(d_value) == a)`.
       - The expression `int(d(d_value) == a)` evaluates to $1$ if true, $0$ if false.
       - This adds `d_value+a` (both numbers) only when the amicable relationship is confirmed.
   - **Condition 2:** `elif threshold <= d_value < float('inf'):`.
     - **Edge case handling:** This catches pairs where $a <$ threshold but $d(a) \geq$ threshold.
     - For example, if $d(9500) = 12000$, this condition triggers when processing $a = 9500$.
-    - **Verification:** Check if $d(d\_value) = a$.
+    - **Verification:** Check if `d(d_value) = a`.
     - **Accumulate sum:** `amicable_sum += a*int(d(d_value) == a)`.
       - Add only $a$ (the number below threshold), not $d\_value$.
     - **Why check `< float('inf')`?** To exclude the edge case where $d(0) = \infty$.
