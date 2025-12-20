@@ -14,7 +14,7 @@ def cycle_length(d):
 
 threshold = 1000
 d_max = 0
-max_length = 0
+max_length = -1
 for d in range(threshold):
     length = cycle_length(d)
     if length > max_length:
