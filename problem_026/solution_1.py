@@ -8,8 +8,7 @@ def cycle_length(d):
     if not d-1:
         return 0
     length = 1
-    remainder = 1
-    remainder = 10*remainder%d
+    remainder = 10%d
     while remainder-1:
         remainder = 10*remainder%d
         length += 1
