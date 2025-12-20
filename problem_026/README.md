@@ -73,7 +73,7 @@ Find the value of $d < 1000$ for which $1/d$ contains the longest recurring cycl
   - Initialize: `length = 1`, `remainder = 10 % d`
   - The loop continues: `while remainder != 1`
   - In each iteration:
-    - Compute new remainder: `_, remainder = divmod(10*remainder, d)`
+    - Compute new remainder: `remainder = 10*remainder%d`
     - Increment cycle length: `length += 1`
   - **Why check for remainder = 1?**
     - When the remainder returns to 1, we're back to where we started
