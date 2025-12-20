@@ -8,7 +8,7 @@ def cycle_length(d):
     if not d-1:
         return 0
     power = 1
-    while pow(10,power,d)-1:  # 10^power ≡ 1 (mod d)
+    while pow(10,power,d)-1:  # (10^power) mod d != 1 
         power += 1
     return power
 
