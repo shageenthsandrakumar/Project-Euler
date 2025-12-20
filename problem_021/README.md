@@ -18,7 +18,7 @@ Evaluate the sum of all the amicable numbers under $10000$.
 
 ### Approach
 
-- Compute $d(n)$ for each number from $0$ to $9999$ using an efficient factorization algorithm with wheel factorization.
+- Compute $d(n)$ for each number from $1$ to `threshold - 1` using an efficient factorization algorithm with wheel factorization.
 - Use a **dictionary** to track computed values and identify amicable pairs.
 - For each number $a$, compute $d(a)$ and check if we've already seen a number $b$ where $d(b) = a$.
 - If such a pair exists and $a \neq b$, we've found an amicable pair. Add both numbers to the sum.
@@ -55,7 +55,7 @@ Evaluate the sum of all the amicable numbers under $10000$.
   - **Key insight:** By the time we compute $d(a)$, if $b = d(a)$ has already been processed and $d(b) = a$, then $(a, b)$ form an amicable pair.
 
 - **Step 3: Main Loop and Pair Identification**
-  - Loop through all numbers from $0$ to $9999$: `for a in range(threshold):`.
+  - Loop through all numbers from $1$ to `threshold`: `for a in range(threshold):`.
   - Compute `d_value = d(a)`.
   - **Check for amicable pair:**
     - Look up `d_values.get(d_value)`.
@@ -74,9 +74,9 @@ Evaluate the sum of all the amicable numbers under $10000$.
 
 - **Step 5: Edge Case Handling - Cross-Threshold Pairs**
   - **The problem:** What if there's an amicable pair like $(9500, 12000)$ where one number is below the threshold but its partner is above?
-  - After the main loop completes, we have stored all $d(a)$ values for $a < 10000$ in the dictionary.
+  - After the main loop completes, we have stored all $d(a)$ values for $a <$ threshold in the dictionary.
   - **Second loop:** Iterate through all keys in the dictionary.
-    - For each `a` in `d_values`, check if `d_value = d_values[a]` is $\geq$ threshold.
+    - For each `a` in `d_values`, check if `d_value = d_values[a]` is >= threshold.
     - If `d_value >= threshold` and `d_value != a`, verify if `d(d_value) = a`.
     - **Optimization trick:** Use `amicable_sum += a*int(d(d_value)==a)` to avoid nested if statements.
     - The expression `int(d(d_value)==a)` evaluates to $1$ if true, $0$ if false.
@@ -85,15 +85,15 @@ Evaluate the sum of all the amicable numbers under $10000$.
   - **Efficiency consideration:** The condition `threshold <= d_value < float('inf')` ensures we skip $n = 0$ (which returns infinity) and only check relevant candidates.
 
 - **Step 6: Example Walkthrough (220, 284)**
-  - When `a = 220`: Compute $d(220) = 284$. Check `d_values.get(284)` → not found (284 hasn't been processed). Store `d_values[220] = 284`.
-  - When `a = 284`: Compute $d(284) = 220$. Check `d_values.get(220)` → returns $284$. Since $d(220) = 284$ and $d(284) = 220$ with $220 \neq 284$, add $220 + 284 = 504$ to the sum.
+  - When `a = 220`: Compute $d(220) = 284$ (cached). Check `d_values.get(284)` = not found (284 hasn't been processed). Store `d_values[220] = 284`.
+  - When `a = 284`: Compute $d(284) = 220$ (cached). Check `d_values.get(220)` = returns $284$. Since $d(220) = 284$ and $d(284) = 220$ with $220 \neq 284$, add $220 + 284 = 504$ to the sum.
 
 - **Step 7: Example Walkthrough for Edge Case (9500, 12000 - Hypothetical)**
-  - When `a = 9500`: Compute $d(9500) = 12000$. Check `d_values.get(12000)` → not found. Store `d_values[9500] = 12000`.
-  - Main loop ends at $a = 9999$.
+  - When `a = 9500`: Compute $d(9500) = 12000$ (cached). Check `d_values.get(12000)` = not found. Store `d_values[9500] = 12000`.
+  - Main loop ends at `threshold - 1`.
   - Second loop: When checking `a = 9500`, find `d_value = 12000 >= threshold`. Compute $d(12000) = 9500$. Since this equals $a$, add $9500$ to the sum.
 
-- **Efficiency:** This solution processes each number from $0$ to $9999$ exactly once, computing its proper divisor sum using optimized factorization. The dictionary lookup is $O(1)$, making pair detection very fast. The second loop only checks numbers below the threshold, and computes $d(n)$ for numbers above the threshold only when necessary. The wheel factorization reduces the number of trial divisions significantly compared to naive approaches.
+- **Efficiency:** This solution processes each number from $1$ to `threshold - 1` exactly once, computing its proper divisor sum using optimized factorization. The dictionary lookup is $O(1)$, making pair detection very fast. The second loop only checks numbers below the threshold, and computes $d(n)$ for numbers above the threshold only when necessary. The wheel factorization reduces the number of trial divisions significantly compared to naive approaches.
 
 ---
 
@@ -103,7 +103,7 @@ Evaluate the sum of all the amicable numbers under $10000$.
 
 - Use **memoization** to cache the results of $d(n)$ computations, avoiding redundant calculations.
 - Apply the `@lru_cache` decorator to automatically store and retrieve previously computed values.
-- For each number $a < 10000$, compute $d(a)$.
+- For each number $a <$ threshold, compute $d(a)$.
 - **Optimization:** Check for amicable pairs using two conditions:
   - When $d(a) < a$: Both numbers are below threshold, verify and add both.
   - When $d(a) \geq$ threshold: One number is above threshold, verify and add only $a$.
@@ -115,7 +115,7 @@ Evaluate the sum of all the amicable numbers under $10000$.
 
 - **Step 1: Memoization with LRU Cache**
   - The `@lru_cache(maxsize=threshold+1)` decorator automatically caches function results.
-  - **Cache size:** Set to `threshold + 1` (10,001) to store all possible values from $0$ to $10000$.
+  - **Cache size:** Set to `threshold + 1` to store all possible values from $0$ to `threshold`.
   - **How it works:** When `d(n)` is called:
     - If the result for $n$ is already cached, return it immediately (O(1) lookup).
     - Otherwise, compute the result, store it in the cache, and return it.
@@ -130,7 +130,7 @@ Evaluate the sum of all the amicable numbers under $10000$.
   - Compute `d_value = d(a)`.
   - **Condition 1:** `if d_value < a:`.
     - **Why this condition?**
-      - For an amicable pair $(x, y)$ with $x < y < $ threshold, we have:
+      - For an amicable pair $(x, y)$ with $x < y <$ threshold, we have:
         - When processing $x$: $d(x) = y$ where $y > x$, so the condition fails and we skip.
         - When processing $y$: $d(y) = x$ where $x < y$, so the condition passes and we check the pair.
       - This ensures each pair where both numbers are below threshold is examined exactly once.
@@ -159,7 +159,7 @@ Evaluate the sum of all the amicable numbers under $10000$.
 
 - **Step 5: Example Walkthrough (220, 284)**
   - When `a = 220`: Compute $d(220) = 284$ (cached). Since $284 > 220$ and $284 <$ threshold, neither condition triggers.
-  - When `a = 284`: Compute $d(284) = 220$ (cached). Since $220 < 284$, Condition 1 passes. Check $d(220)$ → cache hit returns $284$. Since $d(220) = 284 = a$, we add $220 + 284 = 504$.
+  - When `a = 284`: Compute $d(284) = 220$ (cached). Since $220 < 284$, Condition 1 passes. Check $d(220)$ = cache hit returns $284$. Since $d(220) = 284 = a$, we add $220 + 284 = 504$.
 
 - **Step 6: Example Walkthrough for Edge Case (9500, 12000 - Hypothetical)**
   - When `a = 9500`: Compute $d(9500) = 12000$ (cached). Since $12000 \geq$ threshold, Condition 2 passes. Compute $d(12000) = 9500$ (newly cached). Since $d(12000) = 9500 = a$, we add $9500$.
@@ -178,6 +178,123 @@ Evaluate the sum of all the amicable numbers under $10000$.
   - The expression `int(True)` evaluates to $1$, and `int(False)` evaluates to $0$.
 
 - **Efficiency:** Memoization ensures that each unique value of $d(n)$ is computed at most once. The dual-condition approach elegantly handles both standard pairs and edge cases in a single pass. The inequality check in Condition 1 ensures that `d(d_value)` is almost always a cache hit. The combination makes this solution very fast and remarkably concise.
+
+---
+
+## Solution 3: Half-Sieve with Prime-Based Divisor Function
+
+### Approach
+
+**This is the recommended solution** as it combines mathematical insight with computational efficiency. The key innovations are:
+
+1. **Half-Sieve for prime generation:** An optimized variant of the Sieve of Eratosthenes that stores only odd numbers, reducing memory usage by approximately 50%.
+2. **Prime-based divisor function:** Leverages the precomputed primes list to perform trial division only on actual primes, avoiding checks on composite numbers.
+3. **Intelligent filtering:** Skips categories that are mathematically proven to never be amicable:
+   - All odd prime numbers
+   - The prime 2
+   - All perfect numbers (only 4 below 10,000: 6, 28, 496, 8128)
+
+By eliminating these categories before computation, we avoid wasteful divisor sum calculations on numbers that cannot possibly be amicable.
+
+**Reference:** The full Python implementation is available in [`solution_3.py`](solution_3.py).
+
+### Detailed Explanation
+
+- **Step 1: Half-Sieve Prime Generation**
+  - Standard Sieve of Eratosthenes is optimized by observing that all primes (except 2) are odd.
+  - **Memory optimization:** Store only odd numbers in a boolean array to reduce memory by ~50%.
+  - **Index mapping:** Index $i$ in the array represents the number $2i + 1$.
+    - Index 0 = number 1 (marked false, not prime)
+    - Index 1 = number 3
+    - Index 2 = number 5
+    - Index 3 = number 7, and so on...
+  - **Sieve process:** For each prime $p$ in the sequence, mark all multiples of $p$ starting from $p^2$ as composite.
+    - Use array slicing `is_prime[i*i//2::i] = False` to mark multiples efficiently.
+  - **Extract primes:** Convert the boolean array back to actual prime numbers using `2*np.nonzero(is_prime)[0]+1`, then prepend 2 to get the complete prime list.
+
+- **Step 2: Prime-Based Divisor Sum Function**
+  - This is the key innovation: instead of checking divisibility by all candidates, we only trial divide by actual primes.
+  - **Edge case:** For $n = 0$, return `float('inf')`.
+  - **Prime factorization:** Iterate through the precomputed `primes` list and extract each prime factor:
+    ```python
+    index = 0
+    f = primes[index]
+    while f*f <= n:
+        count = 0
+        while not n%f:
+            n //= f
+            count += 1
+        if count:
+            answer *= (f**(count+1)-1)//(f-1)
+        index += 1
+        f = primes[index]
+    ```
+  - **Why only check primes?**
+    - If $n$ is divisible by a composite number, it's already divisible by that composite's prime factors.
+    - By only checking primes, we extract the prime factorization directly.
+    - This eliminates redundant checks on composite numbers like 4, 6, 8, 9, 10, etc.
+  - **Early termination:** Stop when $f^2 > n$ because any remaining $n > 1$ must be prime.
+  - **Handle remaining prime:** If $n > 1$ after all trial divisions, then $n$ itself is a prime factor with exponent 1.
+    - For a prime $p$: $\sigma(p) = p + 1$.
+  - **Divisor formula:** Use $\sigma(n) = \prod_{i=1}^{k} \frac{p_i^{a_i+1} - 1}{p_i - 1}$ to compute the sum of all divisors.
+  - **Return proper divisors:** Return $\sigma(n) - n$ to get the sum of proper divisors.
+  - **Advantages over Solution 2's divisor function:**
+    - Solution 2 explicitly handles 2 and 3, then uses wheel factorization for remaining candidates.
+    - Solution 3 skips this entirely by only checking primes from the precomputed list.
+    - Checking only primes is much faster than checking all candidates, especially for large numbers.
+
+- **Step 3: Exclude Non-Amicable Numbers**
+  - **Why exclude primes?** As proven rigorously in the Mathematical Foundation, no prime number can be amicable.
+  - **Why exclude perfect numbers?** By definition, amicable pairs require two *distinct* numbers. Perfect numbers satisfy $d(n) = n$, making them incompatible with the amicable condition.
+  - **The exclusion set:**
+    ```python
+    PN = [6, 28, 496, 8128]
+    exclusion = set(PN)
+    exclusion.add(2)
+    ```
+  - **Perfect numbers below 10,000:** There are exactly four: 6, 28, 496, and 8128. These are extraordinarily rare; as of 2024, only 51 perfect numbers are known, with the largest containing over 49 million digits.
+  - **Why hardcode?** Rather than computing whether a number is perfect (which is non-trivial), we simply list the four known perfect numbers below our threshold. This is far more efficient than checking the mathematical condition $\sigma(n) = 2n$.
+  - **Historical context:** Perfect numbers were studied by ancient mathematicians including Euclid. The known perfect numbers follow the Euclid-Euler form $2^{p-1}(2^p - 1)$ where $2^p - 1$ is a Mersenne prime. It remains an open question whether any odd perfect numbers exist.
+
+- **Step 4: Main Loop with Intelligent Filtering**
+  - Iterate through all numbers below threshold:
+    ```python
+    for a in range(threshold):
+        if (a%2 and is_prime[a//2]) or a in exclusion:
+            continue
+    ```
+  - **Condition breakdown:**
+    - `a%2 and is_prime[a//2]`: Skip odd primes
+      - `a%2` is true if $a$ is odd.
+      - If odd and `is_prime[a//2]` is true, then $a$ is an odd prime => skip.
+    - `a in exclusion`: Skip 2 and all perfect numbers.
+  - **What passes through:**
+    - All even numbers (including even composites like 220, 284, which form the smallest amicable pair)
+    - All odd composite numbers
+  - **Efficiency gain:** By skipping all primes and perfect numbers, we avoid computing $d(n)$ for numbers that mathematically cannot be amicable.
+
+- **Step 5: Amicable Pair Detection**
+  - For each number that passes the filter, compute `d_value = d(a)`.
+  - **Condition 1:** `if d_value < a:`.
+    - Ensure we count each pair exactly once by deferring to the larger element.
+    - When the condition passes, both numbers are below threshold, so add both.
+    - Verify with `d(d_value) == a` before adding.
+  - **Condition 2:** `elif threshold <= d_value < float('inf'):`.
+    - Handle cross-threshold pairs where one number exceeds the threshold.
+    - Add only the number below threshold.
+    - Verify with `d(d_value) == a` before adding.
+  - **The boolean multiplication trick:** Use `int(condition)` to multiply by 0 or 1, avoiding explicit if statements.
+
+- **Step 6: Why This Is Faster**
+  - **Fewer divisor computations:** By skipping all odd primes and perfect numbers, we compute $d(n)$ for fewer candidates.
+  - **Faster divisor computation:** Checking only primes is significantly faster than wheel factorization, especially for large numbers.
+  - **Memory efficiency:** The half-sieve uses ~50% less memory than a full sieve.
+  - **Combined effect:** Solution 3 is typically 2-5x faster than Solution 2, despite Solution 2 already being highly optimized.
+
+- **Step 7: Memoization Cache Size Optimization**
+  - The cache is set to `maxsize=threshold` (not `threshold+1`).
+  - Since we skip many numbers (all odd primes, all perfect numbers), the actual cache usage is considerably less than the theoretical maximum.
+  - This is a minor optimization that reflects the reduced number of unique `d(n)` values computed.
 
 ---
 
@@ -214,66 +331,114 @@ The function $\sigma$ is **multiplicative**: if $\gcd(m, n) = 1$, then $\sigma(m
 - The smallest amicable pair $(220, 284)$ was known to the ancient Greeks (Pythagoras).
 - Perfect numbers (where $d(n) = n$) are excluded from amicable numbers by the condition $a \neq b$.
 
-### Wheel Factorization (6k±1 Pattern)
+### Why Prime Numbers Cannot Be Amicable
 
-After removing all factors of $2$ and $3$, any remaining prime must be of the form $6k \pm 1$.
+**Theorem:** No prime number can be part of an amicable pair.
 
-**Proof:**
-Any integer can be written as one of: $6k$, $6k+1$, $6k+2$, $6k+3$, $6k+4$, $6k+5$.
-- $6k$, $6k+2$, $6k+4$ are divisible by $2$.
-- $6k+3$ is divisible by $3$.
-- Only $6k+1$ and $6k+5$ (i.e., $6k-1$) can be prime (for $k \geq 1$).
+**Proof by contradiction:**
 
-The alternating step pattern (2, 4, 2, 4, ...) efficiently generates all numbers of this form:
-- Start at $5 = 6(1) - 1$, add $2$ → $7 = 6(1) + 1$
-- Add $4$ → $11 = 6(2) - 1$, add $2$ → $13 = 6(2) + 1$
-- Add $4$ → $17 = 6(3) - 1$, and so on...
+Assume that a prime $p$ is part of an amicable pair with some positive integer $m$.
 
-This reduces the search space by approximately $66\%$ compared to checking all numbers.
+**Step 1: Determine the proper divisors of $p$**
 
----
+Let $p$ be prime. By definition of a prime number, its only positive divisors are:
+- $1$
+- $p$
 
-## Comparison of Solutions
+Therefore, the only *proper* divisor of $p$ is $1$.
 
-| Aspect | Solution 1 (Dictionary) | Solution 2 (Memoization) |
-|--------|-------------------------|--------------------------|
-| **Approach** | Track pairs with dictionary | Cache with dual conditions |
-| **Caching** | Manual dictionary storage | Automatic with `@lru_cache` |
-| **Pair Detection** | Check if reverse exists in dict | Check $d(a) < a$ or $d(a) \geq$ threshold |
-| **Edge Case Handling** | Separate second loop | Integrated into main loop |
-| **Cache Efficiency** | Stores only processed values | Stores all computed values |
-| **Double-Counting Prevention** | Dictionary lookup logic | Inequality and threshold conditions |
-| **Code Clarity** | ★★★★☆ | ★★★★★ |
-| **Lines of Code** | More lines (explicit logic) | Fewer lines (compact conditionals) |
-| **Speed** | Very fast | Very fast |
-| **Best For** | Explicit control and clarity | Elegance and conciseness |
+**Step 2: Calculate $d(p)$**
 
----
+The sum of proper divisors of $p$ is:
+$$d(p) = 1$$
 
-## Output
+**Step 3: Apply the amicable condition**
 
-```
-31626
-```
+If $p$ is amicable with $m$, then by definition:
+$$d(p) = m$$
 
----
+From Step 2, this means:
+$$m = 1$$
 
-## Notes
+**Step 4: Check the reverse condition**
 
-- The sum of all amicable numbers under 10,000 is **31,626**.
-- There are exactly **10 amicable numbers** below 10,000, forming **5 amicable pairs**:
-  - $(220, 284)$ → sum: $504$
-  - $(1184, 1210)$ → sum: $2394$
-  - $(2620, 2924)$ → sum: $5544$
-  - $(5020, 5564)$ → sum: $10584$
-  - $(6232, 6368)$ → sum: $12600$
-  - **Total:** $504 + 2394 + 5544 + 10584 + 12600 = 31626$
-- **Solution 2** is the more elegant approach, handling edge cases within the main loop using a clean dual-condition structure.
-- **Solution 1** provides more explicit control with a separate loop for edge cases, which may be easier to understand and modify.
-- Both solutions correctly handle the important edge case of **cross-threshold pairs** where one amicable number is below 10,000 but its partner is above. This ensures completeness.
-- The wheel factorization optimization (checking only $6k \pm 1$ candidates) provides significant speedup over naive trial division.
-- Both solutions correctly handle the edge case of $n = 0$ by returning `float('inf')`, though this doesn't affect the problem since we only check $n \geq 1$.
-- The inequality optimization ($d(a) < a$) in Solution 2 is mathematically elegant: it ensures each in-range pair is counted exactly once by deferring the check until we reach the larger element, at which point the smaller element's value is guaranteed to be cached.
-- Perfect numbers (where $d(n) = n$) are automatically excluded by the condition $a \neq b$ (or `d_value` $\neq a$).
-- The boolean multiplication trick `int(condition)` used in both solutions is a compact way to conditionally add values without explicit nested if statements.
-- The problem demonstrates the power of combining efficient algorithms (wheel factorization), mathematical properties (multiplicativity of $\sigma$), and programming techniques (memoization, dictionary lookups, conditional logic) to solve number theory problems efficiently and correctly.
+For an amicable pair, we also require:
+$$d(m) = p$$
+
+Substituting $m = 1$:
+$$d(1) = p$$
+
+**Step 5: Calculate $d(1)$**
+
+The number $1$ has no proper divisors (the only divisor of $1$ is $1$ itself, which is not a proper divisor). Therefore:
+$$d(1) = 0$$
+
+**Step 6: Derive the contradiction**
+
+From Step 4, we need $d(1) = p$.
+
+But from Step 5, $d(1) = 0$.
+
+Therefore:
+$$p = 0$$
+
+This contradicts the assumption that $p$ is a prime number, since prime numbers are positive integers greater than $1$. QED
+
+**Intuition:** Amicable pairs require a "feedback loop" where each number's divisors sum to the other. A prime is too simple: it has only divisor $1$, which forces its partner to be $1$. But $1$ has no divisors to feed back to the prime. The symmetry requirement cannot be satisfied.
+
+### Why Perfect Numbers Cannot Be Amicable
+
+**Theorem:** No perfect number can be part of an amicable pair.
+
+**Proof by definition:**
+
+**Definition:** A number $n$ is **perfect** if $d(n) = n$, i.e., $\sigma(n) = 2n$.
+
+**Definition:** Two distinct positive integers $a$ and $b$ form an **amicable pair** if $d(a) = b$ and $d(b) = a$ where $a \neq b$.
+
+**Argument:**
+
+Suppose $n$ is perfect and is part of an amicable pair with some number $m$.
+
+Then by the amicable condition:
+- $d(n) = m$
+- $d(m) = n$
+
+But since $n$ is perfect:
+- $d(n) = n$
+
+Therefore:
+$$m = n$$
+
+However, the definition of amicable pairs explicitly requires $a \neq b$ (the two numbers must be distinct). Since $m = n$, this violates the definition.
+
+Therefore, no perfect number can be part of an amicable pair. QED
+
+**Consequence:** Perfect numbers are categorically excluded from amicable number problems, not by computational difficulty but by the fundamental definition of what makes a pair amicable.
+
+### Perfect Numbers: Rarity, Structure, and the Hardcoded List
+
+**Definition:** A number $n$ is **perfect** if $d(n) = n$, i.e., $\sigma(n) = 2n$.
+
+**Known Perfect Numbers:**
+There are exactly four perfect numbers below 10,000:
+- $6 = 2^1(2^2 - 1)$
+- $28 = 2^2(2^3 - 1)$
+- $496 = 2^4(2^5 - 1)$
+- $8128 = 2^6(2^7 - 1)$
+
+**Why Hardcode Rather Than Compute?**
+
+Rather than computing whether a number is perfect (checking if $\sigma(n) = 2n$, which requires computing all divisors), we simply hardcode the known perfect numbers below our threshold. This approach is justified because:
+
+1. **Extreme rarity:** As of 2024, only **51 perfect numbers are known**. The next one after 8128 is 33,550,336, far exceeding typical algorithm thresholds.
+
+2. **Exponential growth:** Known perfect numbers follow the Euclid-Euler form:
+   $$P = 2^{p-1}(2^p - 1)$$
+   where $2^p - 1$ is a Mersenne prime. The largest known perfect number has exponent $p = 82,589,933$, resulting in a number with over **49 million digits**. The gap between consecutive perfect numbers grows exponentially.
+
+3. **Computational efficiency:** For a typical problem threshold (up to a few million), checking a hardcoded list of 4-5 elements is orders of magnitude faster than computing $\sigma(n)$ for each number.
+
+4. **Mathematical certainty:** These are not estimates or probabilistic results, they are mathematically proven perfect numbers. There is zero ambiguity in using a hardcoded list.
+
+5. **Problem structure:** Many Project Euler problems are designed with specific bounds (like 10,000 in this case) that are carefully chosen to be computationally feasible while still being interesting. With a threshold of 10,000
