@@ -7,10 +7,13 @@ def cycle_length(d):
         d //= 5
     if not d-1:
         return 0
-    power = 1
-    while pow(10,power,d)-1:  # (10^power) mod d != 1 
-        power += 1
-    return power
+    length = 1
+    remainder = 10
+    _,remainder = divmod(remainder,d)
+    while remainder-1:
+        _,remainder = divmod(10*remainder,d)
+        length += 1
+    return length
 
 threshold = 1000
 d_max = 0
