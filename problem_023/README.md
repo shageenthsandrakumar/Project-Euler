@@ -395,18 +395,13 @@ $$\sigma(p^k) = 1 + p + p^2 + \cdots + p^k$$
 $$\sigma(p^k) = \frac{p^{k+1} - 1}{p - 1}$$
 
 **Step 3:** The sum of proper divisors is:
-$$d(p^k) = \sigma(p^k) - p^k = \frac{p^{k+1} - 1}{p - 1} - p^k$$
+$$d(p^k) = \sigma(p^k) - p^k = \frac{p^{k+1} - 1}{p - 1} - p^k = \frac{p^{k} - 1}{p - 1}$$
 
 **Step 4:** To show $p^k$ is deficient, we need to prove $d(p^k) < p^k$:
-$$\frac{p^{k+1} - 1}{p - 1} - p^k < p^k$$
-$$\frac{p^{k+1} - 1}{p - 1} < 2p^k$$
-$$p^{k+1} - 1 < 2p^k(p - 1)$$
+$$\frac{p^{k} - 1}{p - 1} < \frac{p^{k} - 1}$$
+$$p^{k} - 1 < p^k$$
+$$\frac{p^{k} - 1}{p - 1} < p^k$$
 $$p^{k+1} - 1 < 2p^{k+1} - 2p^k$$
-$$-1 < p^{k+1} - 2p^k$$
-$$2p^k - 1 < p^{k+1}$$
-
-**Step 5:** For $p \geq 2$ and $k \geq 1$:
-$$p^{k+1} = p \cdot p^k \geq 2p^k > 2p^k - 1$$
 
 This inequality holds for all primes $p \geq 2$ and all positive integers $k \geq 1$.
 
