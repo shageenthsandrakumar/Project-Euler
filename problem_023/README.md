@@ -392,12 +392,15 @@ Therefore:
 $$\sigma(p^k) = 1 + p + p^2 + \cdots + p^k$$
 
 **Step 2:** This is a geometric series with first term 1, common ratio $p$, and $k+1$ terms. Using the geometric series formula:
+
 $$\sigma(p^k) = \frac{p^{k+1} - 1}{p - 1}$$
 
 **Step 3:** The sum of proper divisors is:
+
 $$d(p^k) = \sigma(p^k) - p^k = \frac{p^{k+1} - 1}{p - 1} - p^k = \frac{p^{k} - 1}{p - 1}$$
 
 **Step 4:** To show $p^k$ is deficient, we need to prove $d(p^k) < p^k$:
+
 $$\frac{p^{k} - 1}{p - 1} < p^{k} - 1 < p^k$$
 
 This inequality holds for all primes $p \geq 2$ and all positive integers $k \geq 1$.
