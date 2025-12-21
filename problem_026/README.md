@@ -558,7 +558,7 @@ The question is whether there's a smaller exponent $k < p-1$ where $10^k \equiv 
 - **Euler's Theorem** is the foundation that guarantees the period divides $\phi(d)$, making the mathematical optimization possible.
 - The **descending search** in Solution 3 provides early termination: the first full reptend prime found is guaranteed to be the largest.
 - For composite numbers, $\phi(d) < d-1$ always, so they can never achieve the maximum period. This is why we focus exclusively on primes.
-- The problem beautifully connects **number theory** (Euler's theorem, primitive roots), **abstract algebra** (multiplicative order), and **practical computation** (sieve algorithms, modular exponentiation).
+- The problem beautifully connects **number theory** (Euler's theorem, primitive roots) and **practical computation** (sieve algorithms, modular exponentiation).
 - Understanding why we can check only prime divisors requires the deep insight that any proper divisor of $p-1$ must be divisible by some prime factor of $p-1$, making prime checks sufficient to rule out all proper divisors.
 - **Historical note:** The study of primitive roots and full reptend primes dates back to Gauss's *Disquisitiones Arithmeticae* (1801), one of the foundational texts of modern number theory.
-- This problem demonstrates how **mathematical insight can transform computational complexity** from $O(n^2)$ (brute force) to approximately $O(n/\log n \times \log \log n)$ (prime sieve with efficient testing).
+
