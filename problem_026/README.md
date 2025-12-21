@@ -298,7 +298,7 @@ Decimal: 0.142857142857... (period 6)
 
 ### Multiplicative Order
 
-**Definition:** The **multiplicative order** of $a$ modulo $n$ (denoted $\text{ord}_n(a)$ ) is the smallest positive integer $k$ such that $a^k \equiv 1 \pmod{n}$.
+**Definition:** The **multiplicative order** of $a$ modulo $n$ ($\text{ord}_n(a)$ ) is the smallest positive integer $k$ such that $a^k \equiv 1 \pmod{n}$.
 
 **For our problem:** The cycle length of $1/d$ equals $\text{ord}_d(10)$ (after removing factors of 2 and 5).
 
