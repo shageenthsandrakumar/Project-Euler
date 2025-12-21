@@ -398,7 +398,7 @@ $$\sigma(p^k) = \frac{p^{k+1} - 1}{p - 1}$$
 $$d(p^k) = \sigma(p^k) - p^k = \frac{p^{k+1} - 1}{p - 1} - p^k = \frac{p^{k} - 1}{p - 1}$$
 
 **Step 4:** To show $p^k$ is deficient, we need to prove $d(p^k) < p^k$:
-$$\frac{p^{k} - 1}{p - 1} < \frac{p^{k} - 1}$$
+$$\frac{p^{k} - 1}{p - 1} < p^{k} - 1$$
 $$p^{k} - 1 < p^k$$
 $$\frac{p^{k} - 1}{p - 1} < p^k$$
 $$p^{k+1} - 1 < 2p^{k+1} - 2p^k$$
