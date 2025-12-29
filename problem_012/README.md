@@ -33,6 +33,7 @@ What is the value of the first triangle number to have over five hundred divisor
 - Generate triangular numbers incrementally using the relation $T_n = T_{n-1} + n$.
 - For each triangular number, compute $\tau(T_n)$ by factoring it directly (see **Mathematical Foundation** for the divisor function formula).
 - Use **wheel factorization (6k±1)** to efficiently find prime factors.
+- Compute the divisor count by multiplying the contributions from each prime factor as they are discovered.
 - Continue until finding the first triangular number with over 500 divisors.
 
 **Reference:** The full Python implementation is available in [`solution_1.py`](solution_1.py).
@@ -42,8 +43,9 @@ What is the value of the first triangle number to have over five hundred divisor
 - **Step 1: Efficient Prime Factorization**
   - The `number_of_divisors` function implements wheel factorization.
   - First, extract all factors of 2: `while not n%2:` divides out powers of 2.
-  - Store `count+1` in the list (since the exponent contributes $(a+1)$ to $\tau$).
+  - Initialize the answer: `answer = count+1` (since the exponent contributes $(a+1)$ to $\tau$).
   - Next, extract all factors of 3: `while not n%3:` divides out powers of 3.
+  - Multiply into the answer: `answer *= count+1`.
   - For all other primes, use the **6k±1 pattern**.
 
 - **Step 2: The 6k±1 Wheel Pattern**
@@ -63,14 +65,21 @@ What is the value of the first triangle number to have over five hundred divisor
   - Continue checking factors while `f*f <= n`.
   - **Why stop at $\sqrt{n}$:** If $n$ has a factor $f > \sqrt{n}$, it must have a corresponding factor $d < \sqrt{n}$ (since $n = f \times d$). All composite numbers are marked by their smaller factors.
   - For each factor found, divide it out completely: `while not n%f:`.
-  - Append `count+1` to track the contribution to $\tau(n)$.
+  - Multiply into the running product: `answer *= count+1`.
 
 - **Step 4: Handle Remaining Prime**
   - After the loop, if `n > 1`, then $n$ itself is a prime factor with exponent 1.
-  - Append 2 to represent $(1+1)$.
-  - Compute the product: `math.prod(exponents_plus1)` gives $\tau(n)$.
+  - Multiply by 2 to represent $(1+1)$: `answer *= 2`.
+  - Return the final divisor count.
 
-- **Step 5: Main Loop**
+- **Step 5: Computing the Product**
+  - The divisor count formula is $\tau(n) = (a_1+1)(a_2+1) \cdots (a_k+1)$ where $a_i$ are the exponents in the prime factorization.
+  - We compute this product incrementally as we discover each prime factor.
+  - Start with the contribution from 2: `answer = count+1`.
+  - For each subsequent prime, multiply: `answer *= count+1`.
+  - This approach is efficient because we compute the result in a single pass through the factorization.
+
+- **Step 6: Main Loop**
   - Initialize `triangle_number = 0`, `n = 0`, `divisor_count = 0`.
   - The loop `while divisor_count <= threshold:` continues until finding the answer.
   - Increment `n` and update the triangular number: `triangle_number += n`.
@@ -97,21 +106,31 @@ What is the value of the first triangle number to have over five hundred divisor
 ### Detailed Explanation
 
 - **Step 1: Enhanced Factorization Function**
-  - The `number_of_divisors` function now returns **two values**: `(tau_n, power_2)`.
+  - The `number_of_divisors` function now returns **two values**: `(answer, power_2)`.
   - This dual-purpose design serves two needs simultaneously:
     1. **Compute $\tau(n)$:** Use the standard formula $(a_1+1)(a_2+1) \cdots (a_k+1)$.
     2. **Track $\nu_2(n)$:** Return the exponent of 2 separately for the formula adjustment.
   - When extracting factors of 2: `power_2 = 0` accumulates the count.
-  - The line `exponents_plus1.append(power_2+1)` contributes to $\tau(n)$.
-  - The line `return math.prod(exponents_plus1), power_2` returns both pieces of information.
+  - Initialize the answer: `answer = power_2+1` contributes to $\tau(n)$.
+  - The line `return answer, power_2` returns both pieces of information.
 
-- **Step 2: Why This Dual-Purpose Design is Brilliant**
+- **Step 2: Computing the Divisor Count**
+  - We build the divisor count by multiplying the contributions from each prime factor:
+    ```python
+    answer = power_2+1      # Start with factor from 2^power_2
+    answer *= power_3+1     # Multiply by factor from 3^power_3
+    answer *= count+1       # Multiply by factor from each prime
+    ```
+  - This approach directly implements the formula $\tau(n) = (a_1+1)(a_2+1) \cdots (a_k+1)$.
+  - By computing the product as we discover factors, we avoid any intermediate storage and maintain excellent cache locality.
+
+- **Step 3: Why This Dual-Purpose Design is Brilliant**
   - **Avoid redundant computation:** A single factorization pass provides all needed data.
   - **No post-processing:** The power of 2 is extracted during factorization, not after.
   - **Efficiency:** Factoring $n$ once is far cheaper than factoring both $n$ and $T_n$.
   - The same loop that computes `power_2` also contributes `(power_2+1)` to the divisor count calculation.
 
-- **Step 3: Main Search Loop**
+- **Step 4: Main Search Loop**
   - Initialize `n = 0`, `divisor_count = 0`.
   - The loop `while divisor_count <= threshold:` searches for the answer.
   - Increment `n` and factor both `n` and `n+1`:
@@ -120,7 +139,7 @@ What is the value of the first triangle number to have over five hundred divisor
   - Compute the total power of 2 in $n(n+1)$: `power_even = power2_n + power2_n1`.
   - Since exactly one of $n$ or $n+1$ is even, this gives $\nu_2(n(n+1))$.
 
-- **Step 4: The Adjustment Formula**
+- **Step 5: The Adjustment Formula**
   - The line `divisor_count = tau_n * tau_n1 * power_even / (power_even + 1)` implements:
     $$\tau(T_n) = \tau(n) \cdot \tau(n+1) \cdot \frac{\nu_2(n(n+1))}{\nu_2(n(n+1)) + 1}$$
   - **Why this formula works:**
@@ -129,9 +148,9 @@ What is the value of the first triangle number to have over five hundred divisor
     - This contributes `(power_even + 1)` to the divisor count.
     - After dividing by 2, the power of 2 becomes `power_even - 1`.
     - This contributes `(power_even - 1 + 1) = power_even` to the divisor count.
-    - The ratio of contributions is: $\frac{\text{power-even}}{\text{power-even} + 1}$.
+    - The ratio of contributions is: $\frac{\text{power\_even}}{\text{power\_even} + 1}$.
 
-- **Step 5: Example Walkthrough (n = 8)**
+- **Step 6: Example Walkthrough (n = 8)**
   - $n = 8 = 2^3$: `tau_n = 4` (divisors: 1, 2, 4, 8), `power2_n = 3`
   - $n+1 = 9 = 3^2$: `tau_n1 = 3` (divisors: 1, 3, 9), `power2_n1 = 0`
   - $T_8 = \frac{8 \times 9}{2} = 36 = 2^2 \times 3^2$
@@ -139,7 +158,7 @@ What is the value of the first triangle number to have over five hundred divisor
   - Formula: `divisor_count = 4 × 3 × (3/4) = 9`
   - Verification: $\tau(36) = \tau(2^2) \times \tau(3^2) = 3 \times 3 = 9$ ✓
 
-- **Step 6: Computing the Answer**
+- **Step 7: Computing the Answer**
   - Once the loop finds `divisor_count > 500`, compute: `answer = n*(n+1)//2`.
   - This is the first triangular number with over 500 divisors.
 
@@ -147,18 +166,97 @@ What is the value of the first triangle number to have over five hundred divisor
 
 ---
 
+## Solution 3: Optimal Factorization with Computation Reuse
+
+### Approach
+
+- Use the same mathematical foundation as Solution 2: factor $n$ and $n+1$ separately.
+- Add a critical optimization: **reuse factorization results between iterations**.
+- Observe that in iteration $i$, we compute $\tau(n)$ and $\tau(n+1)$, but in iteration $i+1$, we need $\tau(n+1)$ and $\tau(n+2)$. We can reuse $\tau(n+1)$!
+- This "sliding window" approach eliminates approximately **50% of factorizations** compared to Solution 2.
+
+**Reference:** The full Python implementation is available in [`solution_3.py`](solution_3.py).
+
+### Detailed Explanation
+
+- **Step 1: The Redundant Computation Problem**
+  - In Solution 2, each iteration factors both $n$ and $n+1$:
+    - Iteration 1: Factor 1, Factor 2
+    - Iteration 2: Factor 2, Factor 3 (Factor 2 again!)
+    - Iteration 3: Factor 3, Factor 4 (Factor 3 again!)
+  - For $n = 12{,}375$ iterations, Solution 2 performs $\sim 24{,}750$ factorizations.
+  - Notice that every number except the first and last is factored **twice**.
+
+- **Step 2: The Sliding Window Optimization**
+  - **Key insight:** The value $\tau(n+1)$ from iteration $i$ becomes $\tau(n)$ in iteration $i+1$.
+  - We can "slide" our computation window forward, reusing previous results:
+    ```python
+    tau_n1, power2_n1 = number_of_divisors(n+1)  # Pre-compute for n=1
+    while divisor_count <= threshold:
+        n += 1
+        tau_n, power2_n = tau_n1, power2_n1      # Reuse previous n+1
+        tau_n1, power2_n1 = number_of_divisors(n+1)  # Compute NEW n+1
+    ```
+  - **What happens:**
+    - Setup: Factor 1, store as `tau_n1`
+    - Iteration 1: Reuse 1 as `tau_n`, Factor 2, store as `tau_n1`
+    - Iteration 2: Reuse 2 as `tau_n`, Factor 3, store as `tau_n1`
+    - Iteration 3: Reuse 3 as `tau_n`, Factor 4, store as `tau_n1`
+  - **Result:** Each number is factored exactly once (except the initial value).
+
+- **Step 3: Quantifying the Performance Gain**
+  - Solution 2 factorizations: $2n$ (both $n$ and $n+1$ each iteration)
+  - Solution 3 factorizations: $n + 1$ (one per iteration, plus initial)
+  - **Speedup ratio:** $\frac{2n}{n+1} \approx 2$ for large $n$
+  - For $n = 12{,}375$:
+    - Solution 2: $\sim 24{,}750$ factorizations
+    - Solution 3: $\sim 12{,}376$ factorizations
+    - **Solution 3 performs ~50% fewer factorizations!**
+
+- **Step 4: Implementation Details**
+  - The pre-computation step is crucial: `tau_n1, power2_n1 = number_of_divisors(n+1)` before the loop.
+  - This initializes the "previous" values for the first iteration.
+  - The assignment `tau_n, power2_n = tau_n1, power2_n1` is a simple variable swap with no computation!
+  - Only one factorization per iteration: `tau_n1, power2_n1 = number_of_divisors(n+1)`.
+  - The rest of the formula remains identical to Solution 2.
+
+- **Step 5: Why This Works**
+  - The sliding window pattern is a form of **dynamic programming**.
+  - We're exploiting the **overlapping subproblems** structure:
+    - Each iteration needs two consecutive values.
+    - Consecutive iterations share one value.
+    - Therefore, we can cache and reuse.
+  - This is analogous to computing Fibonacci numbers: instead of recalculating F(n-1) when computing F(n+1), we save it.
+
+- **Step 6: Memory vs. Computation Trade-off**
+  - **Memory cost:** Two extra variables (`tau_n1`, `power2_n1`) negligible.
+  - **Computation savings:** 50% reduction in factorizations substantial!
+  - This is an excellent example of **space-time trade-off** favoring time optimization.
+
+- **Step 7: Generalization**
+  - This optimization applies whenever you have a **sliding window** over sequential computations.
+  - Pattern recognition: If iteration $i$ computes $f(i)$ and $f(i+1)$, and iteration $i+1$ needs $f(i+1)$ and $f(i+2)$, reuse $f(i+1)$.
+  - Common in dynamic programming, signal processing, and sequence analysis algorithms.
+
+- **Efficiency:** Solution 3 combines the mathematical efficiency of Solution 2 (factoring small numbers) with algorithmic efficiency (eliminating redundant computations). It performs ~12,376 factorizations instead of ~24,750, while maintaining all the benefits of the coprimality approach. This represents the **optimal solution** for this problem.
+
+---
+
 ## Comparison of Solutions
 
-| Aspect | Solution 1 (Direct) | Solution 2 (Optimized) |
-|--------|---------------------|------------------------|
-| **Approach** | Factor $T_n$ directly | Factor $n$ and $n+1$ separately |
-| **Number Size** | Up to $\sim 7.66 \times 10^7$ | Up to $\sim 12{,}376$ |
-| **Trial Division Range** | Up to $\sim 8{,}752$ | Up to $\sim 111$ |
-| **Formula Used** | Standard $\tau$ calculation | Multiplicative property with adjustment |
-| **Mathematical Insight** | Wheel factorization | Coprimality + multiplicativity |
-| **Efficiency** | Moderate | Very high |
-| **Code Complexity** | Simple and direct | Slightly more complex |
-| **Best For** | Understanding basics | Optimal performance |
+| Aspect | Solution 1 (Direct) | Solution 2 (Optimized) | Solution 3 (Optimal) |
+|--------|---------------------|------------------------|----------------------|
+| **Approach** | Factor $T_n$ directly | Factor $n$ and $n+1$ | Factor $n$ and $n+1$ with reuse |
+| **Number Size** | Up to $\sim 7.66 \times 10^7$ | Up to $\sim 12{,}376$ | Up to $\sim 12{,}376$ |
+| **Trial Division Range** | Up to $\sim 8{,}752$ | Up to $\sim 111$ | Up to $\sim 111$ |
+| **Factorizations** | $\sim 12{,}375$ | $\sim 24{,}750$ | $\sim 12{,}376$ |
+| **Formula Used** | Standard $\tau$ | Multiplicative + adjustment | Multiplicative + adjustment |
+| **Mathematical Insight** | Wheel factorization | Coprimality + multiplicativity | Coprimality + multiplicativity |
+| **Algorithmic Insight** | Incremental product | Incremental product | Sliding window |
+| **Memory Usage** | Minimal | Minimal | Minimal + 2 variables |
+| **Efficiency** | Low | High | Highest |
+| **Code Complexity** | Simple | Moderate | Moderate + |
+| **Best For** | Understanding basics | Production use | Optimal performance |
 
 ---
 
@@ -175,7 +273,7 @@ What is the value of the first triangle number to have over five hundred divisor
 ### Triangular Numbers
 
 The $n$-th triangular number is defined as:
-$T_n = 1 + 2 + 3 + \cdots + n = \frac{n(n+1)}{2}$
+$$T_n = 1 + 2 + 3 + \cdots + n = \frac{n(n+1)}{2}$$
 
 **Proof:** 
 Let $S = 1 + 2 + 3 + \cdots + n$. Writing the sum forwards and backwards:
@@ -184,7 +282,7 @@ S = 1    +  2    +  3    + ... + n
 S = n    + (n-1) + (n-2) + ... + 1
 ```
 Adding these equations term by term:
-$2S = (n+1) + (n+1) + (n+1) + \cdots + (n+1) = n(n+1)$
+$$2S = (n+1) + (n+1) + (n+1) + \cdots + (n+1) = n(n+1)$$
 Therefore: $S = \frac{n(n+1)}{2}$ ∎
 
 ### Number of Divisors Function
@@ -192,17 +290,17 @@ Therefore: $S = \frac{n(n+1)}{2}$ ∎
 The **divisor function** $\tau(n)$ counts the positive divisors of $n$.
 
 If $n$ has prime factorization:
-$n = p_1^{a_1} \cdot p_2^{a_2} \cdot p_3^{a_3} \cdots p_k^{a_k}$
+$$n = p_1^{a_1} \cdot p_2^{a_2} \cdot p_3^{a_3} \cdots p_k^{a_k}$$
 
 Then:
-$\tau(n) = (a_1 + 1)(a_2 + 1)(a_3 + 1) \cdots (a_k + 1)$
+$$\tau(n) = (a_1 + 1)(a_2 + 1)(a_3 + 1) \cdots (a_k + 1)$$
 
 **Why this formula works:** Each divisor of $n$ is formed by choosing an exponent between $0$ and $a_i$ for each prime $p_i$. There are $(a_i + 1)$ choices for each prime, giving $(a_1 + 1)(a_2 + 1) \cdots (a_k + 1)$ total divisors.
 
 ### Key Property: Multiplicativity
 
 **Theorem:** If $\gcd(m, n) = 1$ (i.e., $m$ and $n$ are coprime), then:
-$\tau(mn) = \tau(m) \cdot \tau(n)$
+$$\tau(mn) = \tau(m) \cdot \tau(n)$$
 
 **Proof:**
 Since $\gcd(m, n) = 1$, every divisor $d$ of $mn$ can be uniquely written as $d = d_1 \cdot d_2$ where $d_1 | m$ and $d_2 | n$.
@@ -227,33 +325,33 @@ Therefore: $\tau(mn) = \tau(m) \cdot \tau(n)$ ∎
 
 **Proof:** 
 Suppose $d$ divides both $n$ and $n+1$. Then $d$ divides their difference:
-$d | [(n+1) - n] = 1$
+$$d | [(n+1) - n] = 1$$
 
 The only positive integer dividing 1 is 1 itself, so $d = 1$. ∎
 
-### The Core Formula for Solution 2
+### The Core Formula for Solutions 2 and 3
 
 Since $T_n = \frac{n(n+1)}{2}$ and $\gcd(n, n+1) = 1$, we can use the multiplicative property with a crucial adjustment for the division by 2:
 
 **Case 1:** If $n$ is even (so $n = 2^a \cdot m$ where $m$ is odd):
-$T_n = \frac{n}{2} \cdot (n+1) = 2^{a-1} \cdot m \cdot (n+1)$
+$$T_n = \frac{n}{2} \cdot (n+1) = 2^{a-1} \cdot m \cdot (n+1)$$
 
 Since $\gcd(2^{a-1} \cdot m, n+1) = 1$ (because $n+1$ is odd and coprime to $m$):
-$\tau(T_n) = \tau(2^{a-1} \cdot m) \cdot \tau(n+1)$
+$$\tau(T_n) = \tau(2^{a-1} \cdot m) \cdot \tau(n+1)$$
 
 The power of 2 in $T_n$ is $a-1$ instead of $a$.
 
 **Case 2:** If $n$ is odd (so $n+1 = 2^b \cdot k$ where $k$ is odd):
-$T_n = n \cdot \frac{n+1}{2} = n \cdot 2^{b-1} \cdot k$
+$$T_n = n \cdot \frac{n+1}{2} = n \cdot 2^{b-1} \cdot k$$
 
 Since $\gcd(n, 2^{b-1} \cdot k) = 1$:
-$\tau(T_n) = \tau(n) \cdot \tau(2^{b-1} \cdot k)$
+$$\tau(T_n) = \tau(n) \cdot \tau(2^{b-1} \cdot k)$$
 
 **General Formula:**
 Let $\nu_2(n)$ denote the exponent of 2 in the prime factorization of $n$ (the 2-adic valuation).
 
 Since exactly one of $n$ or $n+1$ is even:
-$\tau(T_n) = \tau(n) \cdot \tau(n+1) \cdot \frac{\nu_2(n) + \nu_2(n+1)}{\nu_2(n) + \nu_2(n+1) + 1}$
+$$\tau(T_n) = \tau(n) \cdot \tau(n+1) \cdot \frac{\nu_2(n) + \nu_2(n+1)}{\nu_2(n) + \nu_2(n+1) + 1}$$
 
 This formula captures how dividing by 2 reduces the power of 2 in the factorization, which in turn reduces the divisor count contribution from the factor of 2.
 
@@ -264,9 +362,13 @@ This formula captures how dividing by 2 reduces the power of 2 in the factorizat
 - The first triangular number with over 500 divisors is $76{,}576{,}500 = T_{12375} = \frac{12375 \times 12376}{2}$.
 - This triangular number has exactly **576 divisors**.
 - The factorization is: $76{,}576{,}500 = 2^2 \times 3 \times 5^3 \times 7 \times 11 \times 13 \times 17$.
-- **Solution 2** is dramatically more efficient than Solution 1. Instead of factoring $T_{12375} \approx 7.66 \times 10^7$, it factors $n = 12{,}375$ and $n+1 = 12{,}376$ (roughly 6,200 times smaller). This reduces the trial division range from $\sim 8{,}752$ down to $\sim 111$, representing a **99% reduction** in computational work.
-- The dual-purpose factorization in Solution 2 (returning both $\tau(n)$ and $\nu_2(n)$ from a single pass) eliminates redundant computation. The same loop that counts powers of 2 also contributes to the divisor count calculation.
-- The 6k±1 wheel factorization reduces the search space by approximately **67%** compared to checking all odd numbers, and **83%** compared to checking all integers. The toggle mechanism `step = 6-step` elegantly generates the sequence without conditionals.
+- **Solution 1** factors $T_{12375} \approx 7.66 \times 10^7$, requiring ~12,375 factorizations of increasingly large numbers with trial division up to ~8,752.
+- **Solution 2** factors $n$ and $n+1$ (up to ~12,376), requiring ~24,750 factorizations of small numbers with trial division up to ~111. This represents a **99% reduction** in the range of factors tested compared to Solution 1.
+- **Solution 3** achieves the same mathematical efficiency as Solution 2 but performs only ~12,376 factorizations (a **50% reduction** compared to Solution 2) by reusing the factorization of $n+1$ from iteration $i$ as the factorization of $n$ in iteration $i+1$.
+- **Incremental product calculation:** All solutions compute $\tau(n) = (a_1+1)(a_2+1) \cdots (a_k+1)$ by multiplying each factor as it is discovered during the factorization process. This approach maintains excellent cache locality and avoids intermediate storage.
+- **6k±1 wheel factorization:** Reduces the search space by approximately **67%** compared to checking all odd numbers, and **83%** compared to checking all integers. The toggle mechanism `step = 6-step` elegantly generates the sequence without conditionals.
+- **Sliding window reuse (Solution 3):** The observation that $\tau(n+1)$ in iteration $i$ equals $\tau(n)$ in iteration $i+1$ enables a simple variable swap to eliminate half of all factorizations. This is a textbook example of **dynamic programming** applied to eliminate overlapping subproblem computations.
 - The formula $\tau(T_n) = \tau(n) \cdot \tau(n+1) \cdot \frac{\nu_2(n) + \nu_2(n+1)}{\nu_2(n) + \nu_2(n+1) + 1}$ works uniformly for both even and odd $n$ because exactly one of $n$ or $n+1$ is always even.
-- The coprimality of consecutive integers ($\gcd(n, n+1) = 1$) is fundamental to Solution 2's efficiency, allowing us to factor smaller numbers independently and use the multiplicative property.
-- This problem illustrates how **number theory, combinatorics, and algorithmic optimization** combine to solve computational problems efficiently.
+- The coprimality of consecutive integers ($\gcd(n, n+1) = 1$) is fundamental to Solutions 2 and 3's efficiency, allowing us to factor smaller numbers independently and use the multiplicative property.
+- The dual-return design of `number_of_divisors(n)` returning both $\tau(n)$ and $\nu_2(n)$ from a single factorization pass is more efficient than computing them separately.
+- This problem illustrates how **number theory, combinatorics, and algorithmic optimization** combine to solve computational problems efficiently. The progression from Solution 1 to Solution 2 to Solution 3 demonstrates how mathematical insight (exploiting structure) and algorithmic insight (eliminating redundancy) compound to achieve dramatic performance improvements.
