@@ -35,7 +35,7 @@ PN = [6,28,496,8128]
 exclusion = set(PN)
 exclusion.add(2)
 for a in range(threshold):
-    if (a%2 and is_prime[a//2]) or a in exclusion:
+    if a%2 and is_prime[a//2] or a in exclusion:
         continue
     d_value = d(a)
     if d_value < a:
