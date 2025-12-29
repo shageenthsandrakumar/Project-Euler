@@ -148,7 +148,7 @@ What is the value of the first triangle number to have over five hundred divisor
     - This contributes `(power_even + 1)` to the divisor count.
     - After dividing by 2, the power of 2 becomes `power_even - 1`.
     - This contributes `(power_even - 1 + 1) = power_even` to the divisor count.
-    - 
+
 - **Step 6: Example Walkthrough (n = 8)**
   - $n = 8 = 2^3$: `tau_n = 4` (divisors: 1, 2, 4, 8), `power2_n = 3`
   - $n+1 = 9 = 3^2$: `tau_n1 = 3` (divisors: 1, 3, 9), `power2_n1 = 0`
