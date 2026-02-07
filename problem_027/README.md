@@ -571,46 +571,6 @@ $$\text{bound}_b \cdot (\text{bound}_b + \text{bound}_a) = 1000 \cdot 2000 = 2{,
 
 This gives us an upper bound for primality testing - we know exactly how large our prime sieve needs to be. ∎
 
----
-
-## Mathematical Insights
-
-### Why Euler's Polynomial Works
-
-The polynomial $n^2 + n + 41$ produces 40 consecutive primes because:
-
-1. **Modular analysis (see Proof 6 in Mathematical Foundation):**
-   - For $p = 2$: $n^2 + n \equiv 0 \pmod{2}$ always, so $f(n) \equiv 41 \equiv 1 \pmod{2}$ (odd)
-   - For $p = 3$: Check $n = 0, 1, 2$:
-     - $f(0) = 41 \equiv 2 \pmod{3}$
-     - $f(1) = 43 \equiv 1 \pmod{3}$
-     - $f(2) = 47 \equiv 2 \pmod{3}$
-     - Never $\equiv 0 \pmod{3}$
-   - For primes $p < 41$: Similar analysis shows no divisibility for $n < 40$
-
-2. **The breakdown at $n = 40$ (confirms Proof 7):**
-   $$f(40) = 40^2 + 40 + 41 = 40(40 + 1) + 41 = 40 \cdot 41 + 41 = 41^2$$
-   - Since $a = 1 \neq -b = -41$, we have $f(b) = f(41) = 41^2$ which is composite
-   - As predicted by Proof 7, the run cannot reach $n = b = 41$
-
-3. **The discriminant:** $\Delta = 1 - 4(41) = -163$
-   - This is a prime discriminant
-   - Related to the class number of $\mathbb{Q}(\sqrt{-163})$
-   - Such polynomials have special properties in algebraic number theory
-
-### The Role of Small Primes
-
-Small primes act as "filters" that eliminate most polynomials early (as explained in Proof 6):
-
-- **Prime 2:** Eliminated by parity requirements (Proof 4)
-- **Prime 3:** Many polynomials divisible by 3 for small $n$
-- **Prime 5, 7, 11:** Further reduce the search space
-- **Larger primes:** Matter less because runs rarely reach them
-
-This is why the modular analysis (Proof 6) is so powerful - it explains the structure of the problem.
-
----
-
 ## Output
 
 ```
