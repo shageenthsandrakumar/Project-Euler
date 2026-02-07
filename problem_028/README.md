@@ -40,7 +40,7 @@ What is the sum of the numbers on the diagonals in a 1001×1001 spiral formed in
   - This terminates the recursion.
 
 - **Step 2: Input Validation**
-  - The condition `elif n%2 and n>1:` checks if $n$ is both odd and greater than 1.
+  - The condition `elif n%2==1 and n>1:` checks if $n$ is both odd and greater than 1.
   - `n%2` returns 1 for odd numbers, 0 for even numbers.
   - Combined with `n>1`, this ensures we only process valid odd spirals larger than the base case.
   - The `else:` clause catches all invalid inputs (even numbers, zero, or negative numbers) and prints an error message.
