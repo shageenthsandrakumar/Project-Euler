@@ -538,7 +538,7 @@ f(b) &= b^2 + ab + b \\
 
 Since $b$ is prime and $b > 1$, this is a product of $b$ and $(b + a + 1)$.
 
-**Case 1:** If $b + a + 1 \neq 1$, then $f(b) = b \cdot (b + a + 1)$ is composite (product of two integers both $> 1$).
+**Case 1:** If $b + a + 1 \neq 1$, then $f(b) = b \cdot (b + a + 1)$ is composite (product of two integers both $\neq 1$).
 
 **Case 2:** If $b + a + 1 = 1$, then $a = -b$ and $f(b) = b \cdot 1 = b$, which is prime.
 
