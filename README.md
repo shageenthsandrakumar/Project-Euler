@@ -31,6 +31,8 @@ This repository contains Python solutions to Project Euler problems. Each proble
 - **[Problem 23: Non-Abundant Sums](./problem_023/README.md)**
 - **[Problem 24: Lexicographic Permutations](./problem_024/README.md)**
 - **[Problem 25: 1000-digit Fibonacci Number](./problem_025/README.md)**
+- **[Problem 26: Reciprocal Cycles](./problem_026/README.md)**
+- **[Problem 27: Quadratic Primes](./problem_027/README.md)**
 
 Each problem folder contains one or more solutions with explanations, code, and output.
 
