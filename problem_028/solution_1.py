@@ -1,7 +1,7 @@
 def diagonal_sum(n):
     if n == 1:
         return 1
-    elif n%2 and n>1:
+    elif n%2==1 and n>1:
         answer = diagonal_sum(n-2)
         corner = n**2
         for corners in range(4):
