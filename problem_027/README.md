@@ -556,7 +556,7 @@ Therefore, for any valid choice of $a$ and $b$, the maximum consecutive prime ru
 **Corollary:** Given the problem constraints $|a| < 1000$ and $|b| \le 1000$, with $b$ being an odd prime and the consecutive prime run ending at some $n \le b - 1$, we have:
 
 The maximum value $f(n)$ can take during a valid prime run is:
-$$f(b-1) < \text{bound}_b^2 + (\text{bound}_a - 1) \cdot \text{bound}_b + \text{bound}_b$$
+$$f(b-1) < (\text{bound}_b)^2 + (\text{bound}_a - 1) \cdot \text{bound}_b + \text{bound}_b$$
 
 where $\text{bound}_a = 1000$ and $\text{bound}_b = 1000$.
 
