@@ -69,7 +69,7 @@ What is the sum of the numbers on the diagonals in a 1001×1001 spiral formed in
   - This efficiently computes all four corner values without explicitly calculating each formula.
 
 - **Step 5: Input Validation**
-  - The condition `elif n%2 and n>1:` checks if $n$ is both odd and greater than 1.
+  - The condition `elif n%2==1 and n>1:` checks if $n$ is both odd and greater than 1.
   - This is the valid recursive case: odd spirals larger than the base case.
   - The `else:` clause catches all invalid inputs (even numbers, zero, or negative numbers).
   - An error message is printed for invalid inputs.
