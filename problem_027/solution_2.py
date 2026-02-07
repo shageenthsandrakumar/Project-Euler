@@ -12,7 +12,7 @@ b_primes = 2*np.nonzero(is_prime[:(bound_b+1)//2+1])[0]+1
 n_max = 0
 a_final = 0
 b_final = 0
-for a in range(-2*(bound_a//2)+1,1000,2):
+for a in range(-2*(bound_a//2)+1,bound_a,2):
     for b in reversed(b_primes):
         if n_max > b:
             break
