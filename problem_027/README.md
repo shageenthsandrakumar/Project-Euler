@@ -443,7 +443,7 @@ Therefore $f(n)$ cannot be even for two consecutive values of $n$. ∎
 
 **Proof:** We have $f(n) = n(n+a) + b$ where $b$ is an odd prime.
 
-We want to produce a long run of consecutive primes (at least 40). By Proof 3, $f(n)$ can be even for at most non-consecutive values.
+We want to produce a long run of consecutive primes (at least 40). By Proof 3, $f(n)$ cannot be even for consecutive values.
 
 Since we need many consecutive primes and the only even prime is 2, we need $f(n)$ to be odd for all (or nearly all) consecutive values.
 
