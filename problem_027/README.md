@@ -90,7 +90,7 @@ Find the product of the coefficients, $a$ and $b$, for the quadratic expression 
   ```
   - **Outer loop:** Iterate through odd $a$ values (1000 values)
   - **Middle loop:** Iterate through odd prime $b$ values (~168 values)
-  - **Inner loop:** Test consecutive $n$ starting from 0, up to $b-1$ (Proof 7)
+  - **Inner loop:** Test consecutive $n$ starting from 0, up to $b-1$ (by Proof 7, runs can be at most $b-1$ long)
   - **Direct polynomial evaluation:** `n*n+a*n+b` is faster than using `np.poly1d`
 
 - **Step 5: Primality Check**
@@ -148,8 +148,8 @@ All steps are identical to Solution 1 except:
   ```
   - `reversed(b_primes)` iterates from largest to smallest prime
   - **Early exit condition:** Once $n_{\max} > b$, no smaller $b$ can improve the result
-  - **Why this works:** From Proof 7 (see **Mathematical Foundation**), $f(b)$ is composite, so the maximum run length is $b-1$
-  - If $n_{\max} \ge b$, then even a perfect run for this $b$ wouldn't beat the current best
+  - **Why this works:** From Proof 7 (see **Mathematical Foundation**), the maximum run length is at most $b-1$
+  - If $n_{\max} \ge b$, then even a perfect run for this $b$ (which can only be $b-1$ long) wouldn't beat the current best
 
 - **Performance benefit:**
   - As $n_{\max}$ grows, more and more $b$ values are skipped
@@ -525,9 +525,9 @@ If $f(r) \equiv 0 \pmod{p}$ for some $0 \le r < p$, then $f(n) \equiv 0 \pmod{p}
 
 ---
 
-### Proof 7: f(b) is composite
+### Proof 7: Maximum run length is at most b-1
 
-**Theorem:** For any odd prime $b$ and any integer $a$, the value $f(b)$ is composite.
+**Theorem:** For any odd prime $b$ and any integer $a$, the maximum consecutive prime run starting at $n = 0$ is at most $b-1$ values long.
 
 **Proof:** Consider $f(b)$ where $b$ is an odd prime.
 
@@ -538,20 +538,22 @@ f(b) &= b^2 + ab + b \\
 
 Since $b$ is prime and $b > 1$, this is a product of $b$ and $(b + a + 1)$.
 
-For $f(b)$ to be prime, we would need either:
-- $b = 1$ (but $b$ is prime, so $b \ge 2$), or
-- $b + a + 1 = 1$, which gives $a = -b$
+**Case 1:** If $b + a + 1 \neq 1$, then $f(b) = b \cdot (b + a + 1)$ is composite (product of two integers both $> 1$).
 
-If $a = -b$, then:
-$$f(1) = 1 - b + b = 1$$
+**Case 2:** If $b + a + 1 = 1$, then $a = -b$ and $f(b) = b \cdot 1 = b$, which is prime.
 
-which is not prime.
+However, when $a = -b$:
+$$f(1) = 1 + a + b = 1 + (-b) + b = 1$$
 
-Therefore, for any valid choice of $a$ and $b$, $f(b)$ is composite. ∎
+Since 1 is not prime, the consecutive prime run starting at $n = 0$ cannot reach $n = 1$ when $a = -b$.
 
-**Corollary 1:** The maximum possible length of a consecutive prime run starting at $n = 0$ is at most $b$ values (specifically, $n = 0$ through $n = b - 1$).
+**Conclusion:** 
+- If $a \neq -b$, then $f(b)$ is composite, so the run ends at or before $n = b-1$.
+- If $a = -b$, then $f(1) = 1$ (not prime), so the run cannot even reach $n = 1$.
 
-**Corollary 2:** Given the problem constraints $|a| < 1000$ and $|b| \le 1000$, with $b$ being an odd prime and the consecutive prime run ending at some $n < b$, we have:
+Therefore, for any valid choice of $a$ and $b$, the maximum consecutive prime run starting at $n = 0$ is at most $b-1$ values long. ∎
+
+**Corollary:** Given the problem constraints $|a| < 1000$ and $|b| \le 1000$, with $b$ being an odd prime and the consecutive prime run ending at some $n \le b - 1$, we have:
 
 The maximum value $f(n)$ can take during a valid prime run is:
 $$f(b-1) < \text{bound}_b^2 + (\text{bound}_a - 1) \cdot \text{bound}_b + \text{bound}_b$$
@@ -559,7 +561,7 @@ $$f(b-1) < \text{bound}_b^2 + (\text{bound}_a - 1) \cdot \text{bound}_b + \text{
 where $\text{bound}_a = 1000$ and $\text{bound}_b = 1000$.
 
 **Justification:**
-- By Proof 7, $f(b)$ is composite, so the run ends at or before $n = b - 1$
+- By the theorem above, the run is at most $b-1$ values long, so it ends at or before $n = b - 1$
 - The maximum occurs when $n$ is as large as possible ($n = b - 1$) and coefficients are at their bounds
 - Since $|a| < 1000$ (strict inequality), we use $\text{bound}_a - 1 = 999$
 - Since $|b| \le 1000$ (non-strict inequality), we use $\text{bound}_b = 1000$
@@ -588,7 +590,8 @@ The polynomial $n^2 + n + 41$ produces 40 consecutive primes because:
 
 2. **The breakdown at $n = 40$ (confirms Proof 7):**
    $$f(40) = 40^2 + 40 + 41 = 40(40 + 1) + 41 = 40 \cdot 41 + 41 = 41^2$$
-   - As predicted by Proof 7, this is composite
+   - Since $a = 1 \neq -b = -41$, we have $f(b) = f(41) = 41^2$ which is composite
+   - As predicted by Proof 7, the run cannot reach $n = b = 41$
 
 3. **The discriminant:** $\Delta = 1 - 4(41) = -163$
    - This is a prime discriminant
