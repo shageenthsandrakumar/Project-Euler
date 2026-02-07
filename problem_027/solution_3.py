@@ -12,7 +12,7 @@ for i in range(3, int(np.sqrt(threshold)) + 1, 2):
 
 b_primes = 2*np.nonzero(is_prime[:(bound_b+1)//2+1])[0]+1
 
-a_values = np.arange(-999, 1000, 2)
+a_values = np.arange(-2*(bound_a//2)+1, 1000, 2)
 A, B = np.meshgrid(a_values, b_primes, indexing='ij')
 n_max_grid = np.zeros_like(A)
 active = np.ones_like(A, dtype=bool) 
