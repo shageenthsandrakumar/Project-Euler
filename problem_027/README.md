@@ -83,7 +83,7 @@ Find the product of the coefficients, $a$ and $b$, for the quadratic expression 
 
 - **Step 4: Main Search Loop**
   ```python
-  for a in range(-2*(bound_a//2)+1,1000,2):  # All odd values of a
+  for a in range(-2*(bound_a//2)+1,bound_a,2):  # All odd values of a
       for b in b_primes:         # All odd prime values of b
           for n in range(b):     # Test n from 0 to b-1
               value = n*n+a*n+b
@@ -201,7 +201,7 @@ This is like filling a bathtub from the bottom up and watching which points stay
 
 - **Step 2: Create the Polynomial Grid**
   ```python
-  a_values = np.arange(-2*(bound_a//2)+1, 1000, 2)  # Shape: (1000,)
+  a_values = np.arange(-2*(bound_a//2)+1, bound_a, 2)  # Shape: (1000,)
   A, B = np.meshgrid(a_values, b_primes, indexing='ij')
   ```
   - `a_values`: 1D array of all odd $a$ values
