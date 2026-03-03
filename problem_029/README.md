@@ -173,12 +173,12 @@ Floating point is used only to produce a candidate integer via `round()`. The ex
   $$\text{lcm}(p_1, p_2, p_3) = \text{lcm}(\text{lcm}(p_1, p_2),\ p_3)$$
 
 - **Step 3: Counting multiples in a range**
-  The count of multiples of $l$ in $[lo, hi]$ is:
-  $$\left\lfloor \frac{hi}{l} \right\rfloor - \left\lfloor \frac{lo - 1}{l} \right\rfloor$$
+  The count of multiples of $m$ in $[lower, upper]$ is:
+  $$\left\lfloor \frac{upper}{m} \right\rfloor - \left\lfloor \frac{lower - 1}{m} \right\rfloor$$
   This is purely integer arithmetic. No floats, no storage.
 
   For a subset of powers, the overlapping range where collisions can occur is:
-  $$lo = 2 \times \max(\text{subset}), \quad hi = 100 \times \min(\text{subset})$$
+  $$lower = 2 \times \max(\text{subset}), \quad upper = 100 \times \min(\text{subset})$$
   Outside this range, the sequences do not overlap.
 
 - **Step 4: Inclusion-Exclusion**
