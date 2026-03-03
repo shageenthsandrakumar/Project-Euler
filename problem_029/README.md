@@ -70,7 +70,7 @@ Floating point is used only to produce a candidate integer via `round()`. The ex
 ### Detailed Explanation
 
 - **Step 1: Nested loops**
-  Iterate over all pairs $(a, b)$ with $a$ and $b$ in $[\text{lower\_bound}, \text{upper\_bound}]$.
+  Iterate over all pairs $(a, b)$ with $a$ and $b$ in $[2, 100]$.
 
 - **Step 2: Python's arbitrary precision integers**
   Even $100^{100}$ — a 200-digit number — is computed exactly. There is no overflow risk. Python handles these natively.
@@ -118,7 +118,7 @@ Floating point is used only to produce a candidate integer via `round()`. The ex
 ### Approach
 
 - Build a dictionary mapping each primitive root $r$ to the set of all exponents it generates.
-- For each base $a = r^p$, the exponents generated are $\{p \times b : b \in [\text{lower\_bound}, \text{upper\_bound}]\}$.
+- For each base $a = r^p$, the exponents generated are $\{p \times b : b \in [2, 100]\}$.
 - If $r$ is already in the dictionary, merge the new exponents in; otherwise create a new entry.
 - The answer is the total number of exponents across all entries.
 
@@ -139,7 +139,7 @@ Floating point is used only to produce a candidate integer via `round()`. The ex
   else:
       root_exponents[r].update(new_exponents)
   ```
-  `.update()` adds all elements from `new_exponents` into the existing set for root $r`. Since it's a set, any exponents already present are silently ignored — deduplication is free.
+  `.update()` adds all elements from `new_exponents` into the existing set for root $r$. Since it's a set, any exponents already present are silently ignored — deduplication is free.
 
 - **Step 3: Result**
   `sum(len(exps) for exps in root_exponents.values())` totals up the distinct exponents across all primitive roots.
@@ -153,7 +153,7 @@ Floating point is used only to produce a candidate integer via `round()`. The ex
 ### Approach
 
 - Avoid sets and hashmaps entirely — count distinct exponents using pure arithmetic.
-- For each primitive root $r$ with associated powers $P = [p_1, p_2, \ldots]$, count $|S_{p_1} \cup S_{p_2} \cup \ldots|$ using the inclusion-exclusion principle, where $S_p = \{p \cdot b : b \in [\text{lower\_bound}, \text{upper\_bound}]\}$.
+- For each primitive root $r$ with associated powers $P = [p_1, p_2, \ldots]$, count $|S_{p_1} \cup S_{p_2} \cup \ldots|$ using the inclusion-exclusion principle, where $S_p = \{p \cdot b : b \in [2, 100]\}$.
 - Sum across all primitive roots.
 
 **Reference:** The full Python implementation is available in [`solution_4.py`](solution_4.py).
@@ -161,7 +161,7 @@ Floating point is used only to produce a candidate integer via `round()`. The ex
 ### Detailed Explanation
 
 - **Step 1: What is $S_p$?**
-  For a base $a = r^p$, the exponents it generates are all multiples of $p$ in the range $[p \cdot \text{lower\_bound},\ p \cdot \text{upper\_bound}]$. So:
+  For a base $a = r^p$, the exponents it generates are all multiples of $p$ in the range $[p \cdot 2,\ p \cdot 100]$. So:
   $$S_p = \{p \cdot 2,\ p \cdot 3,\ \ldots,\ p \cdot 100\}$$
 
 - **Step 2: Why LCM?**
@@ -178,7 +178,7 @@ Floating point is used only to produce a candidate integer via `round()`. The ex
   This is purely integer arithmetic. No floats, no storage.
 
   For a subset of powers, the overlapping range where collisions can occur is:
-  $$lo = \text{lower\_bound} \times \max(\text{subset}), \quad hi = \text{upper\_bound} \times \min(\text{subset})$$
+  $$lo = 2 \times \max(\text{subset}), \quad hi = 100 \times \min(\text{subset})$$
   Outside this range, the sequences do not overlap.
 
 - **Step 4: Inclusion-Exclusion**
@@ -229,9 +229,9 @@ So every element is counted exactly once, regardless of how many sets contain it
 
 For a subset of powers $T = \{p_{i_1}, p_{i_2}, \ldots\}$, the intersection $\bigcap_{p \in T} S_p$ contains numbers that are:
 - Multiples of $\text{lcm}(T)$ (to be in every sequence)
-- In every range $[p \cdot \text{lower\_bound},\ p \cdot \text{upper\_bound}]$ simultaneously
+- In every range $[p \cdot 2,\ p \cdot 100]$ simultaneously
 
-The overlapping range is therefore $[\text{lower\_bound} \cdot \max(T),\ \text{upper\_bound} \cdot \min(T)]$, and `count_multiples` counts the multiples of $\text{lcm}(T)$ within it.
+The overlapping range is therefore $[2 \cdot \max(T),\ 100 \cdot \min(T)]$, and `count_multiples` counts the multiples of $\text{lcm}(T)$ within it.
 
 ---
 
