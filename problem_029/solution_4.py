@@ -10,11 +10,6 @@ def lcm_list(numbers):
         result *= number//gcd(number, result)
     return result
 
-def count_multiples(m, lower,upper):
-    if lower > upper:
-        return 0
-    return upper // m - (lower - 1) // m
-
 def count_distinct_exponents(powers,lower_bound,upper_bound):
     total = 0
     for size in range(len(powers)):
@@ -22,7 +17,7 @@ def count_distinct_exponents(powers,lower_bound,upper_bound):
             m = lcm_list(list(subset))
             lower = lower_bound * max(subset)
             upper = upper_bound * min(subset)
-            total += (-1)**(size)*count_multiples(m, lower, upper)
+            total += (-1)**(size)*(upper // m - (lower - 1) // m)
     return total
     
 def get_primitive_root(a):
