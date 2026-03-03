@@ -264,5 +264,3 @@ The overlapping range is therefore $[2 \cdot \max(T),\ 100 \cdot \min(T)]$, and 
 - **Solution 2** introduces the key idea of working in exponent space rather than value space, reducing the data stored from 200-digit integers to pairs of small integers.
 - **Solution 3** makes the grouping structure explicit, allowing direct inspection of which exponents each primitive root contributes.
 - **Solution 4** is the most mathematically sophisticated, replacing all set operations with the inclusion-exclusion principle. The largest power list (for $r = 2$) has only 6 elements, so at most $2^6 = 64$ subsets need to be evaluated.
-- A Python gotcha worth noting: never use a mutable object like `[]` as a default argument. The same object is reused across all calls, causing subtle bugs. Always use `None` as the default and initialize inside the function body.
-- The `for...else` construct used in Solution 4 is idiomatic Python: the `else` block runs only if the loop completed without hitting a `break`, making it a natural fit for "search and append if not found" logic.
