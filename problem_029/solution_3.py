@@ -9,13 +9,12 @@ def get_primitive_root(a):
     return a, 1
 
 root_exponents = {}
-
 for a in range(lower_bound, upper_bound+1):
     r, p = get_primitive_root(a)
     new_exponents = {p * b for b in range(lower_bound, upper_bound+1)}
     if r not in root_exponents:
         root_exponents[r] = new_exponents
     else:
-        root_exponents[r].update(new_exponents)  # only adds genuinely new ones
+        root_exponents[r].update(new_exponents)
 
 print(sum(len(exps) for exps in root_exponents.values()))
