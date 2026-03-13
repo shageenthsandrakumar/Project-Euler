@@ -5,7 +5,7 @@ digits = 1
 max_sum = digits*(9**power)
 p = [d**power for d in range(10)]
 
-while(upper_bound > 10**(digits-1)):
+while(max_sum > 10**(digits-1)):
     digits += 1
     max_sum = digits*(9**power)
 
