@@ -2,7 +2,7 @@ power = 5
 digits = 1
 max_sum = digits*(9**power)
 
-while(upper_bound > 10**(digits-1)):
+while(max_sum > 10**(digits-1)):
     digits += 1
     max_sum = digits*(9**power)
 upper_bound = (digits-1)*(9**power)
