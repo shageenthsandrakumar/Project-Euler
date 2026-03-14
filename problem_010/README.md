@@ -262,17 +262,89 @@ Find the sum of all the primes below two million.
 
 ---
 
+## Solution 5: Euler's Sieve
+
+### Approach
+
+- Generate all primes below the limit using **Euler's sieve**, also known as the **linear sieve**.
+- Unlike the Sieve of Eratosthenes, which can mark the same composite number multiple times, Euler's sieve guarantees that **every composite number is marked exactly once**, always by its smallest prime factor.
+- This unique ownership of each composite is what makes the algorithm run in true $O(n)$ linear time.
+- Accumulate the running sum as each prime is discovered, avoiding a separate summation pass.
+
+**Reference:** The full Python implementation is available in [`solution_5.py`](solution_5.py).
+
+### Background: How Euler's Sieve Works
+
+The Sieve of Eratosthenes marks composites by iterating through multiples of each prime. A number like $12$ gets marked twice: once when processing $2$ (as $6 \times 2$) and again when processing $3$ (as $4 \times 3$). This redundant work is why Eratosthenes runs in $O(n \log \log n)$ rather than $O(n)$.
+
+Euler's sieve eliminates this redundancy with a single observation: every composite number $c$ has a unique smallest prime factor, $\text{spf}(c)$. The number $c$ can always be written uniquely as:
+
+$$c = \text{spf}(c) \times \frac{c}{\text{spf}(c)}$$
+
+Euler's sieve assigns ownership of $c$ exclusively to the pair $(i, p)$ where $p = \text{spf}(c)$ and $i = c / p$. No other pair ever marks $c$. This is enforced by a single stop condition in the inner loop.
+
+### Detailed Explanation
+
+- **Step 1: Initialization**
+  - Allocate a boolean array `is_composite` of size `limit + 1`, initialized to `False` (assume everything is prime).
+  - Initialize an empty `primes` list and `answer = 0` to accumulate the sum.
+
+- **Step 2: The Outer Loop**
+  - Iterate $i$ from $2$ to `limit` inclusive.
+  - If `is_composite[i]` is `False`, then $i$ has not been marked by any smaller number, so $i$ is prime.
+    - Append $i$ to `primes`.
+    - Add $i$ to `answer`.
+  - Whether prime or composite, $i$ then participates in the inner loop to mark further composites.
+
+- **Step 3: The Inner Loop**
+  - For each prime $p$ in the `primes` list (iterating from smallest to largest):
+    - **Overflow check:** if $i \times p > \text{limit}$, break. The product is out of range.
+    - Mark `is_composite[i * p] = True`.
+    - **Stop condition:** if $p$ divides $i$ evenly (`i % p == 0`), break immediately.
+
+- **Step 4: Why the Stop Condition Enforces Unique Ownership**
+  - The stop condition `i % p == 0` is the heart of the algorithm. Suppose $p \mid i$, so $i = k \times p$ for some integer $k$. Then for any prime $q > p$ we might consider next:
+
+    $$i \times q = (k \times p) \times q = k \times (p \times q)$$
+
+  - This shows $p$ divides $i \times q$, making $p < q$ a smaller prime factor of the product. So $p \neq \text{spf}(i \times q)$, meaning the pair $(i, q)$ is not the legitimate owner of $i \times q$. That product will be (or already has been) marked by a different pair whose second element is $p$.
+  - Stopping here prevents all such duplicate markings. Conversely, while $p$ does not divide $i$, all prime factors of $i$ are strictly greater than $p$, meaning $p = \text{spf}(i \times p)$ and the pair $(i, p)$ is the unique rightful owner of that product.
+  - The result: every integer in the primes list produces a distinct set of composites. No two pairs $(i, p)$ and $(i', p')$ ever mark the same number.
+
+- **Step 5: Every Composite is Marked Exactly Once**
+  - **Existence:** For any composite $c \leq \text{limit}$, let $p = \text{spf}(c)$ and $i = c / p$. When the outer loop reaches $i$, $p$ is already in the primes list (it was found earlier, since $p \leq i$). The inner loop reaches $p$ before the stop condition fires, so $c = i \times p$ gets marked.
+  - **Uniqueness:** If two pairs $(i, p)$ and $(i', p')$ both mark the same composite $c$, then by the stop condition argument both $p$ and $p'$ must equal $\text{spf}(c)$. So $p = p'$ and $i = c / p = i'$. The pairs are identical. There is no second pair.
+  - Therefore each of the $n - \pi(n)$ composites up to $n$ is marked exactly once, giving $O(n)$ total work.
+
+- **Step 6: Example Trace**
+  - `i = 6`, `primes = [2, 3, 5]`:
+    - Mark $6 \times 2 = 12$. Check: $6 \% 2 = 0$, stop.
+    - $6 \times 3 = 18$ is never marked here. Its true owner is the pair $(9, 2)$, which marks it when $i = 9$, since $18 = 9 \times 2$ and $\text{spf}(18) = 2$.
+  - `i = 15`, `primes = [2, 3, 5, 7, 11, 13]`:
+    - Mark $15 \times 2 = 30$. Check: $15 \% 2 \neq 0$, continue.
+    - Mark $15 \times 3 = 45$. Check: $15 \% 3 = 0$, stop.
+    - $15 \times 5 = 75$ is not marked here. Its owner is $(25, 3)$, since $75 = 25 \times 3$ and $\text{spf}(75) = 3$.
+
+- **Step 7: Accumulating the Sum**
+  - Rather than collecting all primes first and summing at the end, `answer += i` is executed at the moment each prime is discovered in the outer loop.
+  - This is equivalent to a final `sum(primes)` call but avoids traversing the primes list a second time.
+
+- **Efficiency:** Euler's sieve runs in strictly $O(n)$ time. Each integer from $2$ to $n$ is visited once in the outer loop, and each composite is marked exactly once in the inner loop. This is asymptotically optimal for a sieve. In practice, Solutions 1 and 2 are often faster for this specific problem because they use NumPy array slicing, which is highly optimized and cache-friendly. Euler's sieve performs individual array writes in an irregular access pattern, which is less cache-efficient. Its main advantage is the theoretical $O(n)$ bound and the fact that it produces the smallest prime factor of every number as a free byproduct, enabling $O(\log n)$ factorization of any number up to $n$.
+
+---
+
 ## Comparison of Solutions
 
-| Aspect | Solution 1<br>(Half-Sieve) | Solution 2<br>(Dual 6k±1) | Solution 3<br>(Sundaram) | Solution 4<br>(Generator) |
-|--------|---------------------------|--------------------------|-------------------------|-------------------------|
-| **Memory Usage** | ~1 MB<br>(50% of full) | ~0.67 MB<br>(33% of full) | ~1 MB<br>(50% of full) | ~10 MB<br>(dict overhead) |
-| **Sieving Strategy** | Mark multiples of primes | Mark in 2 sieves | Direct composite computation | Incremental generation |
-| **Implementation** | Simple and intuitive | Complex dual-sieve logic | Moderate complexity | Simple generator pattern |
-| **Mathematical Insight** | Skip even numbers | Skip multiples of 2 and 3 | Algebraic composite formula | Dynamic composite tracking |
-| **Speed** | Very fast | Very fast | Slower | Slowest |
-| **Code Clarity** | ★★★★★ | ★★ | ★★★ | ★★★★ |
-| **Best For** | General use | Memory-constrained | Educational | Streaming/nth prime |
+| Aspect | Solution 1<br>(Half-Sieve) | Solution 2<br>(Dual 6k±1) | Solution 3<br>(Sundaram) | Solution 4<br>(Generator) | Solution 5<br>(Euler's Sieve) |
+|--------|---------------------------|--------------------------|-------------------------|-------------------------|-------------------------------|
+| **Memory Usage** | ~1 MB<br>(50% of full) | ~0.67 MB<br>(33% of full) | ~1 MB<br>(50% of full) | ~10 MB<br>(dict overhead) | ~2 MB<br>(full array) |
+| **Sieving Strategy** | Mark multiples of primes | Mark in 2 sieves | Direct composite computation | Incremental generation | Mark by smallest prime factor |
+| **Implementation** | Simple and intuitive | Complex dual-sieve logic | Moderate complexity | Simple generator pattern | Moderate complexity |
+| **Mathematical Insight** | Skip even numbers | Skip multiples of 2 and 3 | Algebraic composite formula | Dynamic composite tracking | Unique spf ownership |
+| **Time Complexity** | $O(n \log \log n)$ | $O(n \log \log n)$ | $O(n \log \log n)$ | $O(n \log \log n)$ | $O(n)$ |
+| **Speed** | Very fast | Very fast | Slower | Slowest | Fast |
+| **Code Clarity** | ★★★★★ | ★★ | ★★★ | ★★★★ | ★★★★ |
+| **Best For** | General use | Memory-constrained | Educational | Streaming/nth prime | Optimal time complexity |
 
 ---
 
@@ -294,5 +366,6 @@ Find the sum of all the primes below two million.
 - The Sieve of Sundaram was discovered in 1934 by **S. P. Sundaram, an Indian student from Sathyamangalam**. It was first published in **"The Mathematics Student" journal, Volume 2, Number 2**, 1934, by V. Ramaswami Aiyar. The algorithm later gained wider attention when it was featured in Scripta Mathematica in 1941 under the title **"Curiosa 81. A New Sieve for Prime Numbers"**.
 - Despite its mathematical elegance and being based on simple arithmetic progressions, the Sieve of Sundaram remains less well-known than other prime-finding algorithms. The algorithm appeared more than 2,000 years after Eratosthenes developed his famous sieve (circa 200 BCE).
 - **Solution 4** (Incremental Generator) is useful when primes need to be generated one at a time without knowing the limit in advance, but it's not optimal for computing sums below a known threshold.
-- All four solutions correctly interpret "below two million" as strictly less than $2,000,000$.
+- **Solution 5** (Euler's Sieve) is the only solution here that achieves true $O(n)$ time complexity. It is the natural choice when the theoretical linear bound matters, or when the smallest prime factor table is needed as a byproduct for further computations such as fast factorization.
+- All five solutions correctly interpret "below two million" as strictly less than $2,000,000$.
 - The problem demonstrates that while there are multiple valid algorithmic approaches to finding primes, the classical Sieve of Eratosthenes (with the half-sieve optimization) remains the gold standard for balancing simplicity, speed, and memory efficiency when the limit is known in advance.
