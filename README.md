@@ -35,6 +35,7 @@ This repository contains Python solutions to Project Euler problems. Each proble
 - **[Problem 27: Quadratic Primes](./problem_027/README.md)**
 - **[Problem 28: Number Spiral Diagonals](./problem_028/README.md)**
 - **[Problem 29: Distinct Powers](./problem_029/README.md)**
+- **[Problem 30: Digit Fifth Powers](./problem_030/README.md)**
 
 Each problem folder contains one or more solutions with explanations, code, and output.
 
