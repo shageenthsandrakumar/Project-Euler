@@ -213,6 +213,66 @@ $$
 
 ---
 
+## Solution 4: Modified Euler's Sieve
+
+### Approach
+
+- Use a modified version of **Euler's sieve** (the linear sieve) that operates without a fixed upper bound.
+- The classical Euler's sieve requires a pre-allocated array of size $n$, making it natural for "find all primes up to $n$" problems. This problem asks for the $n$-th prime instead, so the upper bound is unknown upfront.
+- The key insight is that Euler's sieve adapts naturally to this formulation, while the Sieve of Eratosthenes does not. The reason comes down to how each sieve terminates its inner loop.
+- Replace the boolean array with a **set** to track composites, removing the dependency on a fixed upper bound.
+- Stop as soon as the primes list reaches the target length.
+
+**Reference:** The full Python implementation is available in [`solution_4.py`](solution_4.py).
+
+### Why Euler's Sieve Adapts but Eratosthenes Does Not
+
+The Sieve of Eratosthenes has no natural stopping point for the inner loop without an upper bound. For each prime $p$ it marks $2p, 3p, 4p, \ldots$ indefinitely. Without knowing the upper bound in advance, there is no way to know when to stop marking multiples. You are forced to either guess an upper bound upfront (as in Solution 2) or abandon the sieve structure entirely (as in Solution 3).
+
+Euler's sieve is different. Its inner loop has a built-in termination condition that has nothing to do with an upper bound: **stop when $p$ divides $i$**. This condition is guaranteed to fire for every value of $i$, because every integer has a smallest prime factor and that prime will always be in the primes list by the time we reach $i$. The loop always terminates on its own, with no knowledge of where the sieve ends.
+
+This means Euler's sieve can be run indefinitely, with the outer loop stopping whenever the primes list reaches the desired length. No upper bound is needed and no mathematical estimate is required.
+
+### Detailed Explanation
+
+- **Step 1: Replacing the Array with a Set**
+  - The classical Euler's sieve uses a boolean array `is_composite[i]` to check membership in $O(1)$ time via direct index lookup.
+  - Without an upper bound, a fixed array cannot be pre-allocated. A **set** provides the same $O(1)$ average membership check without requiring a known size upfront.
+  - A set is the correct data structure here rather than a dictionary, since we only care about membership and carry no associated value. A dictionary mapping `composite -> True` would store redundant information: the value is always `True` and is never read, so the key alone is sufficient.
+  - The tradeoff is that set operations have worse cache behavior than array indexing, but for finding the $n$-th prime this is acceptable.
+
+- **Step 2: The Outer Loop**
+  - Iterate $i$ from $2$ upward with no fixed limit.
+  - If `i not in composites`, then $i$ has not been marked by any smaller number, so $i$ is prime. Append it to `primes`.
+  - Whether prime or composite, $i$ then participates in the inner loop to mark further composites.
+  - **Stopping condition:** once `len(primes) == threshold`, the outer loop exits. This replaces the `i * p > n` overflow check from the classical version.
+
+- **Step 3: The Inner Loop**
+  - For each prime $p$ in the `primes` list (iterating from smallest to largest):
+    - Add `i * p` to the composites set.
+    - **Stop condition:** if `i % p == 0`, break immediately.
+  - There is no `i * p > n` overflow check. In the classical bounded version, this check prevents marking composites beyond the array boundary. Here, composites beyond the eventual stopping point simply accumulate in the set harmlessly and are never looked up again.
+
+- **Step 4: Why the Stop Condition Guarantees Termination**
+  - Every integer $i \geq 2$ has a smallest prime factor $\text{spf}(i)$. Since primes are iterated in ascending order and $\text{spf}(i)$ is always in the primes list by the time we reach $i$ (it was found earlier as a smaller prime), the inner loop is guaranteed to encounter $\text{spf}(i)$ and break. The loop can never run forever.
+  - This is the structural property that makes the unbounded adaptation work. Eratosthenes has no equivalent guarantee: its inner loop for a prime $p$ has no natural stopping signal other than exceeding the upper bound.
+
+- **Step 5: Why Every Composite is Still Marked Exactly Once**
+  - Removing the upper bound does not affect the correctness argument from the classical Euler's sieve. The stop condition `i % p == 0` still ensures that every composite `i * p` is marked only when $p = \text{spf}(i \times p)$. The unique ownership of each composite by the pair $(i, \text{spf}(i \times p))$ is preserved regardless of whether there is an upper bound.
+  - Some composites beyond the final prime get marked into the set and are never queried. This is wasted work in terms of memory, but it does not affect correctness or the linear marking property.
+
+- **Step 6: Example Trace**
+  - `i = 6`, `primes = [2, 3, 5]`:
+    - Add $6 \times 2 = 12$ to composites. Check: $6 \% 2 = 0$, stop.
+    - $6 \times 3 = 18$ is never marked here. Its true owner is the pair $(9, 2)$, which marks it when $i = 9$.
+  - `i = 7`, `primes = [2, 3, 5, 7]`:
+    - Add $14, 21, 35, 49$ to composites. None of $2, 3, 5$ divide $7$, so all four are marked. The loop stops when $p = 7$ since $7 \% 7 = 0$.
+  - The outer loop stops as soon as `len(primes)` reaches 10,001.
+
+- **Efficiency:** The modified sieve retains the linear marking property of Euler's sieve: each composite is added to the set exactly once. However, replacing the boolean array with a set introduces hashing overhead and poorer cache behavior compared to direct array indexing. In practice this makes it slower than Solution 2 for large $n$, but it requires no upper bound estimate and no mathematical pre-computation. It is also simpler to implement than Solution 3, avoiding the collision-handling logic of the incremental Eratosthenes generator entirely.
+
+---
+
 ## Output
 
 ```
@@ -226,10 +286,12 @@ $$
 - The 10,001st prime number is $104{,}743$.
 - **Solution 2** is optimal when you need all primes up to a limit (batch generation), leveraging the Rosser-Schoenfeld bound with the classical Sieve of Eratosthenes.
 - **Solution 3** is optimal when you need a specific nth prime or want to generate primes on demand without knowing an upper bound in advance. The incremental sieve with generators showcases elegant Python programming and efficient algorithm design.
+- **Solution 4** demonstrates how Euler's sieve adapts naturally to the nth prime problem. Its built-in `i % p == 0` termination condition makes it unbounded by design, requiring no upper bound estimate and no generator machinery. The set-based adaptation is a direct consequence of the structural difference between Euler's sieve and the Sieve of Eratosthenes.
 - The inequality **$p_n < n(\ln(n) + \ln(\ln(n)))$** for the $n$-th prime, $p_n$, is a key explicit upper bound proven by **J. Barkley Rosser and Lowell Schoenfeld** in their 1962 paper, **"Approximate Formulas for Some Functions of Prime Numbers."** It holds true for all integers $n \ge 6$ (and thus for all primes $p_n \ge 13$).
-- The incremental sieve algorithm was popularized by **Melissa O'Neill** in her 2009 paper **"The Genuine Sieve of Eratosthenes"** and represents a significant improvement over naive implementations.
-- For educational purposes, all three solutions demonstrate different algorithmic paradigms:
+- The incremental sieve algorithm (Solution 3) was popularized by **Melissa O'Neill** in her 2009 paper **"The Genuine Sieve of Eratosthenes"** and represents a significant improvement over naive implementations.
+- For educational purposes, all four solutions demonstrate different algorithmic paradigms:
   - **Solution 1:** Brute force with trial division
   - **Solution 2:** Batch processing with mathematical bounds
   - **Solution 3:** Lazy evaluation with incremental discovery
+  - **Solution 4:** Linear sieve adapted to unbounded nth prime search
 - The problem beautifully illustrates the progression from naive algorithms to sophisticated, mathematically-grounded solutions.
