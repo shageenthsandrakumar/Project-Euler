@@ -178,6 +178,63 @@ What is the **smallest positive number** that is evenly divisible by all of the 
 
 ---
 
+## Solution 4: Euler's Sieve
+
+### Approach
+
+- Generate all prime numbers up to the threshold using **Euler's sieve**, also known as the **linear sieve**.
+- Unlike the Sieve of Eratosthenes, which can mark the same composite number multiple times, Euler's sieve guarantees that **every composite number is marked exactly once**, always by its smallest prime factor.
+- This unique ownership of each composite is what makes the algorithm run in true $O(n)$ linear time.
+- Extract primes and compute the LCM using the same logarithmic exponent method as Solutions 1 and 2.
+
+**Reference:** The full Python implementation is available in [`solution_4.py`](solution_4.py).
+
+### Detailed Explanation
+
+- **Step 1: The Core Idea — Smallest Prime Factor Ownership**
+  - Every composite number $c$ can be written uniquely as $c = \text{spf}(c) \times (c / \text{spf}(c))$, where $\text{spf}(c)$ is the smallest prime factor of $c$.
+  - Euler's sieve exploits this: it assigns each composite a unique "owner", the pair $(i, p)$ where $p = \text{spf}(c)$ and $i = c / p$.
+  - No two pairs ever mark the same composite. This is what makes it linear.
+
+- **Step 2: The Outer Loop**
+  - Iterate $i$ from $2$ to $\text{nums}$.
+  - If `is_composite[i]` is `False`, then $i$ has not been marked by any smaller number, so $i$ must be prime. Append it to the `primes` list.
+  - Whether prime or composite, $i$ then participates in marking further composites in the inner loop.
+
+- **Step 3: The Inner Loop**
+  - For each prime $p$ in the `primes` list (iterating from smallest to largest):
+    - If $i \times p > \text{nums}$, break — the product is out of range.
+    - Mark `is_composite[i * p] = True`.
+    - **Stop condition:** if $p$ divides $i$ evenly (`i % p == 0`), break immediately.
+
+- **Step 4: Why the Stop Condition Works**
+  - This is the heart of the algorithm. Suppose $p \mid i$, meaning $i = k \times p$ for some integer $k$. Then for any prime $q > p$ we might consider next:
+
+    $$i \times q = (k \times p) \times q = k \times (p \times q)$$
+
+  - This shows $p$ divides $i \times q$, so $p < q$ is a smaller prime factor of $i \times q$. That means $p \neq \text{spf}(i \times q)$, so the pair $(i, q)$ is not the legitimate owner of $i \times q$. Some other pair $(kq, p)$ already is or will be.
+  - Continuing past this point would mark composites that will be (or already have been) marked by their true owners. Stopping prevents all redundant work.
+  - Conversely, while $p$ does not divide $i$, the product $i \times p$ has no prime factor smaller than $p$ — because all prime factors of $i$ are $\geq p$ (we iterate primes in order and haven't hit a divisor yet). So $p = \text{spf}(i \times p)$ and the pair $(i, p)$ is the unique legitimate owner of that composite.
+
+- **Step 5: Every Composite is Marked Exactly Once**
+  - **Existence:** For any composite $c \leq \text{nums}$, let $p = \text{spf}(c)$ and $i = c / p$. When the outer loop reaches $i$, $p$ will be in the primes list. The inner loop reaches $p$ before the stop condition fires (since $p \leq \text{spf}(i)$, all primes before $p$ do not divide $i$), so $c = i \times p$ gets marked.
+  - **Uniqueness:** Suppose two pairs $(i, p)$ and $(i', p')$ both mark the same composite $c$. By the stop condition argument, both $p$ and $p'$ must equal $\text{spf}(c)$. So $p = p'$, and therefore $i = c / p = i'$. The pairs are identical, so there is no second pair.
+  - Therefore every composite from $4$ to $\text{nums}$ is marked exactly once, giving $O(n)$ total work.
+
+- **Step 6: Example Trace (i = 6)**
+  - `primes = [2, 3, 5]` at this point, `i = 6`.
+  - Mark $6 \times 2 = 12$. Check: $6 \% 2 = 0$ → stop.
+  - Why not mark $6 \times 3 = 18$? Because $18 = 2 \times 9$, and $2 = \text{spf}(18)$. The true owner of $18$ is the pair $(9, 2)$, not $(6, 3)$. Continuing would duplicate that marking.
+
+- **Step 7: Computing Exponents and LCM**
+  - Once all primes up to `nums` are collected, use the same logarithmic formula as Solutions 1 and 2:
+    - `exponents = np.log(nums) // np.log(primes)`
+  - Compute the LCM: `int(np.prod(primes**exponents))`
+
+- **Efficiency:** Euler's sieve runs in strictly $O(n)$ time, as each integer from $2$ to $n$ is visited once in the outer loop, and each composite is marked exactly once in the inner loop. This is asymptotically optimal for a sieve. In practice however, the Sieve of Eratosthenes (Solution 2) is often faster for moderate $n$ due to better cache locality and simpler inner loop operations. Euler's sieve becomes advantageous when the $O(n)$ bound matters strictly, or when the **smallest prime factor table** is needed as a byproduct. Since each composite is marked by its $\text{spf}$, the table comes for free and enables $O(\log n)$ factorization of any number up to $n$.
+
+---
+
 ## Output
 
 ```
@@ -192,7 +249,8 @@ What is the **smallest positive number** that is evenly divisible by all of the 
 - Prime factorization: $232{,}792{,}560 = 2^4 \times 3^2 \times 5 \times 7 \times 11 \times 13 \times 17 \times 19$.
 - **Solution 2** is the optimal approach for generating large batches of primes, leveraging the half-sieve optimization for efficient prime generation.
 - **Solution 3** is the most memory-efficient approach and is ideal for this specific problem, using only standard Python libraries and generating primes on-demand.
-- This incremental sieve algorithm is sometimes called the **"Postponed Sieve"** or **"Priority Queue Sieve"** and was popularized by **Melissa O'Neill** in her 2009 paper **"The Genuine Sieve of Eratosthenes"**.
+- **Solution 4** achieves the theoretically optimal $O(n)$ time complexity by ensuring every composite is marked exactly once via its smallest prime factor. It also produces a smallest prime factor table as a free byproduct, enabling $O(\log n)$ factorization of any number up to $n$.
+- This incremental sieve algorithm (Solution 3) is sometimes called the **"Postponed Sieve"** or **"Priority Queue Sieve"** and was popularized by **Melissa O'Neill** in her 2009 paper **"The Genuine Sieve of Eratosthenes"**.
 - The problem is equivalent to finding $\text{LCM}(1, 2, 3, \dots, 20)$.
 - Simply multiplying all numbers from $1$ to $20$ would produce a much larger number with redundant prime factors. The LCM approach ensures each prime appears with the minimal necessary exponent.
 - The logarithmic method for computing exponents avoids iterative division and is highly efficient for vectorized operations.
